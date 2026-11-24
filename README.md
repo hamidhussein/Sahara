@@ -1,6 +1,6 @@
 # Sahara Welfare Foundation
 
-A responsive coming-soon page with an original SVG landscape, a short purpose section, and an accessible welcome-note dialog. No build step or dependencies required.
+A responsive coming-soon page built around a patchwork quilt (drawn entirely in CSS), a short values section, and an accessible welcome-note dialog. No build step or dependencies required.
 
 ## Run locally
 
