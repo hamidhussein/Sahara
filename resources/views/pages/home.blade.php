@@ -1,0 +1,133 @@
+{{--
+    Home page, plan 1.1. Built: 1 Hero, 2 Impact counters, 4 Our programs,
+    5 Latest projects, 8 News, 9 Partners, 10 Volunteer call.
+    Still to come: 3 Current appeals and 7 Giving tiers (donation module),
+    6 A story (needs a beneficiary quote given with permission).
+--}}
+<x-layouts.app>
+    {{-- 1. Hero --}}
+    <section class="relative isolate overflow-hidden bg-primary-deep text-white">
+        <img src="{{ asset('images/hero-danyor-water.jpg') }}"
+             alt="Sab Ka Sahara volunteers delivering clean drinking water in Danyor"
+             fetchpriority="high"
+             decoding="async"
+             class="absolute inset-0 -z-20 size-full object-cover object-center">
+        <div aria-hidden="true" class="absolute inset-0 -z-10 bg-gradient-to-r from-primary-deep/95 via-primary-deep/80 to-primary-deep/45"></div>
+        <div class="mx-auto max-w-7xl px-4 py-16 sm:px-6 sm:py-24 lg:px-8 lg:py-32">
+            <div class="max-w-2xl">
+                <h1 class="text-[2rem] font-bold leading-[1.15] sm:text-5xl">Support for everyone who has none.</h1>
+                <p class="mt-5 text-lg text-white/90 sm:text-xl">
+                    From clean water in Nagar to free eye surgeries and food for families in need, Sab Ka Sahara Welfare Foundation stands with the people of Gilgit-Baltistan, day and night.
+                </p>
+                <div class="mt-8 flex flex-col gap-3 sm:flex-row">
+                    <a href="{{ route('donate') }}" class="btn-donate text-lg">Donate Now</a>
+                    <a href="{{ route('get-help') }}" class="btn-outline text-lg text-white hover:bg-white/10">Get Help</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    {{-- 2. Impact counters --}}
+    <section aria-label="Our impact" class="border-b border-line bg-surface">
+        <dl class="mx-auto grid max-w-7xl grid-cols-1 gap-px bg-line sm:grid-cols-2 lg:grid-cols-4">
+            @php
+                $stats = [
+                    [$impact->yearsServing().' years', 'serving Gilgit-Baltistan, since '.$impact->founded_year],
+                    [$impact->water_plants, 'water filtration plants built to WHO standards'],
+                    [number_format($impact->patients_examined), 'patients examined and '.$impact->eye_operations.'+ free eye operations in '.$impact->report_year],
+                    [number_format($impact->ramadan_families), 'families received Ramadan rations in '.$impact->report_year],
+                ];
+            @endphp
+            @foreach ($stats as [$number, $label])
+                <div class="bg-surface px-6 py-8">
+                    <dt class="sr-only">{{ $label }}</dt>
+                    <dd class="text-4xl font-bold text-primary">{{ $number }}</dd>
+                    <dd class="mt-1 text-ink-muted">{{ $label }}</dd>
+                </div>
+            @endforeach
+        </dl>
+    </section>
+
+    {{-- 4. Our programs --}}
+    <section class="mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:px-8 lg:py-24" aria-labelledby="programs-title">
+        <h2 id="programs-title" class="text-[1.375rem] font-bold text-primary md:text-[1.75rem]">What we do</h2>
+        <ul class="mt-8 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+            @foreach ($programs as $program)
+                <li>
+                    <a href="{{ route('programs.show', $program) }}" class="group block h-full rounded-card border border-line bg-surface p-6 hover:border-primary">
+                        <h3 class="text-lg font-semibold text-ink group-hover:text-primary">{{ $program->name }}</h3>
+                        <p class="mt-2 text-ink-muted">{{ $program->summary }}</p>
+                    </a>
+                </li>
+            @endforeach
+        </ul>
+        <a href="{{ route('programs.index') }}" class="btn-primary mt-8">See all programs</a>
+    </section>
+
+    {{-- 5. Latest projects (marked "Show on the home page" in the admin) --}}
+    @if ($projects->isNotEmpty())
+        <section class="border-y border-line bg-surface" aria-labelledby="projects-title">
+            <div class="mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:px-8 lg:py-24">
+                <h2 id="projects-title" class="text-[1.375rem] font-bold text-primary md:text-[1.75rem]">See what your support has built</h2>
+                <ul class="mt-8 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+                    @foreach ($projects as $project)
+                        <li><x-project-card :project="$project" /></li>
+                    @endforeach
+                </ul>
+                <a href="{{ route('projects.index') }}" class="btn-primary mt-8">See all projects</a>
+            </div>
+        </section>
+    @endif
+
+    {{-- 8. News --}}
+    @if ($posts->isNotEmpty())
+        <section class="mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:px-8 lg:py-24" aria-labelledby="news-title">
+            <h2 id="news-title" class="text-[1.375rem] font-bold text-primary md:text-[1.75rem]">Latest from the field</h2>
+            <ul class="mt-8 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+                @foreach ($posts as $post)
+                    <li><x-post-card :post="$post" /></li>
+                @endforeach
+            </ul>
+            <a href="{{ route('news.index') }}" class="btn-primary mt-8">All news</a>
+        </section>
+    @endif
+
+    {{-- 9. Partners: logos when uploaded, otherwise names --}}
+    @if ($partners->isNotEmpty())
+        <section class="{{ $posts->isNotEmpty() ? 'border-t border-line' : '' }} bg-canvas" aria-labelledby="partners-title">
+            <div class="mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:px-8">
+                <h2 id="partners-title" class="text-[1.375rem] font-bold text-primary md:text-[1.75rem]">Working together</h2>
+                <ul class="mt-8 grid grid-cols-2 gap-4 md:grid-cols-4">
+                    @foreach ($partners as $partner)
+                        <li class="flex min-h-20 items-center justify-center rounded-card border border-line bg-surface p-4 text-center font-medium text-ink-muted">
+                            @php($logo = $partner->imageUrl('logo', 'thumb'))
+                            @if ($partner->url)<a href="{{ $partner->url }}" rel="noopener" class="hover:text-primary">@endif
+                                @if ($logo)
+                                    <img src="{{ $logo }}" alt="{{ $partner->name }}" loading="lazy" class="max-h-12 w-auto">
+                                @else
+                                    {{ $partner->name }}
+                                @endif
+                            @if ($partner->url)</a>@endif
+                        </li>
+                    @endforeach
+                </ul>
+            </div>
+        </section>
+    @endif
+
+    {{-- 10. Volunteer call --}}
+    <section class="border-t border-line bg-surface" aria-labelledby="volunteer-title">
+        <div class="mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:px-8 lg:py-20">
+            <div class="max-w-2xl">
+                <h2 id="volunteer-title" class="text-[1.375rem] font-bold text-primary md:text-[1.75rem]">Be someone’s Sahara.</h2>
+                <p class="mt-3 text-lg text-ink">
+                    Our volunteers carried water to thirsty homes in Danyor for 28 days and served at every camp and procession. Join them.
+                </p>
+                <div class="mt-6 flex flex-col gap-3 sm:flex-row">
+                    <a href="{{ route('get-involved') }}" class="btn-primary">Become a Volunteer</a>
+                    <a href="{{ route('get-involved') }}" class="btn-outline text-primary hover:bg-primary-tint">Register as a Blood Donor</a>
+                </div>
+            </div>
+        </div>
+    </section>
+</x-layouts.app>
