@@ -70,6 +70,25 @@ Anything the plan lists under "Facts to confirm" starts empty and is filled in f
 php artisan test
 ```
 
+### UI audit
+
+With the site running (`php artisan serve`), run:
+
+```sh
+node scripts/ui-audit.mjs http://127.0.0.1:8000 storage/ui-audit
+```
+
+This opens the installed Google Chrome through Playwright and checks the main pages at 360 px and 1440 px. It looks for:
+
+- accessibility problems (axe-core, including colour contrast)
+- sideways scrolling
+- tap targets under 44 px
+- text under 14 px
+- photos without alt text, broken photos
+- console errors and failed requests
+
+It also opens the mobile menu and goes through the Donate steps. Screenshots and `report.json` are saved to the output folder.
+
 ## Pre-launch page
 
 The earlier coming-soon page lives in `public/coming-soon/` and is served at `/coming-soon` until launch.

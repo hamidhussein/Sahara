@@ -31,6 +31,11 @@ class DonateForm extends Component
 
     public int $step = 1;
 
+    /** Step 1 shows the most used types first; the rest sit behind "Show more types". */
+    public const PRIMARY_TYPES = 4;
+
+    public bool $showAllTypes = false;
+
     #[Url(as: 'type', except: '')]
     public string $typeSlug = '';
 
@@ -76,6 +81,11 @@ class DonateForm extends Component
 
         if (count($methods = PaymentMethod::available()) === 1) {
             $this->method = $methods[0]->value;
+        }
+
+        // A preselected type that is not among the first few keeps the full list open.
+        if ($this->type && $this->types->search(fn ($t) => $t->is($this->type)) >= self::PRIMARY_TYPES) {
+            $this->showAllTypes = true;
         }
 
         // Open at the first step still to answer, e.g. "Pay this as Zakat" lands on step 3.

@@ -13,6 +13,14 @@ it('renders every page in the main menu', function (string $uri) {
     '/privacy', '/refund-policy', '/terms',
 ]);
 
+it('leaves the Donate button out of the phone bar on the Donate pages', function () {
+    $bar = fn (string $html) => str($html)->after('aria-label="Quick actions"')->before('</nav>')->value();
+
+    expect($bar($this->get('/')->getContent()))->toContain(route('donate'))
+        ->and($bar($this->get('/donate')->getContent()))->not->toContain('>Donate')
+        ->and($bar($this->get('/donate')->getContent()))->toContain('Call us');
+});
+
 it('returns 404 for an unknown program', function () {
     $this->get('/programs/not-a-program')->assertNotFound();
 });

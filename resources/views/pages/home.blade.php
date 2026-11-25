@@ -85,12 +85,13 @@
     {{-- 4. Our programs --}}
     <section class="mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:px-8 lg:py-24" aria-labelledby="programs-title">
         <h2 id="programs-title" class="text-[1.375rem] font-bold text-primary md:text-[1.75rem]">What we do</h2>
-        <ul class="mt-8 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+        {{-- Phones: a compact two-column list of names; summaries from tablet width up. --}}
+        <ul class="mt-8 grid grid-cols-2 gap-3 sm:gap-6 lg:grid-cols-4">
             @foreach ($programs as $program)
                 <li>
-                    <a href="{{ route('programs.show', $program) }}" class="group block h-full rounded-card border border-line bg-surface p-6 hover:border-primary">
-                        <h3 class="text-lg font-semibold text-ink group-hover:text-primary">{{ $program->name }}</h3>
-                        <p class="mt-2 text-ink-muted">{{ $program->summary }}</p>
+                    <a href="{{ route('programs.show', $program) }}" class="group flex h-full min-h-16 items-center rounded-card border border-line bg-surface p-4 hover:border-primary sm:block sm:p-6">
+                        <h3 class="font-semibold leading-snug text-ink group-hover:text-primary sm:text-lg">{{ $program->name }}</h3>
+                        <p class="mt-2 hidden text-ink-muted sm:block">{{ $program->summary }}</p>
                     </a>
                 </li>
             @endforeach

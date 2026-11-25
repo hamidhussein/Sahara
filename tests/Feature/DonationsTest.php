@@ -71,11 +71,20 @@ function fakeCallback(Donation $donation, string $outcome = 'approved', ?int $am
 
 // ── The Donate page ────────────────────────────────────────────────────────
 
-it('shows all nine types of giving and only bank transfer until gateways are approved', function () {
+it('shows the four main types first, all nine on request, and only bank transfer until gateways are approved', function () {
     $this->get('/donate')->assertOk()->assertSee('Zakat')->assertSee('Khums (Sehm-e-Sadat / Sehm-e-Imam)')
-        ->assertSee('General donation or membership fee');
+        ->assertSee('Show 5 more types')
+        ->assertDontSee('Supports all our work.');
+
+    Livewire::test(DonateForm::class)->set('showAllTypes', true)
+        ->assertSee('General donation or membership fee')->assertSee('Supports all our work.');
 
     expect(PaymentMethod::available())->toBe([PaymentMethod::BankTransfer]);
+});
+
+it('opens the full list when a link preselects a less common type', function () {
+    Livewire::withQueryParams(['type' => 'fitrana'])->test(DonateForm::class)
+        ->assertSet('showAllTypes', true)->assertSet('step', 2);
 });
 
 it('preselects type, cause and amount from the link', function () {

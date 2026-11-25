@@ -72,7 +72,7 @@
                     <legend class="text-[1.375rem] font-bold text-ink">Choose your type of giving</legend>
                     @error('typeSlug') <p class="mt-2 font-medium text-emergency" role="alert">{{ $message }}</p> @enderror
                     <div class="mt-5 grid gap-3 sm:grid-cols-2">
-                        @foreach ($this->types as $type)
+                        @foreach ($showAllTypes ? $this->types : $this->types->take(\App\Livewire\DonateForm::PRIMARY_TYPES) as $type)
                             <button type="button" wire:click="chooseType('{{ $type->slug }}')" aria-pressed="{{ $typeSlug === $type->slug ? 'true' : 'false' }}"
                                     class="rounded-card border p-4 text-start {{ $tile($typeSlug === $type->slug) }}">
                                 <span class="block text-lg font-semibold text-ink">{{ $type->name }}</span>
@@ -85,6 +85,11 @@
                             </button>
                         @endforeach
                     </div>
+                    @if (! $showAllTypes && $this->types->count() > \App\Livewire\DonateForm::PRIMARY_TYPES)
+                        <button type="button" wire:click="$set('showAllTypes', true)" class="btn-outline mt-4 w-full text-primary hover:bg-primary-tint sm:w-auto">
+                            Show {{ $this->types->count() - \App\Livewire\DonateForm::PRIMARY_TYPES }} more types: {{ $this->types->slice(\App\Livewire\DonateForm::PRIMARY_TYPES)->pluck('name')->map(fn ($n) => str($n)->before(' or ')->before(' and '))->implode(', ') }}
+                        </button>
+                    @endif
                 </fieldset>
             @endif
 
