@@ -55,6 +55,15 @@ If XAMPP's PHP 8.2 comes first on your PATH, `php` runs 8.2 and Composer will re
 
 Anything the plan lists under "Facts to confirm" starts empty and is filled in from Admin → Settings once confirmed. That includes the ambulance and WhatsApp numbers, the account title, IBAN, SWIFT code and the Fitrana amount. While the ambulance number is empty, the site shows the office phone. While WhatsApp is empty, WhatsApp buttons are hidden.
 
+## Donations
+
+- **Donate page:** `/donate`, a Livewire form in four steps: type of giving, cause (optional), amount and details, payment. Links can preselect choices, e.g. `/donate?type=zakat&cause=winter-package&amount=10000`. The Zakat calculator is at `/donate/zakat-calculator`.
+- **Funds:** each type of giving is its own fund. Zakat and Khums only go to causes Finance has ticked as eligible under Admin → Causes & appeals. A gift to any other cause is flagged under "Zakat/Khums to review", so Finance contacts the donor first.
+- **Bank transfer / Raast:** the donor uploads a receipt. It is stored privately and only Finance and Super Admin can open it. The donation waits under "Transfers to confirm" until Finance checks the bank statement. Confirming emails the PDF receipt.
+- **Online methods (JazzCash, Easypaisa, card):** each one is hidden until it's switched on in `.env` (see `.env.example`). A donation is marked paid only after the provider's signed callback reaches `/payments/{method}/callback`. Each provider needs a driver in `app/Payments/Gateways` that implements `PaymentGateway`, registered in `GatewayManager`. `FakeGateway` shows the expected shape and lets you try the whole flow locally.
+- **Records:** nobody, including Super Admin, can create or delete donation records in the admin. Mistakes are handled with Reject, Mark refunded and Finance notes.
+- **Emails:** emails and receipts are queued, so run `php artisan queue:work`. Locally they go to `storage/logs/laravel.log` unless you configure `MAIL_*`.
+
 ## Tests
 
 ```sh

@@ -3,6 +3,7 @@
 namespace App\Providers;
 
 use App\Enums\Role;
+use App\Models\Donation;
 use App\Settings\ImpactSettings;
 use App\Settings\SiteSettings;
 use Illuminate\Support\Facades\Gate;
@@ -24,11 +25,21 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        // Super Admin can do everything (plan 1.2, roles).
-        Gate::before(fn ($user) => $user->hasRole(Role::SuperAdmin->value) ? true : null);
+        // Super Admin can do everything (plan 1.2, roles), except create or delete
+        // donation records, which DonationPolicy refuses for everyone.
+        Gate::before(function ($user, string $ability, array $arguments) {
+            $target = $arguments[0] ?? null;
+            $isDonation = $target instanceof Donation || $target === Donation::class;
+
+            if ($isDonation && ! in_array($ability, ['viewAny', 'view', 'update'], true)) {
+                return null;
+            }
+
+            return $user->hasRole(Role::SuperAdmin->value) ? true : null;
+        });
 
         // Contact details and impact numbers for the public layout, edited in Admin → Settings.
-        View::composer(['components.site.*', 'components.layouts.*', 'pages.*'], function ($view) {
+        View::composer(['components.site.*', 'components.layouts.*', 'pages.*', 'donate.*', 'livewire.*'], function ($view) {
             $view->with('site', app(SiteSettings::class));
         });
         View::composer('pages.home', function ($view) {

@@ -20,6 +20,7 @@
     --color-accent: #e8a317;
     --color-accent-dark: #cf8f0c;
 
+    /* Plan's glacier blue is 4.3:1 on white, so link text uses water-dark (5.9:1). */
     --color-water: #2a7fb8;
     --color-water-dark: #1f6696;
 
@@ -49,7 +50,7 @@
     }
 
     :focus-visible {
-        @apply outline-3 outline-offset-2 outline-water;
+        @apply outline-3 outline-offset-2 outline-water-dark;
     }
 
     /* Urdu content: only the content area runs right-to-left (plan 0.4). */
@@ -99,7 +100,7 @@
     }
 
     .rich-text a {
-        @apply font-medium text-water underline underline-offset-2 hover:text-water-dark;
+        @apply font-medium text-water-dark underline underline-offset-2 hover:text-primary-deep;
     }
 
     .rich-text strong {

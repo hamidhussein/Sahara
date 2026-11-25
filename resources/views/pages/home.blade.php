@@ -1,8 +1,8 @@
 {{--
-    Home page, plan 1.1. Built: 1 Hero, 2 Impact counters, 4 Our programs,
-    5 Latest projects, 8 News, 9 Partners, 10 Volunteer call.
-    Still to come: 3 Current appeals and 7 Giving tiers (donation module),
-    6 A story (needs a beneficiary quote given with permission).
+    Home page, plan 1.1. Built: 1 Hero, 2 Impact counters, 3 Current appeals,
+    4 Our programs, 5 Latest projects, 7 Giving tiers, 8 News, 9 Partners,
+    10 Volunteer call. Still to come: 6 A story (needs a beneficiary quote
+    given with permission).
 --}}
 <x-layouts.app>
     {{-- 1. Hero --}}
@@ -48,6 +48,40 @@
         </dl>
     </section>
 
+    {{-- 3. Current appeals (Admin → Causes & appeals). Progress shows only when a goal is set. --}}
+    @if ($appeals->isNotEmpty())
+        <section class="mx-auto max-w-7xl px-4 pt-16 sm:px-6 lg:px-8 lg:pt-24" aria-labelledby="appeals-title">
+            <h2 id="appeals-title" class="text-[1.375rem] font-bold text-primary md:text-[1.75rem]">Where your help is needed now</h2>
+            <ul class="mt-8 grid gap-6 lg:grid-cols-3">
+                @foreach ($appeals as $appeal)
+                    @php $percent = $appeal->progressPercent(); @endphp
+                    <li class="flex flex-col overflow-hidden rounded-card border border-line bg-surface">
+                        @if ($photo = $appeal->imageUrl('cover', 'card'))
+                            <img src="{{ $photo }}" alt="" loading="lazy" class="aspect-[3/2] w-full object-cover">
+                        @endif
+                        <div class="flex flex-1 flex-col p-6">
+                            <h3 class="text-lg font-semibold text-ink">{{ $appeal->appeal_title ?: $appeal->name }}</h3>
+                            @if ($appeal->description)
+                                <p class="mt-2 text-ink-muted">{{ $appeal->description }}</p>
+                            @endif
+                            <div class="mt-auto pt-6">
+                                @if ($percent !== null)
+                                    <div class="h-2.5 overflow-hidden rounded-full bg-line" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="{{ $percent }}" aria-label="{{ $percent }}% of goal raised">
+                                        <div class="h-full rounded-full bg-accent" style="width: {{ $percent }}%"></div>
+                                    </div>
+                                    <p class="mt-2 text-sm text-ink-muted">
+                                        Raised <strong class="text-ink">Rs {{ number_format($appeal->raisedAmount()) }}</strong> of Rs {{ number_format($appeal->goal_amount) }}
+                                    </p>
+                                @endif
+                                <a href="{{ route('donate', ['cause' => $appeal->slug]) }}" class="btn-donate mt-4 w-full">Donate</a>
+                            </div>
+                        </div>
+                    </li>
+                @endforeach
+            </ul>
+        </section>
+    @endif
+
     {{-- 4. Our programs --}}
     <section class="mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:px-8 lg:py-24" aria-labelledby="programs-title">
         <h2 id="programs-title" class="text-[1.375rem] font-bold text-primary md:text-[1.75rem]">What we do</h2>
@@ -79,6 +113,27 @@
         </section>
     @endif
 
+    {{-- 7. How your donation helps. The Rs 15,000 eye surgery tier waits for the confirmed cost. --}}
+    <section class="mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:px-8 lg:py-24" aria-labelledby="tiers-title">
+        <h2 id="tiers-title" class="text-[1.375rem] font-bold text-primary md:text-[1.75rem]">How your donation helps</h2>
+        @php
+            $tiers = [
+                ['Rs 10,000', 'gives one family a Ramadan ration package', ['cause' => 'ramadan-package', 'amount' => 10000]],
+                ['Rs 50,000', 'helps a talented student through a year of medical or engineering study (interest-free loan)', ['cause' => 'education', 'amount' => 50000]],
+                ['Any amount', 'brings the Sahara Complex, and its low-cost laboratory, a step closer', ['cause' => 'sahara-complex']],
+            ];
+        @endphp
+        <ul class="mt-8 grid gap-6 md:grid-cols-3">
+            @foreach ($tiers as [$amount, $text, $query])
+                <li class="flex flex-col rounded-card border border-line bg-surface p-6">
+                    <p class="text-3xl font-bold text-primary">{{ $amount }}</p>
+                    <p class="mt-2 flex-1 text-lg text-ink">{{ $text }}</p>
+                    <a href="{{ route('donate', $query) }}" class="btn-donate mt-6">Give {{ $amount === 'Any amount' ? 'any amount' : $amount }}</a>
+                </li>
+            @endforeach
+        </ul>
+    </section>
+
     {{-- 8. News --}}
     @if ($posts->isNotEmpty())
         <section class="mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:px-8 lg:py-24" aria-labelledby="news-title">
@@ -100,7 +155,7 @@
                 <ul class="mt-8 grid grid-cols-2 gap-4 md:grid-cols-4">
                     @foreach ($partners as $partner)
                         <li class="flex min-h-20 items-center justify-center rounded-card border border-line bg-surface p-4 text-center font-medium text-ink-muted">
-                            @php($logo = $partner->imageUrl('logo', 'thumb'))
+                            @php $logo = $partner->imageUrl("logo", "thumb"); @endphp
                             @if ($partner->url)<a href="{{ $partner->url }}" rel="noopener" class="hover:text-primary">@endif
                                 @if ($logo)
                                     <img src="{{ $logo }}" alt="{{ $partner->name }}" loading="lazy" class="max-h-12 w-auto">

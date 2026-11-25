@@ -34,8 +34,8 @@ class PostsTable
                 TernaryFilter::make('published')->label('Status')
                     ->placeholder('All')->trueLabel('Published')->falseLabel('Drafts')
                     ->queries(
-                        true: fn (Builder $q) => $q->whereNotNull('published_at'),
-                        false: fn (Builder $q) => $q->whereNull('published_at'),
+                        true: fn (Builder $query) => $query->whereNotNull('published_at'),
+                        false: fn (Builder $query) => $query->whereNull('published_at'),
                     ),
             ])
             ->recordActions([

@@ -1,9 +1,11 @@
 <?php
 
+use App\Http\Controllers\DonationController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\PostController;
 use App\Http\Controllers\ProgramController;
 use App\Http\Controllers\ProjectController;
+use Illuminate\Foundation\Http\Middleware\PreventRequestForgery;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -42,7 +44,19 @@ Route::view('/gallery', 'pages.placeholder', $placeholder('Gallery', 'Moments of
 
 // Contact and donate
 Route::view('/contact', 'pages.placeholder', $placeholder('Contact Us', 'We would love to hear from you.'))->name('contact');
-Route::view('/donate', 'pages.placeholder', $placeholder('Donate', 'Your gift becomes water, medicine and food for someone today.'))->name('donate');
+// Donations (plan 1.1 Donate, 1.2 Donation module)
+Route::get('/donate', [DonationController::class, 'create'])->name('donate');
+Route::get('/donate/zakat-calculator', fn () => view('donate.zakat-calculator'))->name('donate.zakat-calculator');
+Route::get('/donate/thank-you/{donation:reference}', [DonationController::class, 'thankYou'])->middleware('signed')->name('donate.thank-you');
+Route::get('/donate/payment-failed/{donation:reference}', [DonationController::class, 'failed'])->middleware('signed')->name('donate.failed');
+Route::match(['get', 'post'], '/payments/{method}/callback', [DonationController::class, 'callback'])
+    ->middleware('throttle:30,1')
+    ->withoutMiddleware(PreventRequestForgery::class)
+    ->name('payments.callback');
+Route::get('/payments/fake/{donation:reference}', [DonationController::class, 'fakeCheckout'])->name('payments.fake.checkout');
+Route::get('/finance/transfer-receipts/{donation}', [DonationController::class, 'transferReceipt'])
+    ->middleware('auth')
+    ->name('donations.transfer-receipt');
 
 // Legal (footer only)
 Route::view('/privacy', 'pages.placeholder', $placeholder('Privacy Policy', 'How we collect, use and protect your details.'))->name('privacy');

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Cause;
 use App\Models\Partner;
 use App\Models\Post;
 use App\Models\Program;
@@ -13,6 +14,7 @@ class HomeController extends Controller
     public function __invoke(): View
     {
         return view('pages.home', [
+            'appeals' => Cause::active()->where('is_appeal', true)->withPaidTotal()->with('media')->limit(3)->get(),
             'programs' => Program::published()->ordered()->get(),
             'projects' => Project::published()
                 ->whereHas('program', fn ($q) => $q->published())

@@ -44,11 +44,15 @@ class ManageDonationSettings extends SettingsPage
                     TextInput::make('iban')->label('IBAN'),
                     TextInput::make('swift_code')->label('SWIFT code'),
                 ]),
-            Section::make('Fitrana')
+            Section::make('Fitrana and Zakat')
+                ->columns(2)
                 ->schema([
                     TextInput::make('fitrana_amount')->label('Fitrana per person this year')
                         ->numeric()->minValue(0)->prefix('Rs')
                         ->helperText('Set before Eid-ul-Fitr each year. Leave empty until it is announced.'),
+                    TextInput::make('nisab_amount')->label('Nisab for the Zakat calculator')
+                        ->numeric()->minValue(0)->prefix('Rs')
+                        ->helperText('Update when silver and gold prices change. While empty, the calculator asks donors to check the nisab with us or a scholar.'),
                 ]),
         ]);
     }

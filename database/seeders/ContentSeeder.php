@@ -33,7 +33,7 @@ class ContentSeeder extends Seeder
             'clean-water' => [
                 'tagline' => 'Safe drinking water for every home.',
                 'body' => '<p>In District Nagar, unsafe water used to cause diarrhoea, stomach problems, gastroenteritis and skin disease, and children were hit hardest. We install water filtration plants built to WHO standards in villages where the water was unsafe, test water before installation, and keep the plants running. When floods cut off supply, we deliver water by tanker to every door.</p>'
-                    .'<h3>Highlights</h3><ul>'
+                    .'<h2>Highlights</h2><ul>'
                     .'<li>9 working plants in Phakar, Dadimal, Miachar, Bar and Minapin, many funded by Mr Hadi Shahzad.</li>'
                     .'<li>Among people using filtered water, these illnesses have dropped by about 80%.</li>'
                     .'<li>"Pani Har Ghar Tak" 2025: 28 days of door-to-door water for Danyor and Sultanabad, with 50 volunteers.</li></ul>'
@@ -41,7 +41,7 @@ class ContentSeeder extends Seeder
             ],
             'health' => [
                 'tagline' => 'Good care should not depend on what you can pay.',
-                'body' => '<h3>Every year</h3><ul>'
+                'body' => '<h2>Every year</h2><ul>'
                     .'<li>Free general medical camps in 3 villages of Nagar (with Mr M. Akbar’s family and friends, Faisalabad).</li>'
                     .'<li>Free circumcision camps in 3 villages of Nagar (with the Health Department, Government of Gilgit-Baltistan).</li>'
                     .'<li>Free medical camps during Muharram and in every disaster-affected area.</li>'
@@ -82,7 +82,7 @@ class ContentSeeder extends Seeder
                 'tagline' => 'The blessing of Eid-ul-Adha, shared with families who cannot afford meat.',
                 'body' => '<p>Every Eid-ul-Adha we perform Qurbani on behalf of our donors at several locations in District Nagar, following Islamic guidelines. Volunteers verify deserving families in advance, and the meat is delivered to their homes during Eid.</p>'
                     .'<p><strong>2026:</strong> three locations in Nagar, meat for about 350 people.</p>'
-                    .'<h3>How it works</h3><ol>'
+                    .'<h2>How it works</h2><ol>'
                     .'<li>Choose your animal or share and the name(s).</li>'
                     .'<li>Pay online, by bank transfer or at our office.</li>'
                     .'<li>We perform the Qurbani and distribute the meat.</li>'
