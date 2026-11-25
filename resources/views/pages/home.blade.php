@@ -28,25 +28,7 @@
     </section>
 
     {{-- 2. Impact counters --}}
-    <section aria-label="Our impact" class="border-b border-line bg-surface">
-        <dl class="mx-auto grid max-w-7xl grid-cols-1 gap-px bg-line sm:grid-cols-2 lg:grid-cols-4">
-            @php
-                $stats = [
-                    [$impact->yearsServing().' years', 'serving Gilgit-Baltistan, since '.$impact->founded_year],
-                    [$impact->water_plants, 'water filtration plants built to WHO standards'],
-                    [number_format($impact->patients_examined), 'patients examined and '.$impact->eye_operations.'+ free eye operations in '.$impact->report_year],
-                    [number_format($impact->ramadan_families), 'families received Ramadan rations in '.$impact->report_year],
-                ];
-            @endphp
-            @foreach ($stats as [$number, $label])
-                <div class="bg-surface px-6 py-8">
-                    <dt class="sr-only">{{ $label }}</dt>
-                    <dd class="text-4xl font-bold text-primary">{{ $number }}</dd>
-                    <dd class="mt-1 text-ink-muted">{{ $label }}</dd>
-                </div>
-            @endforeach
-        </dl>
-    </section>
+    <x-impact-counters class="border-t-0" />
 
     {{-- 3. Current appeals (Admin → Causes & appeals). Progress shows only when a goal is set. --}}
     @if ($appeals->isNotEmpty())

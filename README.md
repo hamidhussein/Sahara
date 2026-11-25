@@ -49,6 +49,10 @@ If XAMPP's PHP 8.2 comes first on your PATH, `php` runs 8.2 and Composer will re
 | Public pages for programs, projects and news | `app/Http/Controllers/`, `resources/views/{programs,projects,news}/` |
 | Projects filter (program, district, status) | `app/Livewire/ProjectBrowser.php` |
 | Starting content from the plan | `database/seeders/ContentSeeder.php` (never overwrites edits) |
+| About, Leadership, Transparency pages | `resources/views/about/`, `app/Http/Controllers/AboutController.php` |
+| Leadership team (Editors) | Admin → Content → Leadership; advisers start hidden until confirmed |
+| Chairman's message | Admin → Settings → Contact & social; hidden until the approved text is entered |
+| Reports, audited accounts, certificates and the spending chart (Finance) | Admin → Transparency |
 | Contact, bank and impact settings | `app/Settings/`, edited at Admin → Settings (Super Admin only) |
 | Starting settings values | `database/settings/` |
 | Roles | `app/Enums/Role.php`, seeded by `DatabaseSeeder` |

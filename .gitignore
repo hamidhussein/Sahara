@@ -31,3 +31,6 @@ Thumbs.db
 /.playwright-mcp
 /storage/ui-audit
 /storage/media-library
+
+# Planning document (kept local; contains staff and bank details)
+/SSWF Website Master Plan.md

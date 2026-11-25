@@ -4,7 +4,6 @@ namespace App\Providers;
 
 use App\Enums\Role;
 use App\Models\Donation;
-use App\Settings\ImpactSettings;
 use App\Settings\SiteSettings;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\View;
@@ -39,11 +38,8 @@ class AppServiceProvider extends ServiceProvider
         });
 
         // Contact details and impact numbers for the public layout, edited in Admin → Settings.
-        View::composer(['components.site.*', 'components.layouts.*', 'pages.*', 'donate.*', 'livewire.*'], function ($view) {
+        View::composer(['components.site.*', 'components.layouts.*', 'pages.*', 'donate.*', 'livewire.*', 'about.*'], function ($view) {
             $view->with('site', app(SiteSettings::class));
-        });
-        View::composer('pages.home', function ($view) {
-            $view->with('impact', app(ImpactSettings::class));
         });
     }
 }

@@ -6,7 +6,10 @@
                 ->map(fn ($p) => ['label' => $p->name, 'url' => route('programs.show', $p)])
                 ->all();
         } else {
-            $children = array_map(fn ($c) => ['label' => $c['label'], 'url' => route($c['route'])], $children);
+            $children = array_map(fn ($c) => [
+                'label' => $c['label'],
+                'url' => route($c['route']).(isset($c['fragment']) ? '#'.$c['fragment'] : ''),
+            ], $children);
         }
 
         return [

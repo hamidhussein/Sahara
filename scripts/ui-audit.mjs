@@ -24,7 +24,7 @@ mkdirSync(outDir, { recursive: true });
 
 const pages = [
     '/', '/programs', '/programs/clean-water', '/projects', '/projects/miachar-water-plant',
-    '/news', '/donate', '/donate/zakat-calculator', '/about', '/contact',
+    '/news', '/donate', '/donate/zakat-calculator', '/about', '/about/leadership', '/about/transparency', '/contact',
 ];
 const viewports = { phone: { width: 360, height: 800 }, desktop: { width: 1440, height: 900 } };
 

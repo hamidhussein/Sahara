@@ -4,6 +4,7 @@ namespace App\Filament\Pages;
 
 use App\Settings\SiteSettings;
 use BackedEnum;
+use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\TextInput;
 use Filament\Pages\SettingsPage;
 use Filament\Schemas\Components\Section;
@@ -50,6 +51,13 @@ class ManageSiteSettings extends SettingsPage
                     TextInput::make('address')->required()->columnSpanFull(),
                     TextInput::make('registration_number')->label('Registration number')->required()
                         ->helperText('Printed in the footer, on receipts and on the Transparency page.'),
+                ]),
+            Section::make('Chairman’s message')
+                ->description('Shown at the top of the Leadership page. It stays hidden while empty. Paste the text only after the chairman has approved it.')
+                ->collapsed()
+                ->schema([
+                    Textarea::make('chairman_message')->hiddenLabel()->rows(5)->maxLength(1200)
+                        ->placeholder('Draft from the plan, for the chairman to review: “When we started, we had little more than a few volunteers and a strong wish to help. Today, thanks to Allah and to the trust of our donors and community, Sahara reaches families across Gilgit-Baltistan. Our promise remains the same: every rupee you give will reach the people who need it, and we will show you where it went.”'),
                 ]),
             Section::make('Social links')
                 ->description('Leave empty to hide a link.')

@@ -63,6 +63,7 @@ return [
             ['label' => 'Our story', 'route' => 'about'],
             ['label' => 'Leadership', 'route' => 'leadership'],
             ['label' => 'Transparency', 'route' => 'transparency'],
+            ['label' => 'Sahara Complex', 'route' => 'about', 'fragment' => 'sahara-complex'],
         ]],
         ['label' => 'Programs', 'route' => 'programs.index', 'children' => 'programs'],
         ['label' => 'Projects', 'route' => 'projects.index'],

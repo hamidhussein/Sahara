@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AboutController;
 use App\Http\Controllers\DonationController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\PostController;
@@ -23,9 +24,9 @@ $placeholder = fn (string $title, string $lede, array $crumbs = []) => [
 ];
 
 // About
-Route::view('/about', 'pages.placeholder', $placeholder('About Us', 'Twenty years of standing with Gilgit-Baltistan.'))->name('about');
-Route::view('/about/leadership', 'pages.placeholder', $placeholder('Our Leadership', 'The people who carry the responsibility.', ['About' => '/about', 'Leadership' => null]))->name('leadership');
-Route::view('/about/transparency', 'pages.placeholder', $placeholder('Transparency', 'Your trust is our most important asset.', ['About' => '/about', 'Transparency' => null]))->name('transparency');
+Route::get('/about', [AboutController::class, 'about'])->name('about');
+Route::get('/about/leadership', [AboutController::class, 'leadership'])->name('leadership');
+Route::get('/about/transparency', [AboutController::class, 'transparency'])->name('transparency');
 
 // Programs and projects
 Route::get('/programs', [ProgramController::class, 'index'])->name('programs.index');

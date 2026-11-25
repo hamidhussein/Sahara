@@ -34,6 +34,9 @@ class SiteSettings extends Settings
 
     public ?string $tiktok_url;
 
+    /** Approved by the chairman before it appears on the Leadership page. */
+    public ?string $chairman_message;
+
     public static function group(): string
     {
         return 'site';
