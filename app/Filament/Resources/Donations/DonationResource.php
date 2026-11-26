@@ -42,7 +42,7 @@ class DonationResource extends Resource
 
     public static function getNavigationBadgeTooltip(): ?string
     {
-        return 'Bank transfers to confirm';
+        return 'Bank and wallet payments to confirm';
     }
 
     public static function infolist(Schema $schema): Schema

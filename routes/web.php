@@ -59,6 +59,9 @@ Route::match(['get', 'post'], '/payments/{method}/callback', [DonationController
     ->middleware('throttle:30,1')
     ->withoutMiddleware(PreventRequestForgery::class)
     ->name('payments.callback');
+Route::get('/receipts/{donation:reference}', [DonationController::class, 'receipt'])
+    ->middleware(['signed', 'throttle:30,1'])
+    ->name('donations.receipt');
 Route::get('/payments/fake/{donation:reference}', [DonationController::class, 'fakeCheckout'])->name('payments.fake.checkout');
 Route::get('/finance/transfer-receipts/{donation}', [DonationController::class, 'transferReceipt'])
     ->middleware('auth')

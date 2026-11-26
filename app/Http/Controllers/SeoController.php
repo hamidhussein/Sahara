@@ -78,6 +78,7 @@ class SeoController extends Controller
                 'Disallow: /payments/',
                 'Disallow: /donate/thank-you/',
                 'Disallow: /donate/payment-failed/',
+                'Disallow: /receipts/',
                 'Disallow: /livewire/',
                 '',
                 'Sitemap: '.route('sitemap'),

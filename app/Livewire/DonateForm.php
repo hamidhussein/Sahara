@@ -7,6 +7,7 @@ use App\Models\Cause;
 use App\Models\Donation;
 use App\Models\GivingType;
 use App\Payments\GatewayManager;
+use App\Payments\PaymentDetails;
 use App\Services\DonationService;
 use App\Settings\DonationSettings;
 use Illuminate\Support\Collection;
@@ -249,10 +250,10 @@ class DonateForm extends Component
         $available = array_map(fn ($m) => $m->value, PaymentMethod::available());
         $this->validate([
             'method' => ['required', Rule::in($available)],
-            'receipt' => [Rule::requiredIf($this->method === PaymentMethod::BankTransfer->value), 'nullable', 'file', 'mimes:jpg,jpeg,png,webp,pdf', 'max:5120'],
+            'receipt' => [Rule::requiredIf(fn () => PaymentMethod::tryFrom($this->method)?->needsReceipt() ?? false), 'nullable', 'file', 'mimes:jpg,jpeg,png,webp,pdf', 'max:5120'],
         ], [
             'method.required' => 'Choose how you would like to pay.',
-            'receipt.required' => 'Upload a screenshot or photo of your transfer receipt.',
+            'receipt.required' => 'Upload a screenshot or photo of your payment receipt.',
             'receipt.mimes' => 'Upload the receipt as a photo (JPG, PNG) or a PDF.',
             'receipt.max' => 'The receipt must be smaller than 5 MB.',
         ]);
@@ -277,7 +278,7 @@ class DonateForm extends Component
             'is_anonymous' => $this->anonymous,
             'payment_method' => $method,
             'ip_address' => request()->ip(),
-        ], $method === PaymentMethod::BankTransfer ? $this->receipt : null);
+        ], $method->needsReceipt() ? $this->receipt : null);
 
         if ($method->isOnline()) {
             return redirect()->away($gateways->for($method)->checkoutUrl($donation));
@@ -293,9 +294,13 @@ class DonateForm extends Component
 
     public function render(): View
     {
+        $chosen = PaymentMethod::tryFrom($this->method);
+
         return view('livewire.donate-form', [
             'methods' => PaymentMethod::available(),
             'presets' => config('payments.amounts.presets'),
+            // Account details, QR code and steps for bank, JazzCash or Easypaisa in manual mode.
+            'paymentDetails' => $chosen?->needsReceipt() ? PaymentDetails::for($chosen) : null,
         ]);
     }
 }

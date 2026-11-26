@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Enums\DonationStatus;
 use App\Enums\PaymentMethod;
 use App\Livewire\DonateForm;
+use App\Mail\DonationReceipt;
 use App\Models\Donation;
 use App\Payments\GatewayManager;
 use App\Payments\Gateways\FakeGateway;
@@ -12,6 +13,7 @@ use App\Payments\InvalidCallbackException;
 use App\Services\DonationService;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\URL;
@@ -83,6 +85,17 @@ class DonationController extends Controller
             'approve' => $fields('approved'),
             'decline' => $fields('declined'),
         ]);
+    }
+
+    /**
+     * The donor's official PDF receipt, opened from the signed link sent by
+     * WhatsApp (and later SMS). Only confirmed donations have a receipt.
+     */
+    public function receipt(Donation $donation): Response
+    {
+        abort_unless($donation->status === DonationStatus::Paid, 404);
+
+        return DonationReceipt::pdf($donation)->stream("SSWF-receipt-{$donation->reference}.pdf");
     }
 
     /** Private bank transfer receipt, for Finance and Super Admin only. */

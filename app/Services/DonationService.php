@@ -31,8 +31,9 @@ class DonationService
             throw new InvalidArgumentException("{$method->getLabel()} is not available.");
         }
 
-        if ($method === PaymentMethod::BankTransfer && ! $transferReceipt) {
-            throw new InvalidArgumentException('A bank transfer needs a receipt.');
+        // Bank, JazzCash and Easypaisa in manual mode: Finance checks the receipt.
+        if ($method->needsReceipt() && ! $transferReceipt) {
+            throw new InvalidArgumentException("{$method->getLabel()} needs a payment receipt.");
         }
 
         $type = GivingType::active()->findOrFail($data['giving_type_id']);
@@ -42,7 +43,7 @@ class DonationService
             $donation = Donation::create([
                 ...$data,
                 'cause_id' => $cause?->id,
-                'status' => $method === PaymentMethod::BankTransfer
+                'status' => $method->needsReceipt()
                     ? DonationStatus::AwaitingConfirmation
                     : DonationStatus::Pending,
                 // Zakat/Khums for a cause Finance hasn't marked eligible: contact the donor first.
@@ -97,7 +98,7 @@ class DonationService
         return $donation;
     }
 
-    /** Finance confirms a bank transfer after checking the receipt against the bank statement. */
+    /** Finance confirms a bank, JazzCash or Easypaisa payment after finding it in the account statement. */
     public function confirmTransfer(Donation $donation, User $by): void
     {
         if ($donation->status !== DonationStatus::AwaitingConfirmation) {

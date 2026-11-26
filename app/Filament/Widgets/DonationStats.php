@@ -29,8 +29,8 @@ class DonationStats extends StatsOverviewWidget
         return [
             Stat::make('Donations this month', 'Rs '.number_format((clone $month)->sum('amount')))
                 ->description((clone $month)->count().' donations · last month Rs '.number_format($lastMonth->sum('amount'))),
-            Stat::make('Bank transfers to confirm', $toConfirm)
-                ->description($toConfirm ? 'Check each against the bank statement' : 'All caught up')
+            Stat::make('Payments to confirm', $toConfirm)
+                ->description($toConfirm ? 'Check each against the bank or wallet statement' : 'All caught up')
                 ->color($toConfirm ? 'warning' : 'success')
                 ->url(DonationResource::getUrl('index', ['tab' => 'to_confirm'])),
             Stat::make('Zakat/Khums to review', $toReview)

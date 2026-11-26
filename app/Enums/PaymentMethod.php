@@ -2,12 +2,15 @@
 
 namespace App\Enums;
 
+use App\Payments\PaymentDetails;
 use Filament\Support\Contracts\HasLabel;
 
 /**
- * Payment methods from plan 1.2. JazzCash, Easypaisa and card only appear on
- * the Donate page once their merchant accounts are approved and switched on in
- * config/payments.php (PAYMENTS_*_ENABLED in .env).
+ * Payment methods from plan 1.2, each in "manual" or "gateway" mode
+ * (config/payments.php):
+ *  - manual: donor sends money to SSWF's bank, JazzCash or Easypaisa account
+ *    and uploads the receipt; shown once the account details are in Settings.
+ *  - gateway: provider checkout with a signed callback; shown once switched on.
  */
 enum PaymentMethod: string implements HasLabel
 {
@@ -26,15 +29,25 @@ enum PaymentMethod: string implements HasLabel
         };
     }
 
-    /** Online methods confirm instantly through the provider; bank transfers need Finance. */
+    /** Gateway mode: confirmed by the provider. Otherwise the donor uploads a receipt for Finance. */
     public function isOnline(): bool
     {
-        return $this !== self::BankTransfer;
+        return config("payments.methods.{$this->value}.mode", 'gateway') === 'gateway';
+    }
+
+    public function needsReceipt(): bool
+    {
+        return ! $this->isOnline();
     }
 
     public function isAvailable(): bool
     {
-        return (bool) config("payments.methods.{$this->value}.enabled");
+        if (! config("payments.methods.{$this->value}.enabled")) {
+            return false;
+        }
+
+        // Manual methods need real account details (samples count only on non-live copies).
+        return $this->isOnline() || PaymentDetails::for($this) !== null;
     }
 
     /** @return list<self> */

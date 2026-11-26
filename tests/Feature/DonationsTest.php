@@ -54,7 +54,7 @@ function filledDonateForm(string $type = 'sadaqah', ?string $cause = null, int $
 
 function enableFakeJazzCash(): void
 {
-    config(['payments.methods.jazzcash.enabled' => true, 'payments.methods.jazzcash.driver' => 'fake']);
+    config(['payments.methods.jazzcash.enabled' => true, 'payments.methods.jazzcash.mode' => 'gateway', 'payments.methods.jazzcash.driver' => 'fake']);
 }
 
 function fakeCallback(Donation $donation, string $outcome = 'approved', ?int $amount = null): array
@@ -71,7 +71,7 @@ function fakeCallback(Donation $donation, string $outcome = 'approved', ?int $am
 
 // ── The Donate page ────────────────────────────────────────────────────────
 
-it('shows the four main types first, all nine on request, and only bank transfer until gateways are approved', function () {
+it('shows the four main types first, all nine on request, and the bank and wallet methods', function () {
     $this->get('/donate')->assertOk()->assertSee('Zakat')->assertSee('Khums (Sehm-e-Sadat / Sehm-e-Imam)')
         ->assertSee('Show 5 more types')
         ->assertDontSee('Supports all our work.');
@@ -79,7 +79,8 @@ it('shows the four main types first, all nine on request, and only bank transfer
     Livewire::test(DonateForm::class)->set('showAllTypes', true)
         ->assertSee('General donation or membership fee')->assertSee('Supports all our work.');
 
-    expect(PaymentMethod::available())->toBe([PaymentMethod::BankTransfer]);
+    // Card waits for a gateway; bank and the wallets work by hand (samples seeded on test copies).
+    expect(PaymentMethod::available())->toBe([PaymentMethod::JazzCash, PaymentMethod::Easypaisa, PaymentMethod::BankTransfer]);
 });
 
 it('opens the full list when a link preselects a less common type', function () {

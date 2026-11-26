@@ -31,7 +31,7 @@ class ListDonations extends ListRecords
     {
         return [
             'all' => Tab::make('All'),
-            'to_confirm' => Tab::make('Transfers to confirm')
+            'to_confirm' => Tab::make('Payments to confirm')
                 ->modifyQueryUsing(fn (Builder $query) => $query->where('status', DonationStatus::AwaitingConfirmation))
                 ->badge(fn () => Donation::where('status', DonationStatus::AwaitingConfirmation)->count() ?: null)
                 ->badgeColor('warning'),

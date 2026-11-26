@@ -188,35 +188,32 @@
                         @foreach ($methods as $m)
                             <label class="flex min-h-14 cursor-pointer items-center gap-3 rounded-card border p-4 {{ $tile($method === $m->value) }}">
                                 <input type="radio" name="method" value="{{ $m->value }}" wire:model.live="method" class="size-5 accent-primary">
-                                <span class="text-lg font-semibold text-ink">{{ $m->getLabel() }}</span>
+                                <span>
+                                    <span class="block text-lg font-semibold text-ink">{{ $m->getLabel() }}</span>
+                                    <span class="block text-sm text-ink-muted">{{ $m->needsReceipt() ? 'Send to our account or scan the QR code' : 'Pay securely online' }}</span>
+                                </span>
                             </label>
                         @endforeach
                     </div>
 
-                    @if ($method === 'bank_transfer')
-                        <div class="mt-6 rounded-card border border-line bg-surface p-5">
-                            <h3 class="text-lg font-semibold text-ink">Please transfer to</h3>
-                            <dl class="mt-3 grid gap-x-6 gap-y-2 sm:grid-cols-[auto_1fr]">
-                                @if ($bank->account_title)
-                                    <dt class="text-ink-muted">Account title</dt><dd class="font-medium">{{ $bank->account_title }}</dd>
-                                @endif
-                                <dt class="text-ink-muted">Bank</dt><dd class="font-medium">{{ $bank->bank_name }}</dd>
-                                <dt class="text-ink-muted">Account number</dt><dd class="font-mono font-medium">{{ $bank->account_number }}</dd>
-                                @if ($bank->iban)
-                                    <dt class="text-ink-muted">IBAN</dt><dd class="font-mono font-medium">{{ $bank->iban }}</dd>
-                                @endif
-                            </dl>
-                            <p class="mt-4 text-ink">Then upload a screenshot or photo of your receipt below. We will confirm your donation and email your receipt within 24 hours.</p>
+                    {{-- Bank, JazzCash or Easypaisa: send to our account (or scan the QR), then upload the receipt --}}
+                    @if ($paymentDetails)
+                        <div class="mt-6" wire:key="details-{{ $method }}">
+                            <x-payment-details :details="$paymentDetails" :amount="$this->amount ?? 0" />
 
-                            <label class="mt-4 block">
-                                <span class="font-medium text-ink">Transfer receipt</span>
+                            <label class="mt-4 block rounded-card border border-line bg-surface p-5">
+                                <span class="font-semibold text-ink">Upload your payment receipt</span>
+                                <span class="mt-1 block text-ink-muted">A screenshot of the confirmation is fine (photo or PDF, up to 5 MB).</span>
                                 <input type="file" wire:model="receipt" accept="image/jpeg,image/png,image/webp,application/pdf"
-                                       class="mt-1 block w-full rounded-button border border-line bg-canvas p-2 file:me-3 file:min-h-10 file:rounded-button file:border-0 file:bg-primary file:px-4 file:font-semibold file:text-white">
+                                       class="mt-3 block w-full rounded-button border border-line bg-canvas p-2 file:me-3 file:min-h-10 file:rounded-button file:border-0 file:bg-primary file:px-4 file:font-semibold file:text-white">
                                 <span wire:loading wire:target="receipt" class="mt-1 block text-ink-muted">Uploading…</span>
+                                @if ($receipt && ! $errors->has('receipt'))
+                                    <span class="mt-1 block font-medium text-primary" wire:loading.remove wire:target="receipt">Receipt attached.</span>
+                                @endif
                                 @error('receipt') <span class="mt-1 block text-emergency">{{ $message }}</span> @enderror
                             </label>
 
-                            @if ($bank->iban && $bank->swift_code)
+                            @if ($method === 'bank_transfer' && $bank->iban && $bank->swift_code)
                                 <p class="mt-4 text-sm text-ink-muted">Overseas donors: send an international transfer to IBAN {{ $bank->iban }}, SWIFT {{ $bank->swift_code }}.</p>
                             @endif
                         </div>

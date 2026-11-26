@@ -21,5 +21,8 @@ class DatabaseSeeder extends Seeder
         }
 
         $this->call([ContentSeeder::class, DonationSeeder::class, LeadershipSeeder::class, GallerySeeder::class, LegalPagesSeeder::class]);
+
+        // Sample JazzCash/Easypaisa/Raast details and QR codes, on local and test copies only.
+        $this->call(SamplePaymentDetailsSeeder::class);
     }
 }

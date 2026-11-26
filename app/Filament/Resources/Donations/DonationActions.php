@@ -4,6 +4,7 @@ namespace App\Filament\Resources\Donations;
 
 use App\Enums\DonationStatus;
 use App\Enums\PaymentMethod;
+use App\Messaging\DonorMessages;
 use App\Models\Donation;
 use App\Services\DonationService;
 use Filament\Actions\Action;
@@ -23,6 +24,7 @@ class DonationActions
             static::viewReceipt(),
             static::confirmTransfer(),
             static::rejectTransfer(),
+            static::sendWhatsApp(),
             static::resendReceipt(),
             static::markRefunded(),
             static::notes(),
@@ -32,31 +34,60 @@ class DonationActions
     public static function viewReceipt(): Action
     {
         return Action::make('viewTransferReceipt')
-            ->label('View transfer receipt')
+            ->label('View payment receipt')
             ->icon(Heroicon::OutlinedPaperClip)
             ->color('gray')
             ->url(fn (Donation $record) => route('donations.transfer-receipt', $record), shouldOpenInNewTab: true)
-            ->visible(fn (Donation $record) => $record->payment_method === PaymentMethod::BankTransfer && $record->hasMedia('transfer_receipt'));
+            ->visible(fn (Donation $record) => $record->hasMedia('transfer_receipt'));
     }
 
     public static function confirmTransfer(): Action
     {
         return Action::make('confirmTransfer')
-            ->label('Confirm transfer')
+            ->label('Confirm payment')
             ->icon(Heroicon::OutlinedCheckCircle)
             ->color('success')
             ->requiresConfirmation()
             ->modalHeading(fn (Donation $record) => "Confirm {$record->formattedAmount()} from {$record->donor_name}?")
-            ->modalDescription('Only confirm after you have found this transfer in the bank statement. The donor will be emailed their receipt.')
-            ->modalSubmitActionLabel('Confirm transfer')
+            ->modalDescription(fn (Donation $record) => match ($record->payment_method) {
+                PaymentMethod::JazzCash => 'Only confirm after you have found this payment in the JazzCash account history.',
+                PaymentMethod::Easypaisa => 'Only confirm after you have found this payment in the Easypaisa account history.',
+                default => 'Only confirm after you have found this transfer in the bank statement.',
+            }.' The donor will be emailed their receipt.')
+            ->modalSubmitActionLabel('Confirm payment')
             ->visible(fn (Donation $record) => $record->status === DonationStatus::AwaitingConfirmation)
             ->authorize(fn (Donation $record) => auth()->user()->can('update', $record))
             ->action(function (Donation $record) {
                 app(DonationService::class)->confirmTransfer($record, auth()->user());
-                Notification::make()->success()->title('Transfer confirmed')
-                    ->body($record->donor_email ? "Receipt emailed to {$record->donor_email}." : 'No email address, so no receipt was sent.')
+                $whatsapp = DonorMessages::whatsappLink($record);
+
+                Notification::make()->success()->title('Payment confirmed')
+                    ->body($record->donor_email
+                        ? "Receipt emailed to {$record->donor_email}.".($whatsapp ? ' You can also send it on WhatsApp.' : '')
+                        : ($whatsapp ? 'No email address: send the receipt on WhatsApp.' : 'No email address or usable phone number, so call the donor.'))
+                    ->actions($whatsapp ? [
+                        Action::make('whatsapp')->label('Send receipt on WhatsApp')->button()->color('success')
+                            ->url($whatsapp, shouldOpenInNewTab: true),
+                    ] : [])
+                    ->persistent()
                     ->send();
             });
+    }
+
+    /**
+     * Opens WhatsApp on the donor's chat with the confirmation and a secure link
+     * to their PDF receipt, ready to send. (Plain WhatsApp links cannot attach
+     * files; the WhatsApp Business API, planned later, will send it directly.)
+     */
+    public static function sendWhatsApp(): Action
+    {
+        return Action::make('sendWhatsApp')
+            ->label('Send receipt on WhatsApp')
+            ->icon(Heroicon::OutlinedChatBubbleLeftRight)
+            ->color('success')
+            ->url(fn (Donation $record) => DonorMessages::whatsappLink($record), shouldOpenInNewTab: true)
+            ->visible(fn (Donation $record) => $record->status === DonationStatus::Paid && DonorMessages::whatsappLink($record) !== null)
+            ->authorize(fn (Donation $record) => auth()->user()->can('update', $record));
     }
 
     public static function rejectTransfer(): Action
@@ -65,24 +96,24 @@ class DonationActions
             ->label('Reject')
             ->icon(Heroicon::OutlinedXCircle)
             ->color('danger')
-            ->modalHeading('Reject this transfer?')
-            ->modalDescription('Use this when the transfer cannot be found in the bank statement or the receipt is not valid. Contact the donor before rejecting.')
+            ->modalHeading('Reject this payment?')
+            ->modalDescription('Use this when the payment cannot be found in the bank or wallet statement, or the receipt is not valid. Contact the donor before rejecting.')
             ->schema([
                 Textarea::make('reason')->label('Reason')->required()->rows(3),
             ])
-            ->modalSubmitActionLabel('Reject transfer')
+            ->modalSubmitActionLabel('Reject payment')
             ->visible(fn (Donation $record) => $record->status === DonationStatus::AwaitingConfirmation)
             ->authorize(fn (Donation $record) => auth()->user()->can('update', $record))
             ->action(function (Donation $record, array $data) {
                 app(DonationService::class)->rejectTransfer($record, auth()->user(), $data['reason']);
-                Notification::make()->title('Transfer rejected')->send();
+                Notification::make()->title('Payment rejected')->send();
             });
     }
 
     public static function resendReceipt(): Action
     {
         return Action::make('resendReceipt')
-            ->label('Resend receipt')
+            ->label('Resend receipt by email')
             ->icon(Heroicon::OutlinedEnvelope)
             ->color('gray')
             ->requiresConfirmation()

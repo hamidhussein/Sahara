@@ -67,8 +67,19 @@ Anything the plan lists under "Facts to confirm" starts empty and is filled in f
 
 - **Donate page:** `/donate`, a Livewire form in four steps: type of giving, cause (optional), amount and details, payment. Links can preselect choices, e.g. `/donate?type=zakat&cause=winter-package&amount=10000`. The Zakat calculator is at `/donate/zakat-calculator`.
 - **Funds:** each type of giving is its own fund. Zakat and Khums only go to causes Finance has ticked as eligible under Admin → Causes & appeals. A gift to any other cause is flagged under "Zakat/Khums to review", so Finance contacts the donor first.
-- **Bank transfer / Raast:** the donor uploads a receipt. It is stored privately and only Finance and Super Admin can open it. The donation waits under "Transfers to confirm" until Finance checks the bank statement. Confirming emails the PDF receipt.
-- **Online methods (JazzCash, Easypaisa, card):** each one is hidden until it's switched on in `.env` (see `.env.example`). A donation is marked paid only after the provider's signed callback reaches `/payments/{method}/callback`. Each provider needs a driver in `app/Payments/Gateways` that implements `PaymentGateway`, registered in `GatewayManager`. `FakeGateway` shows the expected shape and lets you try the whole flow locally.
+- **Bank transfer, Raast, JazzCash and Easypaisa (manual mode):**
+  - The Donate page shows SSWF's account details, the QR code issued by the provider, a copy button and numbered steps.
+  - The donor sends the money and uploads a screenshot. It is stored privately, and only Finance and Super Admin can open it.
+  - The donation waits under "Payments to confirm" until Finance finds it in the bank or wallet statement. Confirming emails the PDF receipt.
+  - Each method appears once its account number is entered in Admin → Settings → Bank, wallets & Fitrana. Upload only QR codes issued by the bank or wallet provider.
+- **Sample details:** local and test copies get clearly labelled sample JazzCash, Easypaisa and Raast numbers and placeholder QR codes from `SamplePaymentDetailsSeeder`, so the flow can be tried. The live site (`APP_ENV=production`) ignores them, and never seeds them, so donors are only ever shown real accounts.
+- **Gateway mode (JazzCash, Easypaisa, card):** use this once a merchant account is approved. Set `PAYMENTS_JAZZCASH_MODE=gateway` and so on (see `.env.example`).
+  - A donation is marked paid only after the provider's signed callback reaches `/payments/{method}/callback`.
+  - Each provider needs a driver in `app/Payments/Gateways` that implements `PaymentGateway`, registered in `GatewayManager`. `FakeGateway` shows the expected shape and lets you try the flow locally.
+- **WhatsApp confirmation:**
+  - After Finance confirms a payment, a "Send receipt on WhatsApp" button opens WhatsApp (app or WhatsApp Web) on the donor's chat. The message is ready, and Finance presses Send. The same action is on every paid donation.
+  - The message holds the receipt number and a permanent signed link to the PDF receipt (`/receipts/{reference}?signature=…`). The link only opens for confirmed donations, and only with the exact signature.
+  - The text lives in `app/Messaging/DonorMessages.php`, and phone numbers are converted to international format by `app/Support/PhoneNumber.php`. When the WhatsApp Business API and an SMS gateway are added, they send the same text automatically.
 - **Records:** nobody, including Super Admin, can create or delete donation records in the admin. Mistakes are handled with Reject, Mark refunded and Finance notes.
 - **Emails:** emails and receipts are queued, so run `php artisan queue:work`. Locally they go to `storage/logs/laravel.log` unless you configure `MAIL_*`.
 

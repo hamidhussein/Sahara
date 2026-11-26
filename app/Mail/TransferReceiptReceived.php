@@ -19,7 +19,7 @@ class TransferReceiptReceived extends Mailable implements ShouldQueue
 
     public function envelope(): Envelope
     {
-        return new Envelope(subject: 'We received your transfer receipt');
+        return new Envelope(subject: 'We received your payment receipt');
     }
 
     public function content(): Content
