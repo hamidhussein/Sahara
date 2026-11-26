@@ -102,6 +102,50 @@ Anything the plan lists under "Facts to confirm" starts empty and is filled in f
 2. Create or claim the Google Business Profile.
 3. Check a WhatsApp and Facebook preview with Facebook's Sharing Debugger.
 
+## Admin security: two-factor login
+
+- **Required for every admin** (`ADMIN_TWO_FACTOR_REQUIRED=true`, the default). At their next sign-in, an admin without it is sent to "Set up two-factor authentication" before they can open anything else.
+- **Two choices:**
+  - an **authenticator app** (Google or Microsoft Authenticator, and others), with one-time recovery codes for a lost phone
+  - **codes by email**, which needs working `MAIL_*` settings
+- **After setup:** each admin manages it on their profile page (top-right menu → Profile). The secret and recovery codes are stored encrypted.
+- **Password reset:** "Forgot password" on the login page emails a reset link.
+- **Tests:** the automated tests switch the requirement off (`phpunit.xml`) and test two-factor sign-in on purpose.
+
+## Backups
+
+**Admin → Settings → Backups** (Super Admin) controls backups without touching the server:
+
+- **Back up now:** makes a backup in the background.
+- **Run restore check:** proves the newest backup can be restored.
+- **Download:** any backup, through a signed link that's valid for 30 minutes.
+- **Automatic backups:** on or off, every day or once a week, at a chosen time (Pakistan time).
+- **Retention:** how many days every backup is kept, at least 7.
+- **Alert email**, and the **weekly restore check** on or off.
+- **Status:** the latest backup, the last restore check result, and warnings when there is no off-site copy or no archive password.
+
+Destinations (`BACKUP_DISKS`) and the archive password (`BACKUP_ARCHIVE_PASSWORD`) stay in `.env`, because they are server secrets. Both buttons need the **queue worker** running; on Forge, add a daemon for `php artisan queue:work`. Automatic backups need the **scheduler**.
+
+The default settings and the commands behind them:
+
+- **Default schedule, Pakistan time** (`routes/console.php` reads it from the settings):
+  - 01:30 `sswf:backup`, which runs `backup:run` and then `backup:clean`. It backs up the database and `storage/app/public` and `storage/app/private` (photos, documents, QR codes and payment receipts).
+  - 07:00 `sswf:backup --monitor`
+  - every Sunday 03:00 `sswf:check-backup`
+- **Kept** 30 days by default, then weekly for 8 weeks, monthly for a year and yearly for 2 years.
+- **Alerts:** an email goes to the alert address only when a backup fails, is too old (more than a day for daily backups, 8 days for weekly ones), or the restore check fails. Without an alert address set in the admin, `BACKUP_NOTIFY_EMAIL` is used.
+- **Scheduler:** the server must run Laravel's scheduler every minute. On Forge, switch on "Scheduler". Elsewhere, add a cron entry for `php artisan schedule:run`.
+- **Before launch:**
+  1. Set `BACKUP_DISKS` to include an **off-site** disk, for example `backups,s3`. A backup kept only on the same server is lost with it.
+  2. Set a strong `BACKUP_ARCHIVE_PASSWORD`, because archives contain payment receipts. Store the password somewhere safe outside the server.
+  3. Run `php artisan backup:run`, then `php artisan sswf:check-backup`.
+- **`php artisan sswf:check-backup`** restores the newest backup's database into a temporary `<database>_restore_check` database, compares 16 key tables with the live ones, and checks every uploaded file is in the archive. It then removes the scratch database; add `--keep` to inspect it. It never touches live data.
+- **Real restore after a disaster:**
+  1. Unzip the newest archive with the archive password.
+  2. Import `db-dumps/*.sql` into the database.
+  3. Copy `public/` and `private/` back into `storage/app/`.
+  4. Run `php artisan storage:link` and `php artisan optimize`.
+
 ## Tests
 
 ```sh

@@ -38,6 +38,14 @@ return [
             'report' => false,
         ],
 
+        // Backups on this server (see config/backup.php). Add an off-site disk too.
+        'backups' => [
+            'driver' => 'local',
+            'root' => storage_path('app/backups'),
+            'throw' => false,
+            'report' => false,
+        ],
+
         'public' => [
             'driver' => 'local',
             'root' => storage_path('app/public'),

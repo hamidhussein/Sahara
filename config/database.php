@@ -62,6 +62,13 @@ return [
             'options' => extension_loaded('pdo_mysql') ? array_filter([
                 Mysql::ATTR_SSL_CA => env('MYSQL_ATTR_SSL_CA'),
             ]) : [],
+            // Backups: folder holding mysqldump and mysql (empty when they are on the PATH,
+            // as on the Forge server; e.g. C:/xampp/mysql/bin on a Windows dev machine).
+            'dump' => array_filter([
+                'dump_binary_path' => env('DB_DUMP_BINARY_PATH'),
+                'use_single_transaction' => true,
+                'timeout' => 600,
+            ]),
         ],
 
         'mariadb' => [

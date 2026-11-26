@@ -12,6 +12,12 @@ return [
     'short_name' => 'SSWF',
     'founded' => 2006,
 
+    /*
+     * Two-factor login for every admin (plan 1.2). Keep this on for the live
+     * site and staging; the automated tests switch it off and test it on purpose.
+     */
+    'admin_two_factor_required' => (bool) env('ADMIN_TWO_FACTOR_REQUIRED', true),
+
     // Districts of Gilgit-Baltistan, for project locations and filters.
     'districts' => [
         'Gilgit', 'Nagar', 'Hunza', 'Ghizer', 'Gupis-Yasin', 'Astore', 'Diamer', 'Darel',

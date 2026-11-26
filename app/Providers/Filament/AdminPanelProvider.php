@@ -2,6 +2,8 @@
 
 namespace App\Providers\Filament;
 
+use Filament\Auth\MultiFactor\App\AppAuthentication;
+use Filament\Auth\MultiFactor\Email\EmailAuthentication;
 use Filament\Http\Middleware\Authenticate;
 use Filament\Http\Middleware\AuthenticateSession;
 use Filament\Http\Middleware\DisableBladeIconComponents;
@@ -28,6 +30,18 @@ class AdminPanelProvider extends PanelProvider
             ->id('admin')
             ->path('admin')
             ->login()
+            // Profile page: where staff set up two-factor login and change their password.
+            ->profile(isSimple: false)
+            // Two-factor login for admins (plan 1.2). Required on the live site, so
+            // every admin sets it up at their next sign-in before doing anything else.
+            ->multiFactorAuthentication(
+                [
+                    AppAuthentication::make()->recoverable()->brandName('SSWF Admin'),
+                    EmailAuthentication::make(),
+                ],
+                isRequired: fn () => (bool) config('sswf.admin_two_factor_required'),
+            )
+            ->passwordReset()
             ->brandName('SSWF Admin')
             ->favicon(asset('favicon.svg'))
             ->colors([

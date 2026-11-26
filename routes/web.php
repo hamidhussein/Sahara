@@ -1,5 +1,7 @@
 <?php
 
+use App\Backups\BackupManager;
+use App\Enums\Role;
 use App\Http\Controllers\AboutController;
 use App\Http\Controllers\DonationController;
 use App\Http\Controllers\GalleryController;
@@ -10,7 +12,9 @@ use App\Http\Controllers\ProgramController;
 use App\Http\Controllers\ProjectController;
 use App\Http\Controllers\SeoController;
 use Illuminate\Foundation\Http\Middleware\PreventRequestForgery;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Storage;
 
 /*
  * Public site, following the sitemap in the SSWF Website Master Plan (0.2).
@@ -59,6 +63,15 @@ Route::match(['get', 'post'], '/payments/{method}/callback', [DonationController
     ->middleware('throttle:30,1')
     ->withoutMiddleware(PreventRequestForgery::class)
     ->name('payments.callback');
+// Backup downloads from Admin → Settings → Backups (Super Admin, signed link).
+Route::get('/finance/backups/download', function (Request $request, BackupManager $backups) {
+    abort_unless($request->user()?->hasRole(Role::SuperAdmin->value), 403);
+    $path = (string) $request->query('path');
+    abort_unless($backups->isBackupFile($path), 404);
+
+    return Storage::disk($backups->disk())->download($path);
+})->middleware(['auth', 'signed'])->name('backups.download');
+
 Route::get('/receipts/{donation:reference}', [DonationController::class, 'receipt'])
     ->middleware(['signed', 'throttle:30,1'])
     ->name('donations.receipt');
