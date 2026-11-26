@@ -24,7 +24,7 @@ mkdirSync(outDir, { recursive: true });
 
 const pages = [
     '/', '/programs', '/programs/clean-water', '/projects', '/projects/miachar-water-plant',
-    '/news', '/donate', '/donate/zakat-calculator', '/about', '/about/leadership', '/about/transparency', '/contact',
+    '/news', '/donate', '/donate/zakat-calculator', '/about', '/about/leadership', '/about/transparency', '/contact', '/gallery', '/gallery/clean-water-plants', '/privacy',
 ];
 const viewports = { phone: { width: 360, height: 800 }, desktop: { width: 1440, height: 900 } };
 
@@ -128,6 +128,26 @@ const interactions = {};
     interactions.summaryAmount = (await page.locator('aside dd').first().innerText()).trim();
     interactions.donateButton = (await page.getByRole('button', { name: /^Donate Rs/ }).innerText()).trim();
     await page.screenshot({ path: path.join(outDir, 'phone-donate-step4.png'), fullPage: true });
+
+    // Gallery lightbox: opens, moves on, closes with Escape.
+    await page.goto(base + '/gallery', { waitUntil: 'networkidle' });
+    const album = page.locator('main article a').first();
+    if (await album.count()) {
+        await album.click();
+        await page.waitForLoadState('networkidle');
+        await page.locator('main ul button').last().click();
+        const lightbox = page.locator('dialog[aria-label="Photo viewer"]');
+        interactions.lightboxOpens = await lightbox.evaluate((d) => d.open);
+        await page.screenshot({ path: path.join(outDir, 'phone-lightbox.png') });
+        await page.keyboard.press('Escape');
+        interactions.lightboxClosesWithEscape = !(await lightbox.evaluate((d) => d.open));
+    }
+
+    // Contact form: an empty submit explains what is missing.
+    await page.goto(base + '/contact', { waitUntil: 'networkidle' });
+    await page.getByRole('button', { name: 'Send message' }).click();
+    await page.waitForSelector('text=Enter your name.');
+    interactions.contactShowsErrors = await page.locator('[aria-invalid="true"]').count();
 }
 await phone.close();
 await browser.close();

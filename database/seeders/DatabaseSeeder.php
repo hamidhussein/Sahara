@@ -20,6 +20,6 @@ class DatabaseSeeder extends Seeder
             RoleModel::findOrCreate($name, 'web');
         }
 
-        $this->call([ContentSeeder::class, DonationSeeder::class, LeadershipSeeder::class]);
+        $this->call([ContentSeeder::class, DonationSeeder::class, LeadershipSeeder::class, GallerySeeder::class, LegalPagesSeeder::class]);
     }
 }

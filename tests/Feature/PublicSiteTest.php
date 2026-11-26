@@ -1,9 +1,9 @@
 <?php
 
 use App\Settings\SiteSettings;
-use Database\Seeders\ContentSeeder;
+use Database\Seeders\DatabaseSeeder;
 
-beforeEach(fn () => $this->seed(ContentSeeder::class));
+beforeEach(fn () => $this->seed(DatabaseSeeder::class));
 
 it('renders every page in the main menu', function (string $uri) {
     $this->get($uri)->assertOk()->assertSee('Sab Ka Sahara');

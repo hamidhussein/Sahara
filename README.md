@@ -53,6 +53,10 @@ If XAMPP's PHP 8.2 comes first on your PATH, `php` runs 8.2 and Composer will re
 | Leadership team (Editors) | Admin → Content → Leadership; advisers start hidden until confirmed |
 | Chairman's message | Admin → Settings → Contact & social; hidden until the approved text is entered |
 | Reports, audited accounts, certificates and the spending chart (Finance) | Admin → Transparency |
+| Contact form messages (Editors) | Admin → Content → Messages; also emailed to the office address in Settings |
+| Gallery albums, photos and YouTube videos (Editors) | Admin → Content → Gallery; albums show once they have content |
+| Privacy, Refund and Terms text (Editors) | Admin → Content → Pages; seeded from the plan's drafts, awaiting legal review |
+| 404 page | `resources/views/errors/404.blade.php` |
 | Contact, bank and impact settings | `app/Settings/`, edited at Admin → Settings (Super Admin only) |
 | Starting settings values | `database/settings/` |
 | Roles | `app/Enums/Role.php`, seeded by `DatabaseSeeder` |

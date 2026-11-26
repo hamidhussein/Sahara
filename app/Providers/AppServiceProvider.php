@@ -38,7 +38,7 @@ class AppServiceProvider extends ServiceProvider
         });
 
         // Contact details and impact numbers for the public layout, edited in Admin → Settings.
-        View::composer(['components.site.*', 'components.layouts.*', 'pages.*', 'donate.*', 'livewire.*', 'about.*'], function ($view) {
+        View::composer(['components.site.*', 'components.layouts.*', 'pages.*', 'donate.*', 'livewire.*', 'about.*', 'contact', 'errors.*'], function ($view) {
             $view->with('site', app(SiteSettings::class));
         });
     }

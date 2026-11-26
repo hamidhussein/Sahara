@@ -2,7 +2,9 @@
 
 use App\Http\Controllers\AboutController;
 use App\Http\Controllers\DonationController;
+use App\Http\Controllers\GalleryController;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\PageController;
 use App\Http\Controllers\PostController;
 use App\Http\Controllers\ProgramController;
 use App\Http\Controllers\ProjectController;
@@ -41,10 +43,12 @@ Route::view('/get-involved', 'pages.placeholder', $placeholder('Get Involved', '
 // Media
 Route::get('/news', [PostController::class, 'index'])->name('news.index');
 Route::get('/news/{post}', [PostController::class, 'show'])->name('news.show');
-Route::view('/gallery', 'pages.placeholder', $placeholder('Gallery', 'Moments of service.'))->name('gallery');
+Route::get('/gallery', [GalleryController::class, 'index'])->name('gallery');
+Route::get('/gallery/{album}', [GalleryController::class, 'show'])->name('gallery.show');
 
-// Contact and donate
-Route::view('/contact', 'pages.placeholder', $placeholder('Contact Us', 'We would love to hear from you.'))->name('contact');
+// Contact
+Route::view('/contact', 'contact')->name('contact');
+
 // Donations (plan 1.1 Donate, 1.2 Donation module)
 Route::get('/donate', [DonationController::class, 'create'])->name('donate');
 Route::get('/donate/zakat-calculator', fn () => view('donate.zakat-calculator'))->name('donate.zakat-calculator');
@@ -59,10 +63,10 @@ Route::get('/finance/transfer-receipts/{donation}', [DonationController::class, 
     ->middleware('auth')
     ->name('donations.transfer-receipt');
 
-// Legal (footer only)
-Route::view('/privacy', 'pages.placeholder', $placeholder('Privacy Policy', 'How we collect, use and protect your details.'))->name('privacy');
-Route::view('/refund-policy', 'pages.placeholder', $placeholder('Refund Policy', 'What to do if you donated by mistake.'))->name('refund-policy');
-Route::view('/terms', 'pages.placeholder', $placeholder('Terms of Use', 'The terms for using this website.'))->name('terms');
+// Legal (footer only). Text is edited in Admin → Content → Pages.
+Route::get('/privacy', PageController::class)->defaults('slug', 'privacy')->name('privacy');
+Route::get('/refund-policy', PageController::class)->defaults('slug', 'refund-policy')->name('refund-policy');
+Route::get('/terms', PageController::class)->defaults('slug', 'terms')->name('terms');
 
 // The pre-launch coming-soon page, kept until the new site goes live.
 Route::get('/coming-soon', fn () => response()->file(public_path('coming-soon/index.html')));
