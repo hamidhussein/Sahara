@@ -1,4 +1,4 @@
-<x-layouts.app title="Payment did not go through" :donateBand="false">
+<x-layouts.app title="Payment did not go through" :donateBand="false" noindex>
     <section class="mx-auto max-w-2xl px-4 py-16 sm:px-6 lg:py-24">
         <div class="rounded-card border border-line bg-surface p-6 sm:p-10">
             <h1 class="text-[1.75rem] font-bold leading-tight text-ink md:text-4xl">Your payment did not go through</h1>

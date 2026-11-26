@@ -1,5 +1,5 @@
 {{-- Plan 1.1: "This page has wandered off." --}}
-<x-layouts.app title="Page not found" :donateBand="false">
+<x-layouts.app title="Page not found" :donateBand="false" noindex>
     <section class="mx-auto max-w-2xl px-4 py-20 text-center sm:px-6 lg:py-28">
         <p class="text-6xl font-bold text-primary" aria-hidden="true">404</p>
         <h1 class="mt-4 text-[1.75rem] font-bold leading-tight text-ink md:text-4xl">This page has wandered off.</h1>

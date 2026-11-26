@@ -6,7 +6,7 @@
     ]);
     $videos = $album->youtubeVideos();
 @endphp
-<x-layouts.app :title="$album->title" :description="$album->description ?: 'Photos from '.$album->title.', Sab Ka Sahara Welfare Foundation.'">
+<x-layouts.app :title="$album->title" :image="$album->coverUrl()" :description="$album->description ?: 'Photos from '.$album->title.', Sab Ka Sahara Welfare Foundation.'">
     <x-site.page-header :title="$album->title" :lede="$album->description" :breadcrumbs="['Gallery' => route('gallery'), $album->title => null]" />
 
     <div class="mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:px-8 lg:py-16"

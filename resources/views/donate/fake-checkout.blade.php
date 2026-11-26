@@ -1,5 +1,5 @@
 {{-- Stand-in for a provider's hosted checkout page. Local and testing only. --}}
-<x-layouts.app title="Test payment" :donateBand="false">
+<x-layouts.app title="Test payment" :donateBand="false" noindex>
     <section class="mx-auto max-w-lg px-4 py-16">
         <div class="rounded-card border-2 border-dashed border-water bg-surface p-8">
             <p class="text-sm font-semibold text-water-dark">Test payment provider: no real money moves</p>

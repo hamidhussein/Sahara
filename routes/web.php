@@ -8,6 +8,7 @@ use App\Http\Controllers\PageController;
 use App\Http\Controllers\PostController;
 use App\Http\Controllers\ProgramController;
 use App\Http\Controllers\ProjectController;
+use App\Http\Controllers\SeoController;
 use Illuminate\Foundation\Http\Middleware\PreventRequestForgery;
 use Illuminate\Support\Facades\Route;
 
@@ -67,6 +68,10 @@ Route::get('/finance/transfer-receipts/{donation}', [DonationController::class, 
 Route::get('/privacy', PageController::class)->defaults('slug', 'privacy')->name('privacy');
 Route::get('/refund-policy', PageController::class)->defaults('slug', 'refund-policy')->name('refund-policy');
 Route::get('/terms', PageController::class)->defaults('slug', 'terms')->name('terms');
+
+// Search engines (plan 1.4)
+Route::get('/sitemap.xml', [SeoController::class, 'sitemap'])->name('sitemap');
+Route::get('/robots.txt', [SeoController::class, 'robots'])->name('robots');
 
 // The pre-launch coming-soon page, kept until the new site goes live.
 Route::get('/coming-soon', fn () => response()->file(public_path('coming-soon/index.html')));

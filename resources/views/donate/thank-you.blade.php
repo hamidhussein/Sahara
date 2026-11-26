@@ -2,7 +2,7 @@
     $isTransfer = $donation->status === \App\Enums\DonationStatus::AwaitingConfirmation;
     $share = rawurlencode('I just gave to Sab Ka Sahara Welfare Foundation, serving Gilgit-Baltistan since 2006. Join me: '.route('donate'));
 @endphp
-<x-layouts.app title="Thank you" :donateBand="false">
+<x-layouts.app title="Thank you" :donateBand="false" noindex>
     <section class="mx-auto max-w-2xl px-4 py-16 sm:px-6 lg:py-24">
         <div class="rounded-card border border-line bg-surface p-6 sm:p-10">
             <h1 class="text-[1.75rem] font-bold leading-tight text-primary md:text-4xl">Thank you, {{ $donation->donor_name }}!</h1>

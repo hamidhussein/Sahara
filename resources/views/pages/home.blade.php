@@ -4,7 +4,34 @@
     10 Volunteer call. Still to come: 6 A story (needs a beneficiary quote
     given with permission).
 --}}
+@php
+    // Structured data so search engines understand who SSWF is (plan 1.4, SEO).
+    $organization = [
+        '@context' => 'https://schema.org',
+        '@type' => 'NGO',
+        'name' => config('sswf.name'),
+        'alternateName' => ['SSWF', 'Syedabad Sahara Welfare Organization'],
+        'url' => route('home'),
+        'foundingDate' => '2006',
+        'description' => $site->seo_description,
+        'email' => $site->email,
+        'telephone' => $site->office_phone,
+        'address' => [
+            '@type' => 'PostalAddress',
+            'streetAddress' => 'G-18, Hussainia Complex, Khazana Road',
+            'addressLocality' => 'Gilgit',
+            'addressRegion' => 'Gilgit-Baltistan',
+            'addressCountry' => 'PK',
+        ],
+        'areaServed' => 'Gilgit-Baltistan',
+        'sameAs' => array_values($site->socialLinks()),
+    ];
+@endphp
 <x-layouts.app>
+    <x-slot:head>
+        <script type="application/ld+json">@json($organization, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE | JSON_HEX_TAG | JSON_HEX_AMP)</script>
+    </x-slot:head>
+
     {{-- 1. Hero --}}
     <section class="relative isolate overflow-hidden bg-primary-deep text-white">
         <img src="{{ asset('images/hero-danyor-water.jpg') }}"

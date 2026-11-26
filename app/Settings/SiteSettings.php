@@ -2,6 +2,7 @@
 
 namespace App\Settings;
 
+use Illuminate\Support\Facades\Storage;
 use Spatie\LaravelSettings\Settings;
 
 /**
@@ -36,6 +37,19 @@ class SiteSettings extends Settings
 
     /** Approved by the chairman before it appears on the Leadership page. */
     public ?string $chairman_message;
+
+    /** Default search/share description for pages without their own. */
+    public string $seo_description;
+
+    /** Default share image (public disk path) for WhatsApp and Facebook previews. */
+    public ?string $share_image;
+
+    public function shareImageUrl(): string
+    {
+        return $this->share_image
+            ? Storage::disk('public')->url($this->share_image)
+            : asset('images/hero-danyor-water.jpg');
+    }
 
     public static function group(): string
     {

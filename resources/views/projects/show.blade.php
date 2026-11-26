@@ -14,7 +14,7 @@
     $after = $project->imageUrl('after', 'card');
     $gallery = $project->getMedia('gallery');
 @endphp
-<x-layouts.app :title="$project->seo_title ?: $project->name" :description="$project->seo_description ?: $project->summary" :urdu="$urdu">
+<x-layouts.app :title="$project->seo_title ?: $project->name" :description="$project->seo_description ?: $project->summary" :image="$project->imageUrl('cover', 'hero')" :urdu="$urdu">
     <x-site.page-header :title="$project->name" :lede="$project->summary" :image="$project->imageUrl('cover', 'hero')"
         :breadcrumbs="['Projects' => route('projects.index'), $project->name => null]" />
 

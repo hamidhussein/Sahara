@@ -2,8 +2,25 @@
     $urdu = $post->language->isRtl();
     $shareText = rawurlencode($post->title.' '.route('news.show', $post));
     $gallery = $post->getMedia('gallery');
+    $articleData = array_filter([
+        '@context' => 'https://schema.org',
+        '@type' => 'NewsArticle',
+        'headline' => \Illuminate\Support\Str::limit($post->title, 110),
+        'description' => $post->excerptText(),
+        'inLanguage' => $post->language->value,
+        'datePublished' => $post->published_at->toIso8601String(),
+        'dateModified' => $post->updated_at->toIso8601String(),
+        'image' => $post->imageUrl('cover', 'hero'),
+        'mainEntityOfPage' => route('news.show', $post),
+        'publisher' => ['@type' => 'NGO', 'name' => config('sswf.name'), 'url' => route('home')],
+    ]);
 @endphp
-<x-layouts.app :title="$post->seo_title ?: $post->title" :description="$post->seo_description ?: $post->excerptText()" :urdu="$urdu">
+<x-layouts.app :title="$post->seo_title ?: $post->title" :description="$post->seo_description ?: $post->excerptText()"
+    :image="$post->imageUrl('cover', 'hero')" type="article" :urdu="$urdu">
+    <x-slot:head>
+        <meta property="article:published_time" content="{{ $post->published_at->toIso8601String() }}">
+        <script type="application/ld+json">@json($articleData, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE | JSON_HEX_TAG | JSON_HEX_AMP)</script>
+    </x-slot:head>
     <article>
         <header class="mx-auto max-w-[760px] px-4 pt-10 sm:px-6 lg:pt-16">
             <nav aria-label="Breadcrumb" class="mb-6 text-sm text-ink-muted">

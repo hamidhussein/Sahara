@@ -2,7 +2,7 @@
     Program page (plan 1.1): hero → description → this program's projects.
     Still to come: stats, giving amounts (with the donation module) and gallery.
 --}}
-<x-layouts.app :title="$program->seo_title ?: $program->name" :description="$program->seo_description ?: $program->summary" :urdu="$program->language->isRtl()">
+<x-layouts.app :title="$program->seo_title ?: $program->name" :description="$program->seo_description ?: $program->summary" :image="$program->imageUrl('cover', 'hero')" :urdu="$program->language->isRtl()">
     <section class="bg-primary-deep text-white">
         <div class="mx-auto grid max-w-7xl gap-8 px-4 py-12 sm:px-6 lg:grid-cols-2 lg:items-center lg:gap-12 lg:px-8 lg:py-16">
             <div @if ($program->language->isRtl()) lang="ur" dir="rtl" @endif>
