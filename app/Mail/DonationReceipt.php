@@ -2,6 +2,8 @@
 
 namespace App\Mail;
 
+use App\Messaging\DonorMessages;
+use App\Messaging\MessageTemplates;
 use App\Models\Donation;
 use App\Settings\SiteSettings;
 use Barryvdh\DomPDF\Facade\Pdf;
@@ -22,13 +24,14 @@ class DonationReceipt extends Mailable implements ShouldQueue
 
     public function envelope(): Envelope
     {
-        return new Envelope(subject: "Thank you for your donation – Receipt #{$this->donation->reference}");
+        return new Envelope(subject: MessageTemplates::render('receipt_email_subject', DonorMessages::values($this->donation)));
     }
 
     public function content(): Content
     {
         return new Content(markdown: 'mail.donation-receipt', with: [
             'site' => app(SiteSettings::class),
+            'body' => MessageTemplates::toMailMarkdown(MessageTemplates::render('receipt_email_body', DonorMessages::values($this->donation))),
         ]);
     }
 

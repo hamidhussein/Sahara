@@ -79,7 +79,12 @@ Anything the plan lists under "Facts to confirm" starts empty and is filled in f
 - **WhatsApp confirmation:**
   - After Finance confirms a payment, a "Send receipt on WhatsApp" button opens WhatsApp (app or WhatsApp Web) on the donor's chat. The message is ready, and Finance presses Send. The same action is on every paid donation.
   - The message holds the receipt number and a permanent signed link to the PDF receipt (`/receipts/{reference}?signature=…`). The link only opens for confirmed donations, and only with the exact signature.
-  - The text lives in `app/Messaging/DonorMessages.php`, and phone numbers are converted to international format by `app/Support/PhoneNumber.php`. When the WhatsApp Business API and an SMS gateway are added, they send the same text automatically.
+  - Phone numbers are converted to international format by `app/Support/PhoneNumber.php`. When the WhatsApp Business API and an SMS gateway are added, they send the same text automatically.
+- **Editable message wording:** Admin → Settings → Donor messages (Super Admin) covers the WhatsApp confirmation, the receipt email, the "receipt received" email and the contact form reply.
+  - Placeholders like `{name}`, `{amount}`, `{type}`, `{cause}`, `{reference}`, `{date}` and `{receipt_link}` are filled in for each donor, and there's a live preview with sample details.
+  - A message can't be saved without its required placeholders (for example, WhatsApp must keep `{reference}` and `{receipt_link}`) or with an unknown one.
+  - An empty box, or "Reset to default", uses the original wording. The defaults, the placeholder lists and the required placeholders are in `app/Messaging/MessageTemplates.php`.
+  - The email layout, the details table, the PDF and the footer stay fixed, and donor-typed values are HTML-escaped.
 - **Records:** nobody, including Super Admin, can create or delete donation records in the admin. Mistakes are handled with Reject, Mark refunded and Finance notes.
 - **Emails:** emails and receipts are queued, so run `php artisan queue:work`. Locally they go to `storage/logs/laravel.log` unless you configure `MAIL_*`.
 

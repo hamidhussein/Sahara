@@ -7,32 +7,35 @@ use App\Support\PhoneNumber;
 use Illuminate\Support\Facades\URL;
 
 /**
- * The words SSWF sends donors, in one place.
+ * Messages SSWF sends donors. The wording comes from the editable templates
+ * (MessageTemplates); this class fills in a donation's details.
  *
  * Today they go out by email (with the PDF attached) and by WhatsApp
  * click-to-chat, where Finance presses Send. When the WhatsApp Business API
- * and an SMS gateway are added, those channels send these same texts, so a
- * donor reads the same thing whichever way it reaches them.
+ * and an SMS gateway are added, those channels send these same texts.
  */
 final class DonorMessages
 {
-    /** Short confirmation with a secure link to the PDF receipt. */
-    public static function receiptConfirmation(Donation $donation): string
+    /** Placeholder values for a donation. */
+    public static function values(Donation $donation): array
     {
         $donation->loadMissing(['givingType', 'cause']);
 
-        return implode("\n", [
-            "Dear {$donation->donor_name},",
-            '',
-            "Thank you for your donation of {$donation->formattedAmount()} as {$donation->givingType->name} for {$donation->causeLabel()}. It has been received and confirmed.",
-            '',
-            "Receipt number: {$donation->reference}",
-            'Download your receipt (PDF): '.self::receiptUrl($donation),
-            '',
-            'Because of you, a family in Gilgit-Baltistan will feel that someone stands with them.',
-            '',
-            'Sab Ka Sahara Welfare Foundation',
-        ]);
+        return [
+            'name' => $donation->donor_name,
+            'amount' => $donation->formattedAmount(),
+            'type' => $donation->givingType->name,
+            'cause' => $donation->causeLabel(),
+            'reference' => $donation->reference,
+            'date' => ($donation->paid_at ?? $donation->created_at)->format('j F Y'),
+            'receipt_link' => self::receiptUrl($donation),
+        ];
+    }
+
+    /** Confirmation with a secure link to the PDF receipt (WhatsApp now, API and SMS later). */
+    public static function receiptConfirmation(Donation $donation): string
+    {
+        return MessageTemplates::render('whatsapp_receipt', self::values($donation));
     }
 
     /**
