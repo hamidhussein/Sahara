@@ -4,10 +4,11 @@
         'Program' => $project->program->name,
         'Status' => $project->status->getLabel(),
         'Place' => $project->place(),
-        'Donor' => $project->donor,
+        'Supported by' => $project->donor,
         $project->people_served_label ?: 'People served' => $project->people_served ? number_format($project->people_served) : null,
         'Cost' => $project->cost ? 'Rs '.number_format($project->cost) : null,
-        'Started' => $project->started_on?->format('j F Y'),
+        // A date still ahead reads "Starts", e.g. a camp scheduled for next month.
+        ($project->started_on?->isFuture() ? 'Starts' : 'Started') => $project->started_on?->format('j F Y'),
         $project->status === \App\Enums\ProjectStatus::Completed ? 'Completed' : 'Expected' => $project->completed_on?->format('j F Y'),
     ]);
     $before = $project->imageUrl('before', 'card');

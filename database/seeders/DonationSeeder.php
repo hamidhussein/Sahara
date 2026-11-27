@@ -52,8 +52,8 @@ class DonationSeeder extends Seeder
             ['education', 'Education', $program('education')],
             ['ramadan-package', 'Ramadan Package', $program('social-services')],
             ['winter-package', 'Winter Package', $program('social-services'), [
-                'appeal_title' => 'Winter Package 2026',
-                'description' => 'A warm blanket and bedding set for families facing the harsh Gilgit-Baltistan winter. Last month we reached more than 100 families from Yasin to Sherqila.',
+                'appeal_title' => 'Winter Support 2026–27',
+                'description' => 'Our Winter Support Programme runs through December 2026 and January 2027. We have already given about 600 blankets; help us keep more families warm this winter.',
             ]],
             ['sahara-complex', 'Sahara Complex', null, [
                 'appeal_title' => 'The Sahara Complex',

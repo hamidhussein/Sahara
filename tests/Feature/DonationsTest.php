@@ -333,7 +333,7 @@ it('calculates 2.5% of zakatable wealth above the nisab', function () {
 });
 
 it('shows the appeals on the home page, with progress only when a goal is set', function () {
-    $this->get('/')->assertSee('Winter Package 2026')->assertSee('The Sahara Complex')
+    $this->get('/')->assertSee('Winter Support 2026–27')->assertSee('The Sahara Complex')
         ->assertSee('A Better Ambulance Service')->assertDontSee('role="progressbar"', false);
 
     $winter = Cause::where('slug', 'winter-package')->sole();

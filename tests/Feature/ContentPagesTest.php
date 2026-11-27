@@ -17,7 +17,7 @@ it('seeds the plan’s programs, projects and partners without duplicating on a 
     $this->seed(ContentSeeder::class);
 
     expect(Program::count())->toBe(8)
-        ->and(Project::count())->toBe(4)
+        ->and(Project::count())->toBe(11)
         ->and(Partner::count())->toBe(8);
 });
 
@@ -108,4 +108,20 @@ it('keeps slugs unique', function () {
     $b = Project::create(['program_id' => $program->id, 'name' => 'New plant', 'summary' => 's']);
 
     expect($a->slug)->toBe('new-plant')->and($b->slug)->toBe('new-plant-2');
+});
+
+it('shows completed, ongoing and upcoming projects from the November 2026 update', function () {
+    Livewire::test(ProjectBrowser::class)
+        ->set('status', ProjectStatus::Completed->value)
+        ->assertSee('Four Water Filtration Plants: Bar, Budalas, Chaprote and Minapin')
+        ->assertSee('1,200 ration packages')->assertSee('600 blankets given')
+        ->set('status', ProjectStatus::Ongoing->value)
+        ->assertSee('Free Medical Camp, Phakar')->assertSee('30 students supported')
+        ->set('status', ProjectStatus::Planned->value)
+        ->assertSee('Winter Support Programme 2026–27')->assertSee('Four More Water Filtration Plants')
+        ->assertDontSee('Ration Distribution');
+
+    $this->get('/projects/water-plants-2027')->assertOk()
+        ->assertSee('Jutal, Hakucher, Dadimal Paeen and one more village')
+        ->assertSee('Starts')->assertSee('1 April 2027')->assertDontSee('Started');
 });
