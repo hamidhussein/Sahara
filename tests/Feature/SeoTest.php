@@ -108,8 +108,9 @@ it('lists published content in the sitemap and leaves out drafts, empty albums a
         ->not->toContain(route('programs.show', 'qurbani'))
         ->not->toContain('phekar-youth-smoking-naswar-seminar') // draft
         ->not->toContain(route('gallery.show', 'muharram-medical-camps')) // no photos yet
-        ->not->toContain('/admin')
-        ->not->toContain('/get-help'); // Phase 2
+        ->toContain('<loc>'.route('get-help').'</loc>')
+        ->toContain('<loc>'.route('get-involved').'</loc>')
+        ->not->toContain('/admin');
 });
 
 it('refreshes the sitemap when news is published', function () {

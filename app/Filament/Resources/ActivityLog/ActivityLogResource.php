@@ -50,6 +50,7 @@ class ActivityLogResource extends Resource
         'content' => 'Content',
         'donations' => 'Donations',
         'messages' => 'Messages',
+        'services' => 'Services',
         'settings' => 'Settings',
         'users' => 'Users',
         'security' => 'Sign-ins',

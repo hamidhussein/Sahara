@@ -11,8 +11,8 @@
         ],
         'Get involved' => [
             'Donate' => route('donate'),
-            'Volunteer' => route('get-involved'),
-            'Become a Blood Donor' => route('get-involved'),
+            'Volunteer' => route('get-involved').'#volunteer',
+            'Become a Blood Donor' => route('get-involved').'#blood-donor',
             'Partner With Us' => route('partner'),
         ],
     ];

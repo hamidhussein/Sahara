@@ -37,10 +37,10 @@ class SeoController extends Controller
                 ->setLastModificationDate($modified ?? now()->startOfDay())
         );
 
-        // Fixed pages. Get Help and Get Involved join once they are built (Phase 2).
+        // Fixed pages.
         $add(route('home'), null, 1.0, Url::CHANGE_FREQUENCY_WEEKLY);
         $add(route('donate'), null, 0.9);
-        foreach (['about', 'leadership', 'transparency', 'programs.index', 'partner', 'contact', 'donate.zakat-calculator'] as $name) {
+        foreach (['about', 'leadership', 'transparency', 'programs.index', 'get-help', 'get-involved', 'partner', 'contact', 'donate.zakat-calculator'] as $name) {
             $add(route($name), null, 0.7);
         }
         $add(route('projects.index'), null, 0.8, Url::CHANGE_FREQUENCY_WEEKLY);

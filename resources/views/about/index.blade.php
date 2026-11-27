@@ -206,7 +206,7 @@
         <div class="mt-6 flex flex-wrap justify-center gap-3">
             <a href="{{ route('donate') }}" class="btn-donate">Donate</a>
             <a href="{{ route('partner') }}" class="btn-primary">Partner with us</a>
-            <a href="{{ route('get-involved') }}" class="btn-outline text-primary hover:bg-primary-tint">Volunteer</a>
+            <a href="{{ route('get-involved') }}#volunteer" class="btn-outline text-primary hover:bg-primary-tint">Volunteer</a>
         </div>
     </section>
 

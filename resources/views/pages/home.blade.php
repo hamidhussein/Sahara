@@ -189,8 +189,8 @@
                     Our volunteers carried water to thirsty homes in Danyor for 28 days and served at every camp and procession. Join them.
                 </p>
                 <div class="mt-6 flex flex-col gap-3 sm:flex-row">
-                    <a href="{{ route('get-involved') }}" class="btn-primary">Become a Volunteer</a>
-                    <a href="{{ route('get-involved') }}" class="btn-outline text-primary hover:bg-primary-tint">Register as a Blood Donor</a>
+                    <a href="{{ route('get-involved') }}#volunteer" class="btn-primary">Become a Volunteer</a>
+                    <a href="{{ route('get-involved') }}#blood-donor" class="btn-outline text-primary hover:bg-primary-tint">Register as a Blood Donor</a>
                 </div>
             </div>
         </div>

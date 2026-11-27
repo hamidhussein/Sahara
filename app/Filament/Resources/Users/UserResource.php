@@ -52,7 +52,7 @@ class UserResource extends Resource
             Role::SuperAdmin->value => 'Everything, including admin users, settings, backups and the activity log.',
             Role::Editor->value => 'Website content and contact messages: pages, news, programs, projects, gallery, partners and team.',
             Role::Finance->value => 'Donations, causes, types of giving, and transparency reports.',
-            Role::Services->value => 'Requests for help (from Phase 2).',
+            Role::Services->value => 'Help requests, volunteers and blood donors.',
         ];
     }
 

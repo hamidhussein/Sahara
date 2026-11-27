@@ -54,6 +54,7 @@ class AdminPanelProvider extends PanelProvider
             ->navigationGroups([
                 NavigationGroup::make('Content'),
                 NavigationGroup::make('Donations'),
+                NavigationGroup::make('Services'),
                 NavigationGroup::make('Transparency'),
                 NavigationGroup::make('Settings'),
                 NavigationGroup::make('Users'),

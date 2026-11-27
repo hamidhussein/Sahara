@@ -9,7 +9,7 @@
         </div>
         <div class="mt-8 flex flex-col gap-3 sm:flex-row lg:mt-0 lg:shrink-0">
             <a href="{{ route('donate') }}" class="btn-donate">Donate Now</a>
-            <a href="{{ route('get-involved') }}" class="btn-outline text-white hover:bg-white/10">Become a Volunteer</a>
+            <a href="{{ route('get-involved') }}#volunteer" class="btn-outline text-white hover:bg-white/10">Become a Volunteer</a>
         </div>
     </div>
 </section>

@@ -11,8 +11,10 @@ use App\Http\Controllers\PostController;
 use App\Http\Controllers\ProgramController;
 use App\Http\Controllers\ProjectController;
 use App\Http\Controllers\SeoController;
+use App\Models\HelpRequest;
 use Illuminate\Foundation\Http\Middleware\PreventRequestForgery;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Storage;
 
@@ -41,9 +43,9 @@ Route::get('/programs/{program}', [ProgramController::class, 'show'])->name('pro
 Route::get('/projects', [ProjectController::class, 'index'])->name('projects.index');
 Route::get('/projects/{project}', [ProjectController::class, 'show'])->name('projects.show');
 
-// Services (Phase 2)
-Route::view('/get-help', 'pages.placeholder', $placeholder('Get Help', 'You are not alone. Tell us what you need.'))->name('get-help');
-Route::view('/get-involved', 'pages.placeholder', $placeholder('Get Involved', 'Be someone’s Sahara.'))->name('get-involved');
+// Services (plan 2.1): help requests, volunteers and blood donors.
+Route::view('/get-help', 'pages.get-help')->name('get-help');
+Route::view('/get-involved', 'pages.get-involved')->name('get-involved');
 Route::view('/partner-with-us', 'pages.partner')->name('partner');
 
 // Media
@@ -83,6 +85,14 @@ Route::get('/payments/fake/{donation:reference}', [DonationController::class, 'f
 Route::get('/finance/transfer-receipts/{donation}', [DonationController::class, 'transferReceipt'])
     ->middleware('auth')
     ->name('donations.transfer-receipt');
+
+// Documents attached to help requests (prescriptions, CNIC copies): Services team only.
+Route::get('/services/help-requests/{helpRequest}/document', function (HelpRequest $helpRequest) {
+    Gate::authorize('view', $helpRequest);
+    $media = $helpRequest->getFirstMedia('document') ?? abort(404);
+
+    return response()->streamDownload(fn () => fpassthru($media->stream()), $media->file_name, ['Content-Type' => $media->mime_type], 'inline');
+})->middleware('auth')->name('services.help-document');
 
 // Legal (footer only). Text is edited in Admin → Content → Pages.
 Route::get('/privacy', PageController::class)->defaults('slug', 'privacy')->name('privacy');
