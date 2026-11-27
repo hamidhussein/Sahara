@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Models\Concerns\RecordsActivity;
 use App\Enums\ReportType;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
@@ -14,7 +15,7 @@ use Spatie\MediaLibrary\InteractsWithMedia;
  */
 class Report extends Model implements HasMedia
 {
-    use InteractsWithMedia;
+    use InteractsWithMedia, RecordsActivity;
 
     protected $guarded = ['id'];
 

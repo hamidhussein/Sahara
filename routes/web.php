@@ -70,6 +70,9 @@ Route::get('/finance/backups/download', function (Request $request, BackupManage
     $path = (string) $request->query('path');
     abort_unless($backups->isBackupFile($path), 404);
 
+    // A backup holds every donor's details, so each download is recorded.
+    activity('backups')->event('download')->withProperties(['file' => basename($path), 'ip' => $request->ip()])->log('Downloaded a backup');
+
     return Storage::disk($backups->disk())->download($path);
 })->middleware(['auth', 'signed'])->name('backups.download');
 

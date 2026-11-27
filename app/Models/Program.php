@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Models\Concerns\RecordsActivity;
 use App\Enums\ContentLanguage;
 use App\Models\Concerns\HasSlug;
 use App\Models\Concerns\HasWebpImages;
@@ -12,7 +13,7 @@ use Spatie\MediaLibrary\HasMedia;
 
 class Program extends Model implements HasMedia
 {
-    use HasSlug, HasWebpImages;
+    use HasSlug, HasWebpImages, RecordsActivity;
 
     protected $guarded = ['id'];
 

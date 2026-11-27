@@ -32,6 +32,9 @@ if ($backup?->schedule_enabled) {
     Schedule::command('sswf:backup --monitor')->dailyAt('07:00')->timezone('Asia/Karachi')->onOneServer();
 }
 
+// Activity log entries are kept for a year (config/activitylog.php), then removed.
+Schedule::command('activitylog:clean --force')->dailyAt('04:00')->timezone('Asia/Karachi')->onOneServer();
+
 if ($backup?->restore_check_enabled) {
     // Every Sunday, prove the newest backup can actually be restored.
     Schedule::command('sswf:check-backup')->weeklyOn(0, '03:00')->timezone('Asia/Karachi')->onOneServer()

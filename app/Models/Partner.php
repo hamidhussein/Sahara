@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Models\Concerns\RecordsActivity;
 use App\Models\Concerns\HasWebpImages;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
@@ -9,7 +10,7 @@ use Spatie\MediaLibrary\HasMedia;
 
 class Partner extends Model implements HasMedia
 {
-    use HasWebpImages;
+    use HasWebpImages, RecordsActivity;
 
     protected $guarded = ['id'];
 

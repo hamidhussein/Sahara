@@ -11,6 +11,7 @@ use App\Models\Post;
 use App\Models\Program;
 use App\Models\Project;
 use App\Settings\SiteSettings;
+use App\Support\ActivityRecorder;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\View;
@@ -44,6 +45,9 @@ class AppServiceProvider extends ServiceProvider
 
             return $user->hasRole(Role::SuperAdmin->value) ? true : null;
         });
+
+        // Sign-ins, role changes and settings changes for Admin → Users → Activity log.
+        ActivityRecorder::register();
 
         // Rebuild the sitemap whenever something in it changes.
         foreach ([Program::class, Project::class, Post::class, GalleryAlbum::class, Page::class, Media::class] as $model) {

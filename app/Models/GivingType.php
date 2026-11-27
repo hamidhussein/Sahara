@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Models\Concerns\RecordsActivity;
 use App\Models\Concerns\HasSlug;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
@@ -13,7 +14,12 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
  */
 class GivingType extends Model
 {
-    use HasSlug;
+    use HasSlug, RecordsActivity;
+
+    protected function activityArea(): string
+    {
+        return 'donations';
+    }
 
     protected $guarded = ['id'];
 

@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Models\Concerns\RecordsActivity;
 use App\Enums\TeamGroup;
 use App\Models\Concerns\HasWebpImages;
 use Illuminate\Database\Eloquent\Builder;
@@ -11,7 +12,7 @@ use Spatie\MediaLibrary\HasMedia;
 
 class TeamMember extends Model implements HasMedia
 {
-    use HasWebpImages;
+    use HasWebpImages, RecordsActivity;
 
     protected $guarded = ['id'];
 

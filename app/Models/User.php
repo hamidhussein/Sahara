@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Models\Concerns\RecordsActivity;
 use App\Enums\Role;
 use Database\Factories\UserFactory;
 use Filament\Auth\MultiFactor\App\Contracts\HasAppAuthentication;
@@ -22,7 +23,23 @@ use Spatie\Permission\Traits\HasRoles;
 class User extends Authenticatable implements FilamentUser, HasAppAuthentication, HasAppAuthenticationRecovery, HasEmailAuthentication
 {
     /** @use HasFactory<UserFactory> */
-    use HasFactory, HasRoles, Notifiable;
+    use HasFactory, HasRoles, Notifiable, RecordsActivity;
+
+    protected function activityArea(): string
+    {
+        return 'users';
+    }
+
+    /** Never passwords or two-factor secrets. */
+    protected function activityOnly(): ?array
+    {
+        return ['name', 'email'];
+    }
+
+    protected function activityDescription(string $event): string
+    {
+        return ucfirst($event).' admin user';
+    }
 
     /**
      * Only staff with one of the admin roles can sign in to /admin.

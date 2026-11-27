@@ -58,6 +58,7 @@ class ManageBackupSettings extends SettingsPage
                 ->modalDescription('Backs up the database and all uploaded files now, in the background. It usually takes a minute or two.')
                 ->action(function () {
                     RunBackup::dispatch();
+                    activity('backups')->event('backup')->log('Started a backup');
                     Notification::make()->success()->title('Backup started')
                         ->body('It runs in the background. Refresh this page in a minute or two to see it in the list.')
                         ->send();
@@ -70,6 +71,7 @@ class ManageBackupSettings extends SettingsPage
                 ->modalDescription('Restores the newest backup into a temporary copy of the database and checks nothing is missing. The live site is not touched.')
                 ->action(function () {
                     RunRestoreCheck::dispatch();
+                    activity('backups')->event('restore-check')->log('Started a restore check');
                     Notification::make()->success()->title('Restore check started')
                         ->body('Refresh this page in a few minutes to see the result.')
                         ->send();

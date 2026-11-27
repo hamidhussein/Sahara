@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Models\Concerns\RecordsActivity;
 use App\Enums\DonationStatus;
 use App\Enums\PaymentMethod;
 use Illuminate\Database\Eloquent\Builder;
@@ -13,7 +14,35 @@ use Spatie\MediaLibrary\InteractsWithMedia;
 
 class Donation extends Model implements HasMedia
 {
-    use InteractsWithMedia;
+    use InteractsWithMedia, RecordsActivity;
+
+    /** Donors create donations on the website; the log records what staff and gateways do after that. */
+    protected static array $recordEvents = ['updated', 'deleted'];
+
+    protected function activityArea(): string
+    {
+        return 'donations';
+    }
+
+    /** Status and Finance's notes only: never the donor's name, phone or email. */
+    protected function activityOnly(): ?array
+    {
+        return ['status', 'amount', 'finance_notes', 'needs_eligibility_review', 'confirmed_by', 'paid_at'];
+    }
+
+    protected function activityDescription(string $event): string
+    {
+        if ($event === 'updated' && $this->wasChanged('status')) {
+            return match ($this->status) {
+                DonationStatus::Paid => 'Confirmed payment',
+                DonationStatus::Refunded => 'Refunded donation',
+                DonationStatus::Failed => 'Marked donation as failed',
+                default => 'Changed donation status',
+            };
+        }
+
+        return ucfirst($event).' donation';
+    }
 
     protected $guarded = ['id'];
 

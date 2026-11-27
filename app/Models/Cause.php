@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Models\Concerns\RecordsActivity;
 use App\Enums\DonationStatus;
 use App\Models\Concerns\HasSlug;
 use App\Models\Concerns\HasWebpImages;
@@ -18,7 +19,12 @@ use Spatie\MediaLibrary\HasMedia;
  */
 class Cause extends Model implements HasMedia
 {
-    use HasSlug, HasWebpImages;
+    use HasSlug, HasWebpImages, RecordsActivity;
+
+    protected function activityArea(): string
+    {
+        return 'donations';
+    }
 
     protected $guarded = ['id'];
 

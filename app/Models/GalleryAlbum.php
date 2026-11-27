@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Models\Concerns\RecordsActivity;
 use App\Models\Concerns\HasSlug;
 use App\Models\Concerns\HasWebpImages;
 use Illuminate\Database\Eloquent\Builder;
@@ -10,7 +11,7 @@ use Spatie\MediaLibrary\HasMedia;
 
 class GalleryAlbum extends Model implements HasMedia
 {
-    use HasSlug, HasWebpImages;
+    use HasSlug, HasWebpImages, RecordsActivity;
 
     protected $guarded = ['id'];
 
