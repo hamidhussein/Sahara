@@ -34,3 +34,6 @@ Thumbs.db
 
 # Planning document (kept local; contains staff and bank details)
 /SSWF Website Master Plan.md
+
+# Tests stay on the developer's machine and are not pushed to GitHub.
+/tests/
