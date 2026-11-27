@@ -23,6 +23,9 @@ class DonationSettings extends Settings
     /** Fitrana per person in rupees, announced before each Eid-ul-Fitr. */
     public ?int $fitrana_amount;
 
+    /** Gets an email whenever a donor uploads a payment receipt. Empty: every Finance user. */
+    public ?string $finance_email;
+
     /** Nisab in rupees for the Zakat calculator; changes with metal prices. */
     public ?int $nisab_amount;
 

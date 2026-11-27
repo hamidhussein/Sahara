@@ -4,8 +4,12 @@ namespace App\Services;
 
 use App\Enums\DonationStatus;
 use App\Enums\PaymentMethod;
+use App\Enums\Role;
 use App\Mail\DonationReceipt;
 use App\Mail\TransferReceiptReceived;
+use App\Mail\TransferReceiptToCheck;
+use App\Settings\DonationSettings;
+use App\Settings\SiteSettings;
 use App\Models\Cause;
 use App\Models\Donation;
 use App\Models\GivingType;
@@ -58,6 +62,9 @@ class DonationService
                 if ($donation->donor_email) {
                     Mail::to($donation->donor_email)->queue(new TransferReceiptReceived($donation));
                 }
+
+                // Tell Finance straight away, so the donor's receipt isn't left waiting.
+                Mail::to($this->financeRecipients())->queue(new TransferReceiptToCheck($donation));
             }
 
             return $donation;
@@ -96,6 +103,25 @@ class DonationService
         $this->sendReceipt($donation);
 
         return $donation;
+    }
+
+    /**
+     * Who hears about new receipts: the address set in Admin → Settings →
+     * Donations, else every Finance user, else the site email.
+     *
+     * @return list<string>
+     */
+    public function financeRecipients(): array
+    {
+        $configured = app(DonationSettings::class)->finance_email;
+        if (filled($configured)) {
+            return [$configured];
+        }
+
+        $finance = User::whereHas('roles', fn ($query) => $query->where('name', Role::Finance->value))
+            ->pluck('email')->filter()->unique()->values()->all();
+
+        return $finance ?: [app(SiteSettings::class)->email];
     }
 
     /** Finance confirms a bank, JazzCash or Easypaisa payment after finding it in the account statement. */

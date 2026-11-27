@@ -98,6 +98,15 @@ class ManageDonationSettings extends SettingsPage
                     static::qrUpload('easypaisa_qr', 'Easypaisa')->columnSpanFull(),
                 ]),
 
+            Section::make('Receipt alerts')
+                ->description('When a donor uploads a bank, JazzCash or Easypaisa receipt, Finance gets an email to check it against the account.')
+                ->schema([
+                    TextInput::make('finance_email')->label('Send receipt alerts to')
+                        ->email()->maxLength(190)
+                        ->placeholder('Every user with the Finance role')
+                        ->helperText('Leave empty to email every Finance user. If there are none, alerts go to the site email.'),
+                ]),
+
             Section::make('Fitrana and Zakat')
                 ->columns(2)
                 ->schema([
