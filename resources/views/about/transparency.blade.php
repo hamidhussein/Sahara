@@ -7,6 +7,7 @@
 @php
     $h2 = 'text-[1.375rem] font-bold leading-snug text-primary md:text-[1.75rem]';
     $breakdown = $spendingReport?->spendingBreakdown() ?? [];
+    $transparency = app(\App\Settings\TransparencySettings::class); // Admin → Transparency → Policy and funding
 @endphp
 <x-layouts.app title="Transparency" description="Registration, annual reports, audited accounts and our Zakat and Khums policy. Donors have the right to know exactly how their money is used.">
     <x-site.page-header title="Transparency" lede="Your trust is our most important asset."
@@ -106,19 +107,18 @@
             <section class="rounded-card border border-line bg-surface p-6" aria-labelledby="funding">
                 <h2 id="funding" class="text-xl font-bold text-primary">How we are funded</h2>
                 <ul class="mt-4 list-disc space-y-1 ps-5">
-                    <li>Monthly fees from registered members</li>
-                    <li>Donation boxes</li>
-                    <li>General donations</li>
-                    <li>Sadaqat, Zakat and Khums</li>
-                    <li>Rent from the shops in our building</li>
+                    @foreach ($transparency->funding as $line)
+                        <li>{{ $line }}</li>
+                    @endforeach
                 </ul>
             </section>
             <section class="rounded-card border border-line bg-surface p-6" aria-labelledby="assets">
                 <h2 id="assets" class="text-xl font-bold text-primary">What we own</h2>
                 <ul class="mt-4 list-disc space-y-1 ps-5">
-                    <li>A 5-marla building (basement hall and three rented shops) for the <a href="{{ route('about') }}#sahara-complex" class="font-medium text-water-dark underline underline-offset-2">Sahara Complex</a></li>
-                    <li>3 ambulances</li>
-                    <li>Office furniture and equipment</li>
+                    @foreach ($transparency->assets as $line)
+                        {{-- "Sahara Complex" stays a link to the About page, whoever edits the line. --}}
+                        <li>{!! str_replace(e('Sahara Complex'), '<a href="'.e(route('about')).'#sahara-complex" class="font-medium text-water-dark underline underline-offset-2">Sahara Complex</a>', e($line)) !!}</li>
+                    @endforeach
                 </ul>
             </section>
         </div>
@@ -127,12 +127,7 @@
         <section class="mt-14" aria-labelledby="policy">
             <h2 id="policy" class="{{ $h2 }}">Our Zakat and Khums policy</h2>
             <ul class="mt-6 space-y-4">
-                @foreach ([
-                    'Zakat, Khums, Fitrana, Fidya and Kaffarah are each kept in a separate fund and recorded separately.',
-                    'Zakat and Fitrana go only to eligible (mustahiq) individuals and families.',
-                    'Khums is used only for permitted purposes, under the permission (ijazah) of the Marja’s representative, as that permission directs.',
-                    'Beneficiaries are verified through surveys by our volunteers and local elders.',
-                ] as $rule)
+                @foreach ($transparency->policy as $rule)
                     <li class="flex gap-4 rounded-card border border-line bg-surface p-4">
                         <svg class="mt-0.5 size-6 shrink-0 text-primary" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="m5 12 5 5L20 7"/></svg>
                         <span class="text-lg">{{ $rule }}</span>

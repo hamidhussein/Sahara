@@ -27,6 +27,7 @@
         'sameAs' => array_values($site->socialLinks()),
     ];
 @endphp
+@php $home = app(\App\Settings\HomeSettings::class); @endphp
 <x-layouts.app>
     <x-slot:head>
         <script type="application/ld+json">@json($organization, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE | JSON_HEX_TAG | JSON_HEX_AMP)</script>
@@ -34,17 +35,17 @@
 
     {{-- 1. Hero --}}
     <section class="relative isolate overflow-hidden bg-primary-deep text-white">
-        <img src="{{ asset('images/hero-danyor-water.jpg') }}"
-             alt="Subka Sahara volunteers delivering clean drinking water in Danyor"
+        <img src="{{ $home->heroImageUrl() }}"
+             alt="{{ $home->hero_image_alt }}"
              fetchpriority="high"
              decoding="async"
              class="absolute inset-0 -z-20 size-full object-cover object-center">
         <div aria-hidden="true" class="absolute inset-0 -z-10 bg-gradient-to-r from-primary-deep/95 via-primary-deep/80 to-primary-deep/45"></div>
         <div class="mx-auto max-w-7xl px-4 py-16 sm:px-6 sm:py-24 lg:px-8 lg:py-32">
             <div class="max-w-2xl">
-                <h1 class="text-[2rem] font-bold leading-[1.15] sm:text-5xl">Support for everyone who has none.</h1>
+                <h1 class="text-[2rem] font-bold leading-[1.15] sm:text-5xl">{{ $home->hero_heading }}</h1>
                 <p class="mt-5 text-lg text-white/90 sm:text-xl">
-                    From clean water in Nagar to free eye surgeries and food for families in need, Subka Sahara Welfare Foundation stands with the people of Gilgit-Baltistan, day and night.
+                    {{ $home->hero_text }}
                 </p>
                 <div class="mt-8 flex flex-col gap-3 sm:flex-row">
                     <a href="{{ route('donate') }}" class="btn-donate text-lg">Donate Now</a>
@@ -123,15 +124,16 @@
         </section>
     @endif
 
-    {{-- 7. How your donation helps. The Rs 15,000 eye surgery tier waits for the confirmed cost. --}}
+    {{-- 7. How your donation helps (Admin → Settings → Home page) --}}
     <section class="mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:px-8 lg:py-24" aria-labelledby="tiers-title">
         <h2 id="tiers-title" class="text-[1.375rem] font-bold text-primary md:text-[1.75rem]">How your donation helps</h2>
         @php
-            $tiers = [
-                ['Rs 10,000', 'gives one family a Ramadan ration package', ['cause' => 'ramadan-package', 'amount' => 10000]],
-                ['Rs 50,000', 'helps a talented student through a year of medical or engineering study (interest-free loan)', ['cause' => 'education', 'amount' => 50000]],
-                ['Any amount', 'brings the Sahara Complex, and its low-cost laboratory, a step closer', ['cause' => 'sahara-complex']],
-            ];
+            // An empty amount means "any amount".
+            $tiers = collect($home->tiers)->values()->map(fn ($tier) => [
+                filled($tier['amount'] ?? null) ? 'Rs '.number_format((int) $tier['amount']) : 'Any amount',
+                $tier['text'],
+                array_filter(['cause' => $tier['cause'] ?? null, 'amount' => filled($tier['amount'] ?? null) ? (int) $tier['amount'] : null]),
+            ]);
         @endphp
         <ul class="mt-8 grid gap-6 md:grid-cols-3">
             @foreach ($tiers as [$amount, $text, $query])
@@ -184,9 +186,9 @@
     <section class="border-t border-line bg-surface" aria-labelledby="volunteer-title">
         <div class="mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:px-8 lg:py-20">
             <div class="max-w-2xl">
-                <h2 id="volunteer-title" class="text-[1.375rem] font-bold text-primary md:text-[1.75rem]">Be someone’s Sahara.</h2>
+                <h2 id="volunteer-title" class="text-[1.375rem] font-bold text-primary md:text-[1.75rem]">{{ $home->volunteer_heading }}</h2>
                 <p class="mt-3 text-lg text-ink">
-                    Our volunteers carried water to thirsty homes in Danyor for 28 days and served at every camp and procession. Join them.
+                    {{ $home->volunteer_text }}
                 </p>
                 <div class="mt-6 flex flex-col gap-3 sm:flex-row">
                     <a href="{{ route('get-involved') }}#volunteer" class="btn-primary">Become a Volunteer</a>
