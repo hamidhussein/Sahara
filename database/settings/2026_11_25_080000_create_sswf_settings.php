@@ -15,7 +15,7 @@ return new class extends SettingsMigration
         $this->migrator->add('site.office_phone', '+92 5811 453014');
         $this->migrator->add('site.ambulance_phone', null);
         $this->migrator->add('site.whatsapp_number', null);
-        $this->migrator->add('site.email', 'sswogilgit@gmail.com');
+        $this->migrator->add('site.email', 'info@subkasahara.org');
         $this->migrator->add('site.address', 'G-18, Hussainia Complex, Khazana Road, Gilgit, Gilgit-Baltistan');
         $this->migrator->add('site.registration_number', 'J-6 (16)/203/2012');
         $this->migrator->add('site.office_hours', null);

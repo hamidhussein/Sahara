@@ -212,7 +212,7 @@ class ContentSeeder extends Seeder
         $post = Post::firstOrCreate(['slug' => 'phakar-youth-smoking-naswar-seminar'], [
             'title' => 'Youth in Phakar Learn the Dangers of Smoking and Naswar',
             'category' => PostCategory::YouthCommunity,
-            'body' => '<p>Sab Ka Sahara Welfare Foundation held a special awareness seminar in Phakar, Nagar, to help young people understand the harm caused by cigarettes, naswar and other harmful substances.</p>'
+            'body' => '<p>Subka Sahara Welfare Foundation held a special awareness seminar in Phakar, Nagar, to help young people understand the harm caused by cigarettes, naswar and other harmful substances.</p>'
                 .'<p>Psychologist Dr Muhammad Ali Khan and SSWF’s chairman spoke to the youth about health, addiction and making strong choices. The seminar is part of the Drug-Free Phakar campaign, run with local elders and youth organizations.</p>',
             'published_at' => null,
         ]);

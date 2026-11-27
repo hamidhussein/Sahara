@@ -1,4 +1,4 @@
-<x-layouts.app title="Zakat calculator" description="Work out how much Zakat you owe and pay it to Sab Ka Sahara Welfare Foundation, where Zakat is kept in a separate fund for eligible families.">
+<x-layouts.app title="Zakat calculator" description="Work out how much Zakat you owe and pay it to Subka Sahara Welfare Foundation, where Zakat is kept in a separate fund for eligible families.">
     <x-site.page-header title="Zakat calculator" lede="Not sure how much Zakat you owe? Enter what you own today; we will calculate 2.5% of your zakatable wealth if it is above the nisab."
         :breadcrumbs="['Donate' => route('donate'), 'Zakat calculator' => null]" />
 

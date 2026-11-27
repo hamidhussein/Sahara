@@ -10,7 +10,7 @@
         ['2013', 'Registered under the Voluntary Social Welfare Agencies Ordinance 1961 (Reg. No. '.$site->registration_number.')'],
         ['2025', 'Office renovated (1 May); "Pani Har Ghar Tak" water emergency serves Danyor and Sultanabad for 28 days'],
         ['2026', 'Free eye camp: 3,000 patients examined, 300+ free operations; 1,067 families reached in Ramadan'],
-        ['2026', 'Building purchased for the Sahara Complex; renamed Sab Ka Sahara Welfare Foundation; SECP registration in process'],
+        ['2026', 'Building purchased for the Sahara Complex; renamed Subka Sahara Welfare Foundation; SECP registration in process'],
     ];
     $values = [
         ['Service without discrimination', 'We help everyone, regardless of color, race, language, religion or political belief.'],
@@ -35,7 +35,7 @@
     ];
     $h2 = 'text-[1.375rem] font-bold leading-snug text-primary md:text-[1.75rem]';
 @endphp
-<x-layouts.app title="About Us" description="Sab Ka Sahara Welfare Foundation began in 2006 as Syedabad Sahara Welfare Organization. A non-profit, non-political, volunteer-run organization serving Gilgit-Baltistan.">
+<x-layouts.app title="About Us" description="Subka Sahara Welfare Foundation began in 2006 as Syedabad Sahara Welfare Organization. A non-profit, non-political, volunteer-run organization serving Gilgit-Baltistan.">
     <x-site.page-header title="About Us" lede="Twenty years of standing with Gilgit-Baltistan." :breadcrumbs="['About' => null]" />
 
     {{-- Our story --}}
@@ -43,7 +43,7 @@
         <div class="lg:col-span-3">
             <h2 id="story" class="{{ $h2 }}">Our story</h2>
             <div class="mt-5 max-w-[68ch] space-y-4 text-lg leading-[1.7]">
-                <p>Sab Ka Sahara Welfare Foundation began in 2006 as Syedabad Sahara Welfare Organization (SSWO), started by people from District Nagar living in Gilgit who wanted to help their neighbours in hard times. In 2013 it was registered under the Voluntary Social Welfare Agencies Ordinance 1961. It is a non-profit, non-political organization run by volunteers.</p>
+                <p>Subka Sahara Welfare Foundation began in 2006 as Syedabad Sahara Welfare Organization (SSWO), started by people from District Nagar living in Gilgit who wanted to help their neighbours in hard times. In 2013 it was registered under the Voluntary Social Welfare Agencies Ordinance 1961. It is a non-profit, non-political organization run by volunteers.</p>
                 <p>Over twenty years, SSWO has grown into one of the most active welfare networks in Gilgit-Baltistan. Today we run three ambulances, nine clean water plants and free medical, eye and circumcision camps. We give Ramadan rations and winter packages to families in five districts, and scholarships and interest-free loans to students. At every Muharram, Chehlum and Milad procession in Gilgit, our medical teams and water stalls are there to serve.</p>
                 <p>We do this with the support of our members, local donors, overseas Gilgit-Baltistanis and partner organizations, and through the dedication of our volunteers.</p>
             </div>

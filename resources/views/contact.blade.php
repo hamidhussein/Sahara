@@ -11,7 +11,7 @@
         'Email' => [$site->email, 'mailto:'.$site->email],
     ]);
 @endphp
-<x-layouts.app title="Contact Us" description="Contact Sab Ka Sahara Welfare Foundation in Gilgit: office address, phone, email and a message form.">
+<x-layouts.app title="Contact Us" description="Contact Subka Sahara Welfare Foundation in Gilgit: office address, phone, email and a message form.">
     <x-site.page-header title="Contact Us" lede="We would love to hear from you." :breadcrumbs="['Contact' => null]" />
 
     <div class="mx-auto grid max-w-7xl gap-10 px-4 py-12 sm:px-6 lg:grid-cols-5 lg:gap-16 lg:px-8 lg:py-16">

@@ -6,7 +6,7 @@ use Database\Seeders\DatabaseSeeder;
 beforeEach(fn () => $this->seed(DatabaseSeeder::class));
 
 it('renders every page in the main menu', function (string $uri) {
-    $this->get($uri)->assertOk()->assertSee('Sab Ka Sahara');
+    $this->get($uri)->assertOk()->assertSee('Subka Sahara');
 })->with([
     '/', '/about', '/about/leadership', '/about/transparency', '/programs', '/programs/clean-water',
     '/projects', '/get-help', '/get-involved', '/news', '/gallery', '/contact', '/donate',
@@ -28,7 +28,7 @@ it('returns 404 for an unknown program', function () {
 it('shows the plan’s confirmed contact details and registration number', function () {
     $this->get('/')
         ->assertSee('+92 5811 453014')
-        ->assertSee('sswogilgit@gmail.com')
+        ->assertSee('info@subkasahara.org')
         ->assertSee('J-6 (16)/203/2012')
         ->assertSee('Support for everyone who has none.');
 });

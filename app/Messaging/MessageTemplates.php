@@ -22,7 +22,7 @@ final class MessageTemplates
         'cause' => 'Cause, or “Where it is needed most”',
         'reference' => 'Receipt number, e.g. SSWF-2026-000123',
         'date' => 'Date, e.g. 26 November 2026',
-        'organization' => 'Sab Ka Sahara Welfare Foundation',
+        'organization' => 'Subka Sahara Welfare Foundation',
     ];
 
     /**
@@ -105,7 +105,7 @@ final class MessageTemplates
                 'label' => 'Contact form reply: subject',
                 'help' => 'Automatic reply to people who write through the Contact page and give an email address.',
                 'multiline' => false,
-                'placeholders' => ['name' => 'Their name', 'subject' => 'The subject they wrote', 'organization' => 'Sab Ka Sahara Welfare Foundation'],
+                'placeholders' => ['name' => 'Their name', 'subject' => 'The subject they wrote', 'organization' => 'Subka Sahara Welfare Foundation'],
                 'required' => [],
                 'default' => 'We received your message',
             ],
@@ -113,7 +113,7 @@ final class MessageTemplates
                 'label' => 'Contact form reply: message',
                 'help' => 'Keep the emergency line: people sometimes write instead of calling.',
                 'multiline' => true,
-                'placeholders' => ['name' => 'Their name', 'subject' => 'The subject they wrote', 'organization' => 'Sab Ka Sahara Welfare Foundation'],
+                'placeholders' => ['name' => 'Their name', 'subject' => 'The subject they wrote', 'organization' => 'Subka Sahara Welfare Foundation'],
                 'required' => [],
                 'default' => implode("\n", [
                     'Dear {name},',

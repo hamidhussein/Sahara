@@ -8,7 +8,7 @@
 
 return [
 
-    'name' => 'Sab Ka Sahara Welfare Foundation',
+    'name' => 'Subka Sahara Welfare Foundation',
     'short_name' => 'SSWF',
     'founded' => 2006,
 
@@ -60,7 +60,7 @@ return [
     ],
 
     /*
-     * Desktop menu, in order. Donate is rendered separately as the gold button.
+     * Desktop menu, in order. Donate is rendered separately as the orange button.
      * 'children' produces a flyout (desktop) or a disclosure (mobile).
      */
     'menu' => [

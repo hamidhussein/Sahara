@@ -7,7 +7,7 @@
         'language' => $language?->value,
     ], $change)));
 @endphp
-<x-layouts.app title="News" description="Latest news from Sab Ka Sahara Welfare Foundation: water plants, health camps, rations, Qurbani and events across Gilgit-Baltistan.">
+<x-layouts.app title="News" description="Latest news from Subka Sahara Welfare Foundation: water plants, health camps, rations, Qurbani and events across Gilgit-Baltistan.">
     <x-site.page-header title="News" lede="Latest from the field." :breadcrumbs="['News' => null]" />
 
     <section class="mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:px-8 lg:py-16">

@@ -25,7 +25,7 @@ enum ProjectStatus: string implements HasColor, HasLabel
         };
     }
 
-    /** Tailwind classes for the public status tag. Gold stays reserved for Donate. */
+    /** Tailwind classes for the public status tag. Orange stays reserved for Donate. */
     public function tagClasses(): string
     {
         return match ($this) {

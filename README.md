@@ -1,6 +1,6 @@
-# Sab Ka Sahara Welfare Foundation website
+# Subka Sahara Welfare Foundation website
 
-The website and admin panel for Sab Ka Sahara Welfare Foundation (SSWF), Gilgit-Baltistan. It follows the *SSWF Website Master Plan* (25 Nov 2026).
+The website and admin panel for Subka Sahara Welfare Foundation (SSWF), Gilgit-Baltistan. It follows the *SSWF Website Master Plan* (25 Nov 2026).
 
 - **Public site:** Laravel 13 with Blade, Livewire 4, Alpine.js and Tailwind CSS 4, styled with the "Karakoram Hope" tokens in `resources/css/app.css`.
 - **Admin panel:** Filament 5 at `/admin`, with four roles: Super Admin, Editor, Finance and Services.

@@ -5,21 +5,21 @@
     <title>Receipt {{ $donation->reference }}</title>
     <style>
         @page { margin: 28px 32px; }
-        body { font-family: DejaVu Sans, sans-serif; font-size: 11px; color: #2b2b2b; }
-        .head { border-bottom: 3px solid #1e6b3a; padding-bottom: 10px; margin-bottom: 16px; }
-        .org { font-size: 16px; font-weight: bold; color: #1e6b3a; }
-        .muted { color: #585c57; }
+        body { font-family: DejaVu Sans, sans-serif; font-size: 11px; color: #1f2532; }
+        .head { border-bottom: 3px solid #0d2d5e; padding-bottom: 10px; margin-bottom: 16px; }
+        .org { font-size: 16px; font-weight: bold; color: #0d2d5e; }
+        .muted { color: #565d6b; }
         h1 { font-size: 14px; margin: 0 0 12px; }
         table { width: 100%; border-collapse: collapse; }
-        td { padding: 6px 0; border-bottom: 1px solid #e4e5df; vertical-align: top; }
-        td.label { width: 40%; color: #585c57; }
-        .amount { font-size: 18px; font-weight: bold; color: #1e6b3a; }
-        .foot { margin-top: 22px; font-size: 9.5px; color: #585c57; }
+        td { padding: 6px 0; border-bottom: 1px solid #e2e6ec; vertical-align: top; }
+        td.label { width: 40%; color: #565d6b; }
+        .amount { font-size: 18px; font-weight: bold; color: #0d2d5e; }
+        .foot { margin-top: 22px; font-size: 9.5px; color: #565d6b; }
     </style>
 </head>
 <body>
     <div class="head">
-        <div class="org">Sab Ka Sahara Welfare Foundation</div>
+        <div class="org">Subka Sahara Welfare Foundation</div>
         <div class="muted">{{ $site->address }}</div>
         <div class="muted">{{ $site->office_phone }} · {{ $site->email }}</div>
     </div>

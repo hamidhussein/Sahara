@@ -43,10 +43,10 @@ function liveSite(): void
 function realWallets(): DonationSettings
 {
     $s = app(DonationSettings::class);
-    $s->jazzcash_title = 'Sab Ka Sahara Welfare Foundation';
+    $s->jazzcash_title = 'Subka Sahara Welfare Foundation';
     $s->jazzcash_number = '0301 2345678';
     $s->jazzcash_qr = 'payment-qr/jazzcash.png';
-    $s->easypaisa_title = 'Sab Ka Sahara Welfare Foundation';
+    $s->easypaisa_title = 'Subka Sahara Welfare Foundation';
     $s->easypaisa_number = '0346 2345678';
     $s->easypaisa_qr = null;
     $s->raast_id = null;
@@ -163,7 +163,7 @@ it('lets Super Admin enter real wallet details and upload a QR code', function (
     Livewire::actingAs($admin)->test(ManageDonationSettings::class)
         ->assertSee('Some details below are samples for testing.')
         ->fillForm([
-            'jazzcash_title' => 'Sab Ka Sahara Welfare Foundation',
+            'jazzcash_title' => 'Subka Sahara Welfare Foundation',
             'jazzcash_number' => '0301 2345678',
             'jazzcash_qr' => [UploadedFile::fake()->image('jazzcash-qr.png', 400, 400)],
         ])

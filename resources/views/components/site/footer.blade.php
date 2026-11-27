@@ -22,7 +22,7 @@
         <div>
             <h2 class="text-lg font-semibold text-white">About</h2>
             <p class="mt-3">
-                Sab Ka Sahara Welfare Foundation (SSWF) is a volunteer-driven welfare organization serving people across Gilgit-Baltistan without discrimination of color, race, language, religion or political belief.
+                Subka Sahara Welfare Foundation (SSWF) is a volunteer-driven welfare organization serving people across Gilgit-Baltistan without discrimination of color, race, language, religion or political belief.
             </p>
             <p lang="ur" dir="rtl" class="mt-3 text-lg text-white">ہمارا عزم – انسانیت کی خدمت</p>
         </div>
@@ -58,7 +58,7 @@
     <div class="border-t border-white/15">
         <div class="mx-auto flex max-w-7xl flex-col gap-3 px-4 py-6 text-sm sm:px-6 lg:flex-row lg:items-center lg:justify-between lg:px-8">
             <p>
-                © {{ now()->year }} Sab Ka Sahara Welfare Foundation. Serving since 2006.
+                © {{ now()->year }} Subka Sahara Welfare Foundation. Serving since 2006.
                 Reg. No. {{ $site->registration_number }} under the Voluntary Social Welfare Agencies Ordinance 1961.
             </p>
             <ul class="flex shrink-0 flex-wrap gap-x-4 gap-y-1 whitespace-nowrap">

@@ -2,7 +2,7 @@
     Leadership (plan 1.1): chairman's message → team by section.
     The message appears only once the approved text is in Admin → Settings.
 --}}
-<x-layouts.app title="Our Leadership" description="The patrons, executive body and advisers who lead Sab Ka Sahara Welfare Foundation.">
+<x-layouts.app title="Our Leadership" description="The patrons, executive body and advisers who lead Subka Sahara Welfare Foundation.">
     <x-site.page-header title="Our Leadership" lede="The people who carry the responsibility."
         :breadcrumbs="['About' => route('about'), 'Leadership' => null]" />
 
@@ -21,7 +21,7 @@
                         @endif
                         <span>
                             <span class="block font-semibold text-ink">{{ $chairman?->name ?? 'Chairman' }}</span>
-                            <span class="block text-ink-muted">Chairman, Sab Ka Sahara Welfare Foundation</span>
+                            <span class="block text-ink-muted">Chairman, Subka Sahara Welfare Foundation</span>
                         </span>
                     </figcaption>
                 </figure>

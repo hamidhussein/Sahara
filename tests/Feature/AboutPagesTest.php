@@ -31,7 +31,7 @@ function aboutStaff(Role $role): User
 
 it('tells the story with the plan’s confirmed timeline only', function () {
     $this->get('/about')->assertOk()
-        ->assertSee('Sab Ka Sahara Welfare Foundation began in 2006 as Syedabad Sahara Welfare Organization')
+        ->assertSee('Subka Sahara Welfare Foundation began in 2006 as Syedabad Sahara Welfare Organization')
         ->assertSee('Registered under the Voluntary Social Welfare Agencies Ordinance 1961 (Reg. No. J-6 (16)/203/2012)')
         ->assertSee('The commitment is the same; the reach is wider.')
         ->assertSee('id="sahara-complex"', false)
@@ -67,7 +67,7 @@ it('shows the chairman’s message only after it is approved and entered', funct
 
     $this->get('/about/leadership')
         ->assertSee('Every rupee you give will reach the people who need it.')
-        ->assertSee('Chairman, Sab Ka Sahara Welfare Foundation');
+        ->assertSee('Chairman, Subka Sahara Welfare Foundation');
 });
 
 it('uses initials when a leader has no photo', function () {

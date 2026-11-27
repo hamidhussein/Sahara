@@ -4,31 +4,31 @@
 @source '../../storage/framework/views/*.php';
 
 /*
- * "Karakoram Hope" design tokens (SSWF Website Master Plan, section 0.4).
- * Gold is reserved for Donate buttons and progress bars, always with dark text.
+ * Brand colours from the Subka Sahara logo: navy #001F47 and orange #FF8F02.
+ * Orange is reserved for Donate buttons and progress bars, always with dark text.
  */
 @theme {
     --font-sans: 'Inter', ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji';
     --font-urdu: 'Noto Nastaliq Urdu', 'Jameel Noori Nastaleeq', 'Urdu Typesetting', serif;
     --font-urdu-body: 'Noto Naskh Arabic', 'Segoe UI', 'Arial', serif;
 
-    --color-primary: #1e6b3a;
-    --color-primary-dark: #154f2a;
-    --color-primary-deep: #0f3b20;
-    --color-primary-tint: #e7f1ea;
+    --color-primary: #0d2d5e;
+    --color-primary-dark: #001f47;
+    --color-primary-deep: #00152f;
+    --color-primary-tint: #e8eef7;
 
-    --color-accent: #e8a317;
-    --color-accent-dark: #cf8f0c;
+    --color-accent: #ff8f02;
+    --color-accent-dark: #e87f00;
 
     /* Plan's glacier blue is 4.3:1 on white, so link text uses water-dark (5.9:1). */
     --color-water: #2a7fb8;
     --color-water-dark: #1f6696;
 
-    --color-canvas: #fafaf7;
+    --color-canvas: #f8f9fb;
     --color-surface: #ffffff;
-    --color-ink: #2b2b2b;
-    --color-ink-muted: #585c57;
-    --color-line: #e4e5df;
+    --color-ink: #1f2532;
+    --color-ink-muted: #565d6b;
+    --color-line: #e2e6ec;
 
     --color-emergency: #b42318;
 
@@ -116,7 +116,7 @@
     }
 }
 
-/* Buttons: gold for Donate only, green secondary, outline (plan 0.4 components). */
+/* Buttons: orange for Donate only, navy secondary, outline (plan 0.4 components). */
 @utility btn {
     @apply inline-flex min-h-11 items-center justify-center gap-2 rounded-button px-5 py-2.5 text-base font-semibold transition-colors;
 }

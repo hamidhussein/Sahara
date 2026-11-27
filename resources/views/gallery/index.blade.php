@@ -1,4 +1,4 @@
-<x-layouts.app title="Gallery" description="Photos and videos of Sab Ka Sahara Welfare Foundation at work across Gilgit-Baltistan.">
+<x-layouts.app title="Gallery" description="Photos and videos of Subka Sahara Welfare Foundation at work across Gilgit-Baltistan.">
     <x-site.page-header title="Gallery" lede="Moments of service." :breadcrumbs="['Gallery' => null]" />
 
     <section class="mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:px-8 lg:py-16">

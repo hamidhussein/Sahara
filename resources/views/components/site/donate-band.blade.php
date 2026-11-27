@@ -1,4 +1,4 @@
-{{-- Full-width green call to action before the footer (plan 1.1, global parts). --}}
+{{-- Full-width navy call to action before the footer (plan 1.1, global parts). --}}
 <section class="bg-primary text-white" aria-labelledby="donate-band-title">
     <div class="mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:flex lg:items-center lg:justify-between lg:gap-12 lg:px-8 lg:py-16">
         <div class="max-w-2xl">

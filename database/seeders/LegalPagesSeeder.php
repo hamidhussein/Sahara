@@ -44,7 +44,7 @@ class LegalPagesSeeder extends Seeder
                 'title' => 'Terms of Use',
                 'lede' => 'The terms for using this website.',
                 'body' => '<p>By using this website you agree to use it lawfully.</p>'
-                    .'<p>Content and photos belong to Sab Ka Sahara Welfare Foundation unless stated otherwise, and may be shared with credit.</p>'
+                    .'<p>Content and photos belong to Subka Sahara Welfare Foundation unless stated otherwise, and may be shared with credit.</p>'
                     .'<p>We work to keep information accurate but cannot guarantee it is always complete.</p>'
                     .'<p>These terms are governed by the laws of Pakistan.</p>',
             ],

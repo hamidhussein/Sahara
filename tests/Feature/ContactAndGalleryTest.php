@@ -36,7 +36,7 @@ it('shows the confirmed contact details and hides what is not confirmed', functi
     $this->get('/contact')->assertOk()
         ->assertSee('G-18, Hussainia Complex, Khazana Road, Gilgit')
         ->assertSee('+92 5811 453014')
-        ->assertSee('sswogilgit@gmail.com')
+        ->assertSee('info@subkasahara.org')
         ->assertSee('24 hours a day, 7 days a week')
         ->assertSee('https://www.google.com/maps/search/?api=1&amp;query=', false)
         ->assertDontSee('Office hours')
@@ -64,7 +64,7 @@ it('saves a message, emails the office and replies to the sender', function () {
     $message = ContactMessage::sole();
     expect($message->email)->toBe('sana@example.com')->and($message->phone)->toBeNull();
 
-    Mail::assertQueued(ContactMessageReceived::class, fn ($m) => $m->hasTo('sswogilgit@gmail.com') && $m->hasReplyTo('sana@example.com'));
+    Mail::assertQueued(ContactMessageReceived::class, fn ($m) => $m->hasTo('info@subkasahara.org') && $m->hasReplyTo('sana@example.com'));
     Mail::assertQueued(ContactAutoReply::class, fn ($m) => $m->hasTo('sana@example.com'));
 });
 

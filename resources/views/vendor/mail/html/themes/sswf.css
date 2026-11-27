@@ -28,7 +28,7 @@ blockquote {
 }
 
 a {
-    color: #1e6b3a;
+    color: #0d2d5e;
 }
 
 a img {
@@ -38,7 +38,7 @@ a img {
 /* Typography */
 
 h1 {
-    color: #1e6b3a;
+    color: #0d2d5e;
     font-size: 18px;
     font-weight: bold;
     margin-top: 0;
@@ -80,7 +80,7 @@ img {
     -premailer-cellpadding: 0;
     -premailer-cellspacing: 0;
     -premailer-width: 100%;
-    background-color: #fafaf7;
+    background-color: #f8f9fb;
     margin: 0;
     padding: 0;
     width: 100%;
@@ -103,7 +103,7 @@ img {
 }
 
 .header a {
-    color: #1e6b3a;
+    color: #0d2d5e;
     font-size: 19px;
     font-weight: bold;
     text-decoration: none;
@@ -125,9 +125,9 @@ img {
     -premailer-cellpadding: 0;
     -premailer-cellspacing: 0;
     -premailer-width: 100%;
-    background-color: #fafaf7;
-    border-bottom: 1px solid #fafaf7;
-    border-top: 1px solid #fafaf7;
+    background-color: #f8f9fb;
+    border-bottom: 1px solid #f8f9fb;
+    border-top: 1px solid #f8f9fb;
     margin: 0;
     padding: 0;
     width: 100%;
@@ -239,20 +239,20 @@ img {
 
 .button-blue,
 .button-primary {
-    background-color: #1e6b3a;
-    border-bottom: 8px solid #1e6b3a;
-    border-left: 18px solid #1e6b3a;
-    border-right: 18px solid #1e6b3a;
-    border-top: 8px solid #1e6b3a;
+    background-color: #0d2d5e;
+    border-bottom: 8px solid #0d2d5e;
+    border-left: 18px solid #0d2d5e;
+    border-right: 18px solid #0d2d5e;
+    border-top: 8px solid #0d2d5e;
 }
 
 .button-green,
 .button-success {
-    background-color: #1e6b3a;
-    border-bottom: 8px solid #1e6b3a;
-    border-left: 18px solid #1e6b3a;
-    border-right: 18px solid #1e6b3a;
-    border-top: 8px solid #1e6b3a;
+    background-color: #0d2d5e;
+    border-bottom: 8px solid #0d2d5e;
+    border-left: 18px solid #0d2d5e;
+    border-right: 18px solid #0d2d5e;
+    border-top: 8px solid #0d2d5e;
 }
 
 .button-red,
@@ -267,12 +267,12 @@ img {
 /* Panels */
 
 .panel {
-    border-left: #1e6b3a solid 4px;
+    border-left: #0d2d5e solid 4px;
     margin: 21px 0;
 }
 
 .panel-content {
-    background-color: #fafaf7;
+    background-color: #f8f9fb;
     color: #52525b;
     padding: 16px;
 }

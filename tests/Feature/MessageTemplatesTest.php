@@ -59,7 +59,7 @@ it('uses the default wording until someone edits it', function () {
     expect($text)->toContain('Dear Sana Ali,')
         ->toContain('Rs 12,000 as Zakat for Where it is needed most')
         ->toContain('/receipts/SSWF-')
-        ->toEndWith('Sab Ka Sahara Welfare Foundation');
+        ->toEndWith('Subka Sahara Welfare Foundation');
 });
 
 it('sends the edited WhatsApp wording with the donation filled in', function () {

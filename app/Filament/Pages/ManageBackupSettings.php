@@ -169,7 +169,7 @@ class ManageBackupSettings extends SettingsPage
             return '<tr style="border-top:1px solid rgba(127,127,127,.2)">'
                 .'<td style="padding:.5rem 1rem .5rem 0">'.e($b['date']->format('j M Y, g:i a')).'</td>'
                 .'<td style="padding:.5rem 1rem;opacity:.75">'.e(Number::fileSize($b['size'])).'</td>'
-                .'<td style="padding:.5rem 0;text-align:right"><a href="'.e($url).'" style="color:#1e6b3a;font-weight:600;text-decoration:underline">Download</a></td>'
+                .'<td style="padding:.5rem 0;text-align:right"><a href="'.e($url).'" style="color:#0d2d5e;font-weight:600;text-decoration:underline">Download</a></td>'
                 .'</tr>';
         })->implode('');
 

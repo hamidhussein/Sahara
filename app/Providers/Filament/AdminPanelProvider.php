@@ -43,10 +43,10 @@ class AdminPanelProvider extends PanelProvider
             )
             ->passwordReset()
             ->brandName('SSWF Admin')
-            ->favicon(asset('favicon.svg'))
+            ->favicon(asset('favicon-32.png'))
             ->colors([
-                'primary' => Color::hex('#1e6b3a'),
-                'warning' => Color::hex('#e8a317'),
+                'primary' => Color::hex('#0d2d5e'),
+                'warning' => Color::hex('#ff8f02'),
                 'info' => Color::hex('#2a7fb8'),
             ])
             ->font('Inter')

@@ -13,7 +13,7 @@ beforeEach(fn () => $this->seed(DatabaseSeeder::class));
 it('publishes the plan’s legal drafts with confirmed contact details and no unconfirmed time limits', function () {
     $this->get('/privacy')->assertOk()
         ->assertSee('Your phone number is never shown publicly.')
-        ->assertSee('mailto:sswogilgit@gmail.com', false)
+        ->assertSee('mailto:info@subkasahara.org', false)
         ->assertSee('Last updated');
 
     $this->get('/refund-policy')->assertOk()

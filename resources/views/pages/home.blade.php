@@ -35,7 +35,7 @@
     {{-- 1. Hero --}}
     <section class="relative isolate overflow-hidden bg-primary-deep text-white">
         <img src="{{ asset('images/hero-danyor-water.jpg') }}"
-             alt="Sab Ka Sahara volunteers delivering clean drinking water in Danyor"
+             alt="Subka Sahara volunteers delivering clean drinking water in Danyor"
              fetchpriority="high"
              decoding="async"
              class="absolute inset-0 -z-20 size-full object-cover object-center">
@@ -44,7 +44,7 @@
             <div class="max-w-2xl">
                 <h1 class="text-[2rem] font-bold leading-[1.15] sm:text-5xl">Support for everyone who has none.</h1>
                 <p class="mt-5 text-lg text-white/90 sm:text-xl">
-                    From clean water in Nagar to free eye surgeries and food for families in need, Sab Ka Sahara Welfare Foundation stands with the people of Gilgit-Baltistan, day and night.
+                    From clean water in Nagar to free eye surgeries and food for families in need, Subka Sahara Welfare Foundation stands with the people of Gilgit-Baltistan, day and night.
                 </p>
                 <div class="mt-8 flex flex-col gap-3 sm:flex-row">
                     <a href="{{ route('donate') }}" class="btn-donate text-lg">Donate Now</a>
