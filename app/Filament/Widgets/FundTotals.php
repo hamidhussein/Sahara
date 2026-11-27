@@ -17,7 +17,7 @@ use Illuminate\Database\Eloquent\Builder;
  */
 class FundTotals extends TableWidget
 {
-    protected static ?int $sort = 2;
+    protected static ?int $sort = 5; // after the to-do numbers
 
     protected int|string|array $columnSpan = 'full';
 
