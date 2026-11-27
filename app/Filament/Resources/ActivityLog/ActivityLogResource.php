@@ -40,6 +40,8 @@ class ActivityLogResource extends Resource
 
     protected static ?string $navigationLabel = 'Activity log';
 
+    protected static ?int $navigationSort = 1;
+
     protected static ?string $modelLabel = 'activity';
 
     protected static ?string $pluralModelLabel = 'activity log';

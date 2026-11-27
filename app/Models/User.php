@@ -95,6 +95,37 @@ class User extends Authenticatable implements FilamentUser, HasAppAuthentication
         return filled($this->app_authentication_secret) || $this->hasEmailAuthentication();
     }
 
+    /** Lost phone: clear both methods, so the next sign-in asks to set two-factor up again. */
+    public function resetTwoFactor(): void
+    {
+        $this->forceFill([
+            'app_authentication_secret' => null,
+            'app_authentication_recovery_codes' => null,
+            'has_email_authentication' => false,
+        ])->save();
+    }
+
+    public function isLastSuperAdmin(): bool
+    {
+        return $this->hasRole(Role::SuperAdmin->value)
+            && static::role(Role::SuperAdmin->value)->count() <= 1;
+    }
+
+    protected static function boot(): void
+    {
+        // Last line of defence: the site must always have someone who can manage it.
+        // Registered before the traits boot, because HasRoles removes the roles on
+        // "deleting"; this check has to run first or a refused delete would still
+        // strip the last Super Admin of the role.
+        static::deleting(function (User $user) {
+            if ($user->isLastSuperAdmin()) {
+                throw new \LogicException('The last Super Admin cannot be deleted.');
+            }
+        });
+
+        parent::boot();
+    }
+
     /**
      * Get the attributes that should be cast.
      *

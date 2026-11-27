@@ -10,6 +10,7 @@ use App\Models\Page;
 use App\Models\Post;
 use App\Models\Program;
 use App\Models\Project;
+use App\Models\User;
 use App\Settings\SiteSettings;
 use App\Support\ActivityRecorder;
 use Illuminate\Support\Facades\Cache;
@@ -40,6 +41,11 @@ class AppServiceProvider extends ServiceProvider
             $isDonation = $target instanceof Donation || $target === Donation::class;
 
             if ($isDonation && ! in_array($ability, ['viewAny', 'view', 'update'], true)) {
+                return null;
+            }
+
+            // Deleting users is decided by UserPolicy (never yourself, never the last Super Admin).
+            if (($target instanceof User || $target === User::class) && in_array($ability, ['delete', 'deleteAny'], true)) {
                 return null;
             }
 
