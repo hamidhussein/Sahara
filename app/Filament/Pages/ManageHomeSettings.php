@@ -67,7 +67,6 @@ class ManageHomeSettings extends SettingsPage
                                 ->placeholder('gives one family a Ramadan ration package'),
                         ])
                         ->columns(2)
-                        ->grid(['lg' => 3])
                         ->minItems(1)->maxItems(3)
                         ->reorderable()
                         ->addActionLabel('Add an example'),
