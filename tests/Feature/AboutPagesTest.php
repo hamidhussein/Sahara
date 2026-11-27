@@ -31,8 +31,11 @@ function aboutStaff(Role $role): User
 
 it('tells the story with the plan’s confirmed timeline only', function () {
     $this->get('/about')->assertOk()
-        ->assertSee('Subka Sahara Welfare Foundation began in 2006 as Syedabad Sahara Welfare Organization')
+        ->assertSee('They called it Syedabad Sahara Welfare Organization (SSWO)')
         ->assertSee('Registered under the Voluntary Social Welfare Agencies Ordinance 1961 (Reg. No. J-6 (16)/203/2012)')
+        ->assertSee('Our mission')->assertSee('Orphan and child welfare')->assertSee('Equality and inclusion')
+        ->assertSee(route('partner'), false)
+        ->assertSee('Together, we can be everyone’s Sahara.')
         ->assertSee('The commitment is the same; the reach is wider.')
         ->assertSee('id="sahara-complex"', false)
         ->assertSee(route('donate', ['cause' => 'sahara-complex']), false)

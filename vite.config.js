@@ -9,6 +9,11 @@ export default defineConfig({
             input: ['resources/css/app.css', 'resources/js/app.js'],
             refresh: true,
             fonts: [
+                // Headings (Humanitarian pairing: editorial serif + clean sans body). Bold only, Latin only, to keep it light.
+                bunny('Merriweather', {
+                    weights: [700],
+                    subsets: ['latin'],
+                }),
                 bunny('Inter', {
                     weights: [400, 500, 600, 700],
                 }),

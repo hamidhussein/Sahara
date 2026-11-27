@@ -33,6 +33,13 @@ class ContactForm extends Component
 
     public bool $sent = false;
 
+    /** Links such as "Start a partnership" open the form with the subject filled in. */
+    public function mount(): void
+    {
+        $subject = request()->query('subject');
+        $this->subject = is_string($subject) ? str($subject)->squish()->limit(160, '')->value() : '';
+    }
+
     public function send(): void
     {
         $this->validate([

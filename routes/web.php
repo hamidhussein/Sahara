@@ -44,6 +44,7 @@ Route::get('/projects/{project}', [ProjectController::class, 'show'])->name('pro
 // Services (Phase 2)
 Route::view('/get-help', 'pages.placeholder', $placeholder('Get Help', 'You are not alone. Tell us what you need.'))->name('get-help');
 Route::view('/get-involved', 'pages.placeholder', $placeholder('Get Involved', 'Be someone’s Sahara.'))->name('get-involved');
+Route::view('/partner-with-us', 'pages.partner')->name('partner');
 
 // Media
 Route::get('/news', [PostController::class, 'index'])->name('news.index');

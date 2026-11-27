@@ -13,7 +13,7 @@
             'Donate' => route('donate'),
             'Volunteer' => route('get-involved'),
             'Become a Blood Donor' => route('get-involved'),
-            'Partner With Us' => route('get-involved'),
+            'Partner With Us' => route('partner'),
         ],
     ];
 @endphp

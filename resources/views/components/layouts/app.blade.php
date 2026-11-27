@@ -44,7 +44,7 @@
     <link rel="icon" type="image/png" sizes="192x192" href="{{ asset('favicon-192.png') }}">
     <link rel="apple-touch-icon" href="{{ asset('apple-touch-icon.png') }}">
 
-    @fonts('inter')
+    @fonts(['merriweather', 'inter'])
     @if ($urdu)
         @fonts(['noto-nastaliq-urdu', 'noto-naskh-arabic'])
     @endif
