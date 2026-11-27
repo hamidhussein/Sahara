@@ -27,7 +27,7 @@ return [
     'programs' => [
         'clean-water' => [
             'name' => 'Clean Water',
-            'summary' => 'Nine filtration plants and emergency water supply for villages without safe drinking water.',
+            'summary' => 'Thirteen filtration plants and emergency water supply for villages without safe drinking water.',
         ],
         'health' => [
             'name' => 'Health',

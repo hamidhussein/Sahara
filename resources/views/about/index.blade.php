@@ -1,7 +1,7 @@
 {{--
     About (plan 1.1): story → timeline → vision and mission → values → structure
     → why a foundation → Sahara Complex → counters. Text is the plan's final copy.
-    Timeline entry "[Year] First water filtration plants open in Phakar" waits
+    Timeline entry "[Year] First water filtration plants open in Phekar" waits
     for the confirmed year.
 --}}
 @php

@@ -106,18 +106,18 @@ it('lists published content in the sitemap and leaves out drafts, empty albums a
         ->toContain('<loc>'.route('privacy').'</loc>')
         ->toContain('<loc>'.route('transparency').'</loc>')
         ->not->toContain(route('programs.show', 'qurbani'))
-        ->not->toContain('phakar-youth-smoking-naswar-seminar') // draft
+        ->not->toContain('phekar-youth-smoking-naswar-seminar') // draft
         ->not->toContain(route('gallery.show', 'muharram-medical-camps')) // no photos yet
         ->not->toContain('/admin')
         ->not->toContain('/get-help'); // Phase 2
 });
 
 it('refreshes the sitemap when news is published', function () {
-    $this->get('/sitemap.xml')->assertDontSee('phakar-youth-smoking-naswar-seminar');
+    $this->get('/sitemap.xml')->assertDontSee('phekar-youth-smoking-naswar-seminar');
 
-    Post::where('slug', 'phakar-youth-smoking-naswar-seminar')->update(['published_at' => now()->subHour()]);
+    Post::where('slug', 'phekar-youth-smoking-naswar-seminar')->update(['published_at' => now()->subHour()]);
     // A query-builder update skips model events, so publish through the model as editors do.
-    Post::where('slug', 'phakar-youth-smoking-naswar-seminar')->first()->touch();
+    Post::where('slug', 'phekar-youth-smoking-naswar-seminar')->first()->touch();
 
-    $this->get('/sitemap.xml')->assertSee(route('news.show', 'phakar-youth-smoking-naswar-seminar'));
+    $this->get('/sitemap.xml')->assertSee(route('news.show', 'phekar-youth-smoking-naswar-seminar'));
 });

@@ -17,8 +17,8 @@ it('seeds the plan’s programs, projects and partners without duplicating on a 
     $this->seed(ContentSeeder::class);
 
     expect(Program::count())->toBe(8)
-        ->and(Project::count())->toBe(11)
-        ->and(Partner::count())->toBe(8);
+        ->and(Project::count())->toBe(12)
+        ->and(Partner::count())->toBe(9);
 });
 
 it('lists programs and shows a program with its projects', function () {
@@ -58,7 +58,7 @@ it('filters projects by program, district and status', function () {
 });
 
 it('keeps draft and future news off the site', function () {
-    $draft = Post::where('slug', 'phakar-youth-smoking-naswar-seminar')->first();
+    $draft = Post::where('slug', 'phekar-youth-smoking-naswar-seminar')->first();
     $this->get('/news')->assertDontSee($draft->title);
     $this->get('/news/'.$draft->slug)->assertNotFound();
 
@@ -67,7 +67,7 @@ it('keeps draft and future news off the site', function () {
 
     $draft->update(['published_at' => now()->subHour()]);
     $this->get('/news')->assertSee($draft->title);
-    $this->get('/news/'.$draft->slug)->assertOk()->assertSee('Drug-Free Phakar campaign');
+    $this->get('/news/'.$draft->slug)->assertOk()->assertSee('Drug-Free Phekar campaign');
     $this->get('/')->assertSee($draft->title);
 });
 
@@ -116,7 +116,7 @@ it('shows completed, ongoing and upcoming projects from the November 2026 update
         ->assertSee('Four Water Filtration Plants: Bar, Budalas, Chaprote and Minapin')
         ->assertSee('1,200 ration packages')->assertSee('600 blankets given')
         ->set('status', ProjectStatus::Ongoing->value)
-        ->assertSee('Free Medical Camp, Phakar')->assertSee('30 students supported')
+        ->assertSee('Free Medical Camp, Phekar')->assertSee('30 students supported')
         ->set('status', ProjectStatus::Planned->value)
         ->assertSee('Winter Support Programme 2026–27')->assertSee('Four More Water Filtration Plants')
         ->assertDontSee('Ration Distribution');
@@ -124,4 +124,14 @@ it('shows completed, ongoing and upcoming projects from the November 2026 update
     $this->get('/projects/water-plants-2027')->assertOk()
         ->assertSee('Jutal, Hakucher, Dadimal Paeen and one more village')
         ->assertSee('Starts')->assertSee('1 April 2027')->assertDontSee('Started');
+});
+
+it('tells the Drug-Free Phekar story with Falahi Tanzeem', function () {
+    $this->get('/projects/drug-free-phekar')->assertOk()
+        ->assertSee('A Healthy, Drug-Free Phekar')
+        ->assertSee('With local elders and Falahi Tanzeem, Phekar')
+        ->assertSee('Stopped the sale of harmful substances');
+
+    $this->get('/programs/youth-and-community')->assertSee('A Healthy, Drug-Free Phekar');
+    $this->get('/programs/clean-water')->assertSee('13 working plants');
 });

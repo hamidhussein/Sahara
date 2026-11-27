@@ -34,7 +34,7 @@ class ContentSeeder extends Seeder
                 'tagline' => 'Safe drinking water for every home.',
                 'body' => '<p>In District Nagar, unsafe water used to cause diarrhoea, stomach problems, gastroenteritis and skin disease, and children were hit hardest. We install water filtration plants built to WHO standards in villages where the water was unsafe, test water before installation, and keep the plants running. When floods cut off supply, we deliver water by tanker to every door.</p>'
                     .'<h2>Highlights</h2><ul>'
-                    .'<li>9 working plants in Phakar, Dadimal, Miachar, Bar and Minapin, many funded by Mr Hadi Shahzad.</li>'
+                    .'<li>13 working plants in villages including Phekar, Dadimal, Miachar, Bar, Budalas, Chaprote and Minapin, many funded by Mr Hadi Shahzad.</li>'
                     .'<li>Among people using filtered water, these illnesses have dropped by about 80%.</li>'
                     .'<li>"Pani Har Ghar Tak" 2025: 28 days of door-to-door water for Danyor and Sultanabad, with 50 volunteers.</li>'
                     .'<li>Latest: four new plants completed in Bar, Budalas, Chaprote and Minapin.</li></ul>'
@@ -50,7 +50,7 @@ class ContentSeeder extends Seeder
                     .'<li>Blood donor records kept with the Regional Blood Center Gilgit.</li>'
                     .'<li>Surgical items for deserving patients.</li></ul>'
                     .'<p><strong>Highlight:</strong> Free Eye Camp 2026: 3,000 patients examined and more than 300 free operations, with follow-up and medicines (with Mr Rizwan Ahmad’s family and friends, Lahore, and DHQ Hospital Nagar).</p>'
-                    .'<p><strong>Next camp:</strong> a free medical camp in Phakar, Nagar, on 4 December 2026.</p>'
+                    .'<p><strong>Next camp:</strong> a free medical camp in Phekar, Nagar, on 4 December 2026.</p>'
                     .'<p><strong>Coming next:</strong> a low-cost pathology laboratory and a blood bank at the Sahara Complex.</p>',
             ],
             'ambulance-service' => [
@@ -68,7 +68,7 @@ class ContentSeeder extends Seeder
                     .'<li>Scholarships for 30 deserving and orphan students at eight educational institutions in Nagar and Gilgit.</li>'
                     .'<li>School fees for orphans and deserving students in Gilgit and Nagar.</li>'
                     .'<li>New books, uniforms, shoes and bags at the start of each session.</li>'
-                    .'<li>Shields and dictionaries for top position holders in Union Council Phakar.</li>'
+                    .'<li>Shields and dictionaries for top position holders in Union Council Phekar.</li>'
                     .'<li>Career counselling with Dr Muhammad Anwar, Prof. Manzoor Hussain and Dr Sajid Ali.</li></ul>'
                     .'<p><strong>Coming next:</strong> IT and AI courses, scholarships with a focus on girls, and student hostels in Gilgit.</p>',
             ],
@@ -95,8 +95,8 @@ class ContentSeeder extends Seeder
             ],
             'youth-and-community' => [
                 'tagline' => 'A healthy, confident next generation and united communities.',
-                'body' => '<p>The Drug-Free Phakar campaign against cigarettes, naswar and other harmful substances; seminars, workshops and teacher training; first-aid and volunteer training; events that build harmony between communities.</p>'
-                    .'<p><strong>Highlight:</strong> with local elders and Falahi Tanzeem, we brought Phakar Valley together for a healthy, drug-free community. Shopkeepers agreed to stop selling cigarettes and other harmful substances in the village.</p>'
+                'body' => '<p>The Drug-Free Phekar campaign against cigarettes, naswar and other harmful substances; seminars, workshops and teacher training; first-aid and volunteer training; events that build harmony between communities.</p>'
+                    .'<p><strong>Highlight:</strong> with local elders and Falahi Tanzeem, we brought Phekar Valley together for a healthy, drug-free community. Shopkeepers agreed to stop selling cigarettes and other harmful substances in the village.</p>'
                     .'<p><strong>Coming next:</strong> support for jobless youth, an entrepreneurship programme, interfaith harmony sessions and climate change awareness.</p>',
             ],
             'religious-events' => [
@@ -207,15 +207,15 @@ class ContentSeeder extends Seeder
 
             // Ongoing.
             [
-                'slug' => 'free-medical-camp-phakar-2026',
+                'slug' => 'free-medical-camp-phekar-2026',
                 'program' => 'health',
-                'name' => 'Free Medical Camp, Phakar',
-                'village' => 'Phakar',
+                'name' => 'Free Medical Camp, Phekar',
+                'village' => 'Phekar',
                 'district' => 'Nagar',
                 'status' => ProjectStatus::Ongoing,
                 'started_on' => '2026-12-04',
-                'summary' => 'A free medical camp in Phakar on 4 December 2026, with medical care and health services for local residents.',
-                'story' => '<p>On 4 December 2026 we are holding a free medical camp in Phakar, Nagar, to give local residents medical care and health services at no cost.</p>',
+                'summary' => 'A free medical camp in Phekar on 4 December 2026, with medical care and health services for local residents.',
+                'story' => '<p>On 4 December 2026 we are holding a free medical camp in Phekar, Nagar, to give local residents medical care and health services at no cost.</p>',
                 'featured' => false,
             ],
             [
@@ -232,16 +232,16 @@ class ContentSeeder extends Seeder
             ],
 
             [
-                'slug' => 'drug-free-phakar',
+                'slug' => 'drug-free-phekar',
                 'program' => 'youth-and-community',
-                'name' => 'A Healthy, Drug-Free Phakar',
-                'village' => 'Phakar Valley',
+                'name' => 'A Healthy, Drug-Free Phekar',
+                'village' => 'Phekar Valley',
                 'district' => 'Nagar',
                 'status' => ProjectStatus::Ongoing,
-                'donor' => 'With local elders and Falahi Tanzeem, Phakar',
-                'summary' => 'A community campaign with local elders, youth and Falahi Tanzeem that ended the sale of cigarettes and harmful substances in Phakar.',
+                'donor' => 'With local elders and Falahi Tanzeem, Phekar',
+                'summary' => 'A community campaign with local elders, youth and Falahi Tanzeem that ended the sale of cigarettes and harmful substances in Phekar.',
                 'story' => '<p>We believe lasting community development begins with people taking part and sharing responsibility.</p>'
-                    .'<p>With local elders and Falahi Tanzeem, a welfare organization in Phakar, we launched an awareness and mobilization campaign in Phakar Valley. Local youth and Sahara volunteers led the way towards a healthier, safer and more responsible community.</p>'
+                    .'<p>With local elders and Falahi Tanzeem, a welfare organization in Phekar, we launched an awareness and mobilization campaign in Phekar Valley. Local youth and Sahara volunteers led the way towards a healthier, safer and more responsible community.</p>'
                     .'<h2>What the campaign did</h2><ul>'
                     .'<li><strong>Brought the community together:</strong> elders, youth, community representatives and Sahara volunteers working for one cause.</li>'
                     .'<li><strong>Stopped the sale of harmful substances:</strong> local shopkeepers agreed to stop selling cigarettes, intoxicants and other harmful products in the village.</li>'
@@ -311,9 +311,9 @@ class ContentSeeder extends Seeder
             'Pakistan Red Crescent Society Gilgit',
             'Rah-e-Khuda Foundation',
             'Vision Welfare Foundation',
-            'Phakar Youth Organization',
+            'Phekar Youth Organization',
             'Hamdardi Welfare',
-            'Falahi Tanzeem, Phakar',
+            'Falahi Tanzeem, Phekar',
         ];
 
         foreach ($names as $i => $name) {
@@ -325,11 +325,11 @@ class ContentSeeder extends Seeder
     {
         // The plan gives the month (November 2026) but not the day, so this
         // starts as a draft: set "Publish on" in the admin to publish it.
-        $post = Post::firstOrCreate(['slug' => 'phakar-youth-smoking-naswar-seminar'], [
-            'title' => 'Youth in Phakar Learn the Dangers of Smoking and Naswar',
+        $post = Post::firstOrCreate(['slug' => 'phekar-youth-smoking-naswar-seminar'], [
+            'title' => 'Youth in Phekar Learn the Dangers of Smoking and Naswar',
             'category' => PostCategory::YouthCommunity,
-            'body' => '<p>Subka Sahara Welfare Foundation held a special awareness seminar in Phakar, Nagar, to help young people understand the harm caused by cigarettes, naswar and other harmful substances.</p>'
-                .'<p>Psychologist Dr Muhammad Ali Khan and SSWF’s chairman spoke to the youth about health, addiction and making strong choices. The seminar is part of the Drug-Free Phakar campaign, run with local elders and youth organizations.</p>',
+            'body' => '<p>Subka Sahara Welfare Foundation held a special awareness seminar in Phekar, Nagar, to help young people understand the harm caused by cigarettes, naswar and other harmful substances.</p>'
+                .'<p>Psychologist Dr Muhammad Ali Khan and SSWF’s chairman spoke to the youth about health, addiction and making strong choices. The seminar is part of the Drug-Free Phekar campaign, run with local elders and youth organizations.</p>',
             'published_at' => null,
         ]);
 

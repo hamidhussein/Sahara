@@ -34,7 +34,7 @@ return new class extends SettingsMigration
 
         // Home page impact counters
         $this->migrator->add('impact.founded_year', 2006);
-        $this->migrator->add('impact.water_plants', 9);
+        $this->migrator->add('impact.water_plants', 13);
         $this->migrator->add('impact.report_year', 2026);
         $this->migrator->add('impact.patients_examined', 3000);
         $this->migrator->add('impact.eye_operations', 300);
