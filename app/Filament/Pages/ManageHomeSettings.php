@@ -46,7 +46,9 @@ class ManageHomeSettings extends SettingsPage
                     TextInput::make('hero_heading')->label('Heading')->required()->maxLength(80),
                     Textarea::make('hero_text')->label('Text under the heading')->required()->rows(3)->maxLength(300),
                     FileUpload::make('hero_image')->label('Photo')->image()->disk('public')->directory('settings')
-                        ->imageEditor()->maxSize(3072)
+                        ->imageEditor()->maxSize(8192)
+                        // Shrunk in the browser before upload, so phones never load a huge photo.
+                        ->imageResizeMode('contain')->imageResizeTargetWidth('1600')->imageResizeTargetHeight('1600')->imageResizeUpscale(false)
                         ->helperText('A wide, real SSWF photo, at least 1600 pixels across. Leave empty to keep the Danyor water photo.'),
                     TextInput::make('hero_image_alt')->label('What the photo shows')->required()->maxLength(160)
                         ->helperText('Read aloud to blind visitors, e.g. "Volunteers delivering water in Danyor".'),

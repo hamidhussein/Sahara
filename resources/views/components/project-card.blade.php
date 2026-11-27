@@ -1,6 +1,11 @@
 @props(['project', 'headingLevel' => 'h3'])
 <article {{ $attributes->class(['group relative flex flex-col overflow-hidden rounded-card border border-line bg-surface']) }}>
-    <x-photo :src="$project->imageUrl('cover', 'card')" :alt="$project->name" class="aspect-[3/2] w-full" />
+    @if ($photo = $project->imageUrl('cover', 'card'))
+        <x-photo :src="$photo" :alt="$project->name" class="aspect-[3/2] w-full" />
+    @else
+        {{-- No photo yet: a slim accent instead of a big empty placeholder. --}}
+        <div class="h-1.5 bg-primary" aria-hidden="true"></div>
+    @endif
     <div class="flex flex-1 flex-col p-5" @if ($project->language->isRtl()) lang="ur" dir="rtl" @endif>
         <div class="flex flex-wrap items-center gap-2 text-sm">
             <span class="rounded-full px-2.5 py-0.5 font-medium {{ $project->status->tagClasses() }}">{{ $project->status->getLabel() }}</span>

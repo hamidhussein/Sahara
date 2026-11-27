@@ -22,6 +22,25 @@
             <p class="mt-5 max-w-[68ch] text-ink-muted">Our ambulance is free within Gilgit city. We also take patients to Islamabad and other districts, and carry the deceased home, at nominal charges.</p>
         </section>
 
+        {{-- What happens next. No promised response time until the Foundation confirms one. --}}
+        <section class="mt-10" aria-labelledby="next-steps">
+            <h2 id="next-steps" class="text-xl font-bold text-primary">What happens after you ask</h2>
+            <ol class="mt-4 grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
+                @foreach ([
+                    ['We read your request', 'Our services team sees it straight away. Blood and emergency requests are handled first.'],
+                    ['We call you', 'To understand your situation and what is needed. Keep your phone nearby.'],
+                    ['We check the need', 'We may ask for a CNIC, prescription, hospital slip or school letter, and local volunteers or elders may visit.'],
+                    ['We tell you how we can help', 'If we can help, we explain what we will provide and when. If not, we tell you honestly and suggest where else to go.'],
+                ] as $i => [$title, $text])
+                    <li class="rounded-card border border-line bg-surface p-4">
+                        <span class="text-sm font-semibold text-ink-muted">{{ $i + 1 }}</span>
+                        <h3 class="mt-1 font-semibold text-ink">{{ $title }}</h3>
+                        <p class="mt-1 text-sm text-ink-muted">{{ $text }}</p>
+                    </li>
+                @endforeach
+            </ol>
+        </section>
+
         <div class="mt-14">
             <livewire:help-request-form />
         </div>

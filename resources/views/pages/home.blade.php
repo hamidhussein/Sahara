@@ -36,6 +36,7 @@
     {{-- 1. Hero --}}
     <section class="relative isolate overflow-hidden bg-primary-deep text-white">
         <img src="{{ $home->heroImageUrl() }}"
+             @if ($srcset = $home->heroSrcset()) srcset="{{ $srcset }}" sizes="100vw" @endif
              alt="{{ $home->hero_image_alt }}"
              fetchpriority="high"
              decoding="async"

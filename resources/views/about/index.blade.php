@@ -79,7 +79,7 @@
             </div>
         </div>
         <figure class="lg:col-span-2">
-            <img src="{{ asset('images/hero-danyor-water.jpg') }}" alt="SSWF volunteers delivering clean drinking water in Danyor" loading="lazy" class="aspect-[4/5] w-full rounded-card object-cover">
+            <img src="{{ asset('images/hero-danyor-water.jpg') }}" srcset="{{ \App\Settings\HomeSettings::builtInSrcset() }}" sizes="(min-width: 1024px) 40vw, 100vw" alt="SSWF volunteers delivering clean drinking water in Danyor" loading="lazy" class="aspect-[4/5] w-full rounded-card object-cover">
             <figcaption class="mt-2 text-ink-muted">Volunteers delivering water door to door in Danyor, 2025.</figcaption>
         </figure>
     </section>
@@ -134,7 +134,7 @@
                         <h3 class="mt-1 text-lg font-semibold leading-snug text-ink">{{ $title }}</h3>
                         <p class="mt-2 grow text-ink-muted">{{ $text }}</p>
                         @if ($link)
-                            <a href="{{ $link }}" class="mt-3 font-medium text-water-dark underline underline-offset-2 hover:text-primary-deep">Learn more<span class="sr-only"> about {{ strtolower($title) }}</span></a>
+                            <a href="{{ $link }}" class="mt-2 inline-flex min-h-11 items-center self-start font-medium text-water-dark underline underline-offset-2 hover:text-primary-deep">Learn more<span class="sr-only"> about {{ strtolower($title) }}</span></a>
                         @endif
                     </li>
                 @endforeach

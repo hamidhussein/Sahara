@@ -34,6 +34,26 @@ class HomeSettings extends Settings
         return 'home';
     }
 
+    /**
+     * WebP sizes of the built-in photo (45–182 KB instead of the 1 MB JPG),
+     * or null for an uploaded photo, which is used as it is.
+     */
+    public function heroSrcset(): ?string
+    {
+        if ($this->hero_image && Storage::disk('public')->exists($this->hero_image)) {
+            return null;
+        }
+
+        return static::builtInSrcset();
+    }
+
+    public static function builtInSrcset(): string
+    {
+        return collect([640, 1280, 1376])
+            ->map(fn ($width) => asset("images/hero-danyor-water-{$width}.webp")." {$width}w")
+            ->implode(', ');
+    }
+
     public function heroImageUrl(): string
     {
         return $this->hero_image && Storage::disk('public')->exists($this->hero_image)

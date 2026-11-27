@@ -11,8 +11,9 @@
 @endphp
 
 <div class="grid gap-8 lg:grid-cols-3 lg:gap-12">
-    {{-- Summary and trust panel: right on desktop, top on phones --}}
-    <aside class="lg:order-last" aria-label="Your donation">
+    {{-- Summary and trust panel: right on desktop; on phones only once something is chosen,
+         so the giving choices start on the first screen. --}}
+    <aside @class(['lg:order-last', 'hidden lg:block' => ! $typeSlug]) aria-label="Your donation">
         <div class="rounded-card border border-line bg-surface p-5 lg:sticky lg:top-28">
             <h2 class="text-lg font-bold text-primary">Your donation</h2>
             <dl class="mt-3 space-y-2">
@@ -37,7 +38,7 @@
             @endif
 
             <ul class="mt-5 hidden space-y-2 border-t border-line pt-4 text-sm text-ink-muted lg:block">
-                <li>Secure payment through trusted Pakistani payment providers.</li>
+                <li>Our Finance team checks every payment before your receipt is sent.</li>
                 <li>Registered since 2013, Reg. No. {{ $site->registration_number }}.</li>
                 <li>Your Zakat and Khums are kept in separate funds and used only for eligible purposes.</li>
                 @if ($site->whatsappLink())
@@ -52,12 +53,14 @@
     <div class="lg:col-span-2">
         {{-- Step indicator --}}
         <nav aria-label="Donation steps">
+            {{-- Phones have room only for the bars, so name the current step in words. --}}
+            <p class="mb-2 font-semibold text-primary sm:hidden">Step {{ $step }} of {{ count($steps) }} · {{ $steps[$step] }}</p>
             <ol class="grid grid-cols-4 gap-2">
                 @foreach ($steps as $n => $label)
                     <li>
                         <button type="button" wire:click="goTo({{ $n }})" @if ($step === $n) aria-current="step" @endif
                                 class="flex min-h-11 w-full flex-col items-start gap-1 border-t-4 pt-2 text-start text-sm {{ $step >= $n ? 'border-primary text-primary' : 'border-line text-ink-muted' }}">
-                            <span class="font-semibold">{{ $n }}</span>
+                            <span class="font-semibold"><span class="sr-only">Step </span>{{ $n }}<span class="sr-only sm:hidden">: {{ $label }}</span></span>
                             <span class="hidden sm:block">{{ $label }}</span>
                         </button>
                     </li>
@@ -167,13 +170,16 @@
                             @error('phone') <span class="mt-1 block text-emergency">{{ $message }}</span> @enderror
                         </label>
                         <label class="block">
-                            <span class="font-medium text-ink">Email <span class="font-normal text-ink-muted">(for your receipt)</span></span>
+                            <span class="font-medium text-ink">Email <span class="font-normal text-ink-muted">(optional, for your receipt)</span></span>
                             <input type="email" autocomplete="email" wire:model.blur="email" class="{{ $fieldClass }}" @error('email') aria-invalid="true" @enderror>
                             @error('email') <span class="mt-1 block text-emergency">{{ $message }}</span> @enderror
                         </label>
-                        <label class="flex min-h-11 items-center gap-3 sm:col-span-2">
-                            <input type="checkbox" wire:model="anonymous" class="size-5 accent-primary">
-                            <span>Give anonymously</span>
+                        <label class="flex min-h-11 items-start gap-3 sm:col-span-2">
+                            <input type="checkbox" wire:model="anonymous" class="mt-1 size-5 shrink-0 accent-primary">
+                            <span>
+                                <span class="block">Give anonymously</span>
+                                <span class="block text-sm text-ink-muted">We will never show your name publicly. Our Finance team still sees it, to send your receipt.</span>
+                            </span>
                         </label>
                     </div>
                 </fieldset>
@@ -235,11 +241,18 @@
                     </button>
                 @else
                     <button type="submit" class="btn-donate text-lg" wire:loading.attr="disabled" wire:target="donate,receipt">
-                        <span wire:loading.remove wire:target="donate">Donate {{ $this->amount ? 'Rs '.number_format($this->amount) : '' }}</span>
+                        {{-- Manual methods: the donor has already paid; this sends the receipt for Finance to check. --}}
+                        <span wire:loading.remove wire:target="donate">{{ $paymentDetails ? 'Submit payment receipt' : 'Donate '.($this->amount ? 'Rs '.number_format($this->amount) : '') }}</span>
                         <span wire:loading wire:target="donate">Sending…</span>
                     </button>
                 @endif
             </div>
+
+            {{-- Phones don't show the desktop trust panel, so a compact version sits under the form. --}}
+            <p class="mt-6 rounded-card border border-line bg-surface p-4 text-sm text-ink-muted lg:hidden">
+                Registered since 2013 (Reg. No. {{ $site->registration_number }}). Zakat and Khums are kept in separate funds, and Finance checks every payment before sending your receipt.
+                Questions? <a href="{{ $site->telLink($site->office_phone) }}" class="font-medium text-water-dark underline">Call {{ $site->office_phone }}</a>.
+            </p>
         </form>
     </div>
 </div>

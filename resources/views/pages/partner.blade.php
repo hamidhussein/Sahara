@@ -61,7 +61,7 @@
                     <li class="rounded-card border border-line bg-surface p-5">
                         <h3 class="font-semibold text-ink">{{ $title }}</h3>
                         <p class="mt-1 text-ink-muted">{{ $text }}</p>
-                        <a href="{{ route('programs.show', $program) }}" class="mt-3 inline-block font-medium text-water-dark underline underline-offset-2 hover:text-primary-deep">See our work<span class="sr-only"> in {{ strtolower($title) }}</span></a>
+                        <a href="{{ route('programs.show', $program) }}" class="mt-2 inline-flex min-h-11 items-center font-medium text-water-dark underline underline-offset-2 hover:text-primary-deep">See our work<span class="sr-only"> in {{ strtolower($title) }}</span></a>
                     </li>
                 @endforeach
             </ul>

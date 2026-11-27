@@ -1,5 +1,5 @@
 <x-layouts.app title="Donate" description="Give Zakat, Khums, Sadaqah or a general donation to Subka Sahara Welfare Foundation. Your gift becomes water, medicine and food for families in Gilgit-Baltistan." :donateBand="false">
-    <x-site.page-header title="Donate" lede="Your gift becomes water, medicine and food for someone today." :breadcrumbs="['Donate' => null]" />
+    <x-site.page-header title="Donate" lede="Your gift becomes water, medicine and food for someone today." :breadcrumbs="['Donate' => null]" compact />
 
     <section class="mx-auto max-w-7xl px-4 py-10 sm:px-6 lg:px-8 lg:py-14">
         <livewire:donate-form />

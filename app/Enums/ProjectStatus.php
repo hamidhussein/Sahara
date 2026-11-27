@@ -30,7 +30,7 @@ enum ProjectStatus: string implements HasColor, HasLabel
     {
         return match ($this) {
             self::Planned => 'bg-line text-ink',
-            self::Ongoing => 'bg-water text-white',
+            self::Ongoing => 'bg-water-dark text-white', // 5.9:1; plain water blue is only 4.3:1
             self::Completed => 'bg-primary text-white',
         };
     }

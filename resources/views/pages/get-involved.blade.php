@@ -19,7 +19,7 @@
                 <li class="flex flex-col rounded-card border border-line bg-surface p-5">
                     <h2 class="text-lg font-semibold text-ink">{{ $title }}</h2>
                     <p class="mt-2 grow text-ink-muted">{{ $text }}</p>
-                    <a href="{{ $url }}" class="mt-4 font-medium text-water-dark underline underline-offset-2 hover:text-primary-deep">{{ $cta }}<span class="sr-only">: {{ strtolower($title) }}</span></a>
+                    <a href="{{ $url }}" class="mt-3 inline-flex min-h-11 items-center self-start font-medium text-water-dark underline underline-offset-2 hover:text-primary-deep">{{ $cta }}<span class="sr-only">: {{ strtolower($title) }}</span></a>
                 </li>
             @endforeach
         </ul>
@@ -27,13 +27,13 @@
         <div class="mt-16 grid gap-8 lg:grid-cols-2">
             <section id="volunteer" class="scroll-mt-28 rounded-card border border-line bg-surface p-5 md:p-8" aria-labelledby="volunteer-title">
                 <h2 id="volunteer-title" class="{{ $h2 }}">Join as a volunteer</h2>
-                <p class="mt-2 text-ink-muted">Tell us a little about yourself. Our volunteer coordinator will call you.</p>
+                <p class="mt-2 text-ink-muted">Tell us a little about yourself. Our volunteer coordinator will call you, invite you to the next camp, survey or distribution near your area, and brief you before you start.</p>
                 <div class="mt-6"><livewire:volunteer-form /></div>
             </section>
 
             <section id="blood-donor" class="scroll-mt-28 rounded-card border border-line bg-surface p-5 md:p-8" aria-labelledby="donor-title">
                 <h2 id="donor-title" class="{{ $h2 }}">Become a blood donor</h2>
-                <p class="mt-2 text-ink-muted">Your blood, someone’s life. Register once, and we will contact you only when a patient near you needs your blood group.</p>
+                <p class="mt-2 text-ink-muted">Your blood, someone’s life. Register once, and we will contact you only when a patient near you needs your blood group. You can always say no, or ask us to stop calling.</p>
                 <div class="mt-6"><livewire:blood-donor-form /></div>
             </section>
         </div>
