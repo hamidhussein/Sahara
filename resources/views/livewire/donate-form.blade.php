@@ -78,7 +78,12 @@
                         @foreach ($showAllTypes ? $this->types : $this->types->take(\App\Livewire\DonateForm::PRIMARY_TYPES) as $type)
                             <button type="button" wire:click="chooseType('{{ $type->slug }}')" aria-pressed="{{ $typeSlug === $type->slug ? 'true' : 'false' }}"
                                     class="rounded-card border p-4 text-start {{ $tile($typeSlug === $type->slug) }}">
-                                <span class="block text-lg font-semibold text-ink">{{ $type->name }}</span>
+                                <span class="flex flex-wrap items-center gap-2">
+                                    <span class="text-lg font-semibold text-ink">{{ $type->name }}</span>
+                                    @if ($type->is_restricted)
+                                        <span class="rounded-full border border-primary/30 bg-primary-tint px-2 py-0.5 text-xs font-semibold text-primary-dark">Restricted fund</span>
+                                    @endif
+                                </span>
                                 @if ($type->description)
                                     <span class="mt-1 block text-ink-muted">{{ $type->description }}</span>
                                 @endif
@@ -100,22 +105,60 @@
             @if ($step === 2)
                 <fieldset>
                     <legend class="text-[1.375rem] font-bold text-ink">Choose a cause</legend>
-                    <p class="mt-2 text-ink-muted">Optional. Leave it blank and we use your gift where it is needed most.</p>
-                    <div class="mt-5 flex flex-wrap gap-2">
-                        @foreach ($this->causes as $cause)
-                            <button type="button" wire:click="chooseCause('{{ $cause->slug }}')" aria-pressed="{{ $causeSlug === $cause->slug ? 'true' : 'false' }}"
-                                    class="min-h-11 rounded-full border px-4 font-medium {{ $chip($causeSlug === $cause->slug) }}">
-                                {{ $cause->name }}
-                            </button>
-                        @endforeach
-                    </div>
+
                     @if ($this->type?->is_restricted)
-                        <p class="mt-5 rounded-card bg-primary-tint p-4 text-ink">
-                            {{ $this->type->name }} can only go to causes where it is religiously allowed.
-                            @if ($this->causeNeedsReview)
+                        {{-- Restricted gifts (Zakat, Khums…): eligible causes first, so nobody picks a cause and only then learns it may not qualify. --}}
+                        @php
+                            [$eligible, $toCheck] = $this->causes->partition(fn ($cause) => $cause->eligibleGivingTypes->contains('id', $this->type->id));
+                        @endphp
+                        <p class="mt-2 text-ink-muted">{{ $this->type->name }} can only go to causes where it is religiously allowed.</p>
+
+                        <button type="button" wire:click="$set('causeSlug', '')" aria-pressed="{{ $causeSlug === '' ? 'true' : 'false' }}"
+                                class="mt-5 block w-full rounded-card border p-4 text-start {{ $tile($causeSlug === '') }}">
+                            <span class="block text-lg font-semibold text-ink">Where it is needed most <span class="ms-1 rounded-full bg-primary px-2 py-0.5 align-middle text-xs font-semibold text-white">Recommended</span></span>
+                            <span class="mt-1 block text-ink-muted">Our Finance team gives your {{ $this->type->name }} only to eligible people and causes.</span>
+                        </button>
+
+                        @if ($eligible->isNotEmpty())
+                            <h3 class="mt-6 font-semibold text-ink">Eligible for {{ $this->type->name }}</h3>
+                            <div class="mt-3 flex flex-wrap gap-2">
+                                @foreach ($eligible as $cause)
+                                    <button type="button" wire:click="chooseCause('{{ $cause->slug }}')" aria-pressed="{{ $causeSlug === $cause->slug ? 'true' : 'false' }}"
+                                            class="min-h-11 rounded-full border px-4 font-medium {{ $chip($causeSlug === $cause->slug) }}">
+                                        {{ $cause->name }}
+                                    </button>
+                                @endforeach
+                            </div>
+                        @endif
+
+                        @if ($toCheck->isNotEmpty())
+                            <h3 class="mt-6 font-semibold text-ink">Needs checking first</h3>
+                            <p class="mt-1 text-sm text-ink-muted">These may not qualify for {{ $this->type->name }}. If you choose one, we will contact you before using your gift.</p>
+                            <div class="mt-3 flex flex-wrap gap-2">
+                                @foreach ($toCheck as $cause)
+                                    <button type="button" wire:click="chooseCause('{{ $cause->slug }}')" aria-pressed="{{ $causeSlug === $cause->slug ? 'true' : 'false' }}"
+                                            class="min-h-11 rounded-full border border-dashed px-4 font-medium {{ $causeSlug === $cause->slug ? 'border-primary bg-primary text-white' : 'border-line bg-surface text-ink-muted hover:border-primary' }}">
+                                        {{ $cause->name }}
+                                    </button>
+                                @endforeach
+                            </div>
+                        @endif
+
+                        @if ($this->causeNeedsReview)
+                            <p class="mt-5 rounded-card bg-primary-tint p-4 text-ink" role="status">
                                 <strong>We will contact you before using your gift for {{ $this->cause->name }}.</strong>
-                            @endif
-                        </p>
+                            </p>
+                        @endif
+                    @else
+                        <p class="mt-2 text-ink-muted">Optional. Leave it blank and we use your gift where it is needed most.</p>
+                        <div class="mt-5 flex flex-wrap gap-2">
+                            @foreach ($this->causes as $cause)
+                                <button type="button" wire:click="chooseCause('{{ $cause->slug }}')" aria-pressed="{{ $causeSlug === $cause->slug ? 'true' : 'false' }}"
+                                        class="min-h-11 rounded-full border px-4 font-medium {{ $chip($causeSlug === $cause->slug) }}">
+                                    {{ $cause->name }}
+                                </button>
+                            @endforeach
+                        </div>
                     @endif
                 </fieldset>
             @endif
@@ -167,11 +210,13 @@
                         <label class="block">
                             <span class="font-medium text-ink">Mobile number</span>
                             <input type="tel" autocomplete="tel" inputmode="tel" wire:model.blur="phone" class="{{ $fieldClass }}" placeholder="0300 1234567" @error('phone') aria-invalid="true" @enderror>
+                            <span class="mt-1 block text-sm text-ink-muted">For your receipt on WhatsApp, and in case Finance needs to check your payment.</span>
                             @error('phone') <span class="mt-1 block text-emergency">{{ $message }}</span> @enderror
                         </label>
                         <label class="block">
                             <span class="font-medium text-ink">Email <span class="font-normal text-ink-muted">(optional, for your receipt)</span></span>
                             <input type="email" autocomplete="email" wire:model.blur="email" class="{{ $fieldClass }}" @error('email') aria-invalid="true" @enderror>
+                            <span class="mt-1 block text-sm text-ink-muted">Add it to also get your receipt by email.</span>
                             @error('email') <span class="mt-1 block text-emergency">{{ $message }}</span> @enderror
                         </label>
                         <label class="flex min-h-11 items-start gap-3 sm:col-span-2">
@@ -237,7 +282,7 @@
 
                 @if ($step < 4)
                     <button type="button" wire:click="next" class="btn-primary text-lg">
-                        {{ $step === 2 && ! $causeSlug ? 'Skip, use it where needed' : 'Continue' }}
+                        {{ $step === 2 && ! $causeSlug && ! $this->type?->is_restricted ? 'Skip, use it where needed' : 'Continue' }}
                     </button>
                 @else
                     <button type="submit" class="btn-donate text-lg" wire:loading.attr="disabled" wire:target="donate,receipt">

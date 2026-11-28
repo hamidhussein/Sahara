@@ -6,8 +6,14 @@
             @foreach ($programs as $program)
                 <li>
                     <article class="group relative flex h-full flex-col overflow-hidden rounded-card border border-line bg-surface sm:flex-row">
-                        <x-photo :src="$program->imageUrl('cover', 'card')" :alt="$program->name" class="aspect-[3/2] w-full sm:aspect-auto sm:w-2/5" />
+                        @if ($photo = $program->imageUrl('cover', 'card'))
+                            <x-photo :src="$photo" :alt="$program->name" class="aspect-[3/2] w-full sm:aspect-auto sm:w-2/5" />
+                        @endif
                         <div class="flex flex-1 flex-col p-6" @if ($program->language->isRtl()) lang="ur" dir="rtl" @endif>
+                            @unless ($photo)
+                                {{-- No photo yet: the program's icon instead of an empty image block. --}}
+                                <x-program-icon :slug="$program->slug" class="mb-4 size-12" />
+                            @endunless
                             <h2 class="text-[1.375rem] font-bold leading-snug text-primary">
                                 <a href="{{ route('programs.show', $program) }}" class="after:absolute after:inset-0 group-hover:underline">{{ $program->name }}</a>
                             </h2>

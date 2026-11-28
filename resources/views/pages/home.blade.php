@@ -100,7 +100,8 @@
         <ul class="mt-8 grid grid-cols-2 gap-3 sm:gap-6 lg:grid-cols-4">
             @foreach ($programs as $program)
                 <li>
-                    <a href="{{ route('programs.show', $program) }}" class="group flex h-full min-h-16 items-center rounded-card border border-line bg-surface p-4 hover:border-primary sm:block sm:p-6">
+                    <a href="{{ route('programs.show', $program) }}" class="group flex h-full min-h-16 items-center gap-3 rounded-card border border-line bg-surface p-4 hover:border-primary sm:block sm:p-6">
+                        <x-program-icon :slug="$program->slug" class="size-9 sm:mb-4 sm:size-11" />
                         <h3 class="font-semibold leading-snug text-ink group-hover:text-primary sm:text-lg">{{ $program->name }}</h3>
                         <p class="mt-2 hidden text-ink-muted sm:block">{{ $program->summary }}</p>
                     </a>

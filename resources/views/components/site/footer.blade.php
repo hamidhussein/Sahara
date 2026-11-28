@@ -46,9 +46,22 @@
                 <p><a href="mailto:{{ $site->email }}" class="break-all hover:text-white hover:underline">{{ $site->email }}</a></p>
             </address>
             @if ($site->socialLinks())
-                <ul class="mt-4 flex flex-wrap gap-x-4 gap-y-1">
+                @php
+                    // Simple 24 × 24 glyphs; the name stays readable to screen readers.
+                    $socialIcons = [
+                        'Facebook' => '<path fill="currentColor" d="M13.5 21v-7.5h2.5l.4-3h-2.9V8.6c0-.9.3-1.5 1.5-1.5h1.5V4.4a20 20 0 0 0-2.2-.1c-2.2 0-3.7 1.3-3.7 3.8v2.4H8v3h2.6V21h2.9Z"/>',
+                        'Instagram' => '<rect x="3.5" y="3.5" width="17" height="17" rx="4.5" fill="none" stroke="currentColor" stroke-width="1.8"/><circle cx="12" cy="12" r="3.8" fill="none" stroke="currentColor" stroke-width="1.8"/><circle cx="17.2" cy="6.8" r="1.1" fill="currentColor"/>',
+                        'YouTube' => '<path fill="currentColor" d="M21.6 7.6a2.6 2.6 0 0 0-1.8-1.8C18.2 5.4 12 5.4 12 5.4s-6.2 0-7.8.4A2.6 2.6 0 0 0 2.4 7.6 27 27 0 0 0 2 12a27 27 0 0 0 .4 4.4 2.6 2.6 0 0 0 1.8 1.8c1.6.4 7.8.4 7.8.4s6.2 0 7.8-.4a2.6 2.6 0 0 0 1.8-1.8A27 27 0 0 0 22 12a27 27 0 0 0-.4-4.4ZM10 15V9l5.2 3L10 15Z"/>',
+                        'TikTok' => '<path fill="currentColor" d="M16.6 5.8A4.3 4.3 0 0 1 15.5 3h-3.1v12.4a2.6 2.6 0 1 1-1.8-2.5V9.7a5.7 5.7 0 1 0 4.9 5.7V9.1a7.3 7.3 0 0 0 4.3 1.4V7.4a4.3 4.3 0 0 1-3.2-1.6Z"/>',
+                    ];
+                @endphp
+                <ul class="mt-4 flex flex-wrap gap-2">
                     @foreach ($site->socialLinks() as $label => $url)
-                        <li><a href="{{ $url }}" rel="noopener" class="inline-flex min-h-11 items-center font-medium text-white hover:underline">{{ $label }}</a></li>
+                        <li>
+                            <a href="{{ $url }}" rel="noopener" class="grid size-11 place-items-center rounded-full bg-white/10 text-white hover:bg-white/20" aria-label="{{ $label }}" title="{{ $label }}">
+                                <svg class="size-5" viewBox="0 0 24 24" aria-hidden="true">{!! $socialIcons[$label] !!}</svg>
+                            </a>
+                        </li>
                     @endforeach
                 </ul>
             @endif

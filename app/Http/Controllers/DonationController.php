@@ -28,11 +28,15 @@ class DonationController extends Controller
     }
 
     /** Signed link, so only the donor who just gave sees their name and amount. */
-    public function thankYou(Donation $donation): View
+    public function thankYou(Donation $donation): Response
     {
         $donation->load(['givingType', 'cause']);
 
-        return view('donate.thank-you', ['donation' => $donation]);
+        // Personal page behind a private link: never stored by browsers or shared caches,
+        // and the link is not passed on to other sites.
+        return response()->view('donate.thank-you', ['donation' => $donation])
+            ->header('Cache-Control', 'private, no-store, max-age=0')
+            ->header('Referrer-Policy', 'no-referrer');
     }
 
     public function failed(Donation $donation): View
