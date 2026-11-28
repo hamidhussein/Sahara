@@ -125,15 +125,15 @@
 
 /* Buttons: orange for Donate only, navy secondary, outline (plan 0.4 components). */
 @utility btn {
-    @apply inline-flex min-h-11 items-center justify-center gap-2 rounded-button px-5 py-2.5 text-base font-semibold transition-colors;
+    @apply inline-flex min-h-11 items-center justify-center gap-2 rounded-button px-5 py-2.5 text-base font-semibold transition-all duration-150 active:scale-[0.99];
 }
 
 @utility btn-donate {
-    @apply btn bg-accent text-ink hover:bg-accent-dark;
+    @apply btn bg-accent text-ink shadow-xs hover:bg-accent-dark hover:shadow-sm;
 }
 
 @utility btn-primary {
-    @apply btn bg-primary text-white hover:bg-primary-dark;
+    @apply btn bg-primary text-white shadow-xs hover:bg-primary-dark hover:shadow-sm;
 }
 
 @utility btn-outline {

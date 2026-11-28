@@ -32,7 +32,7 @@
                 <h2 class="text-lg font-semibold text-white">{{ $heading }}</h2>
                 <ul class="mt-3 space-y-1">
                     @foreach ($links as $label => $url)
-                        <li><a href="{{ $url }}" class="inline-flex min-h-11 items-center hover:text-white hover:underline">{{ $label }}</a></li>
+                        <li><a href="{{ $url }}" class="inline-flex min-h-11 min-w-11 items-center hover:text-white hover:underline">{{ $label }}</a></li>
                     @endforeach
                 </ul>
             </div>

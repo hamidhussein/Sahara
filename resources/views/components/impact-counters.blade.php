@@ -9,11 +9,11 @@
     ];
 @endphp
 <section aria-label="Our impact" {{ $attributes->merge(['class' => 'border-y border-line bg-surface']) }}>
-    <dl class="mx-auto grid max-w-7xl grid-cols-1 gap-px bg-line sm:grid-cols-2 lg:grid-cols-4">
+    <dl class="mx-auto grid max-w-7xl grid-cols-2 gap-px bg-line lg:grid-cols-4">
         @foreach ($stats as [$number, $label])
-            <div class="flex flex-col-reverse bg-surface px-6 py-8">
-                <dt class="mt-1 text-ink-muted">{{ $label }}</dt>
-                <dd class="text-4xl font-bold text-primary">{{ $number }}</dd>
+            <div class="flex flex-col-reverse justify-end bg-surface px-4 py-5 sm:px-6 sm:py-7 lg:py-8">
+                <dt class="mt-1.5 text-sm leading-snug text-ink-muted sm:text-base">{{ $label }}</dt>
+                <dd class="text-[1.75rem] font-bold leading-none tracking-tight text-primary tabular-nums sm:text-3xl lg:text-4xl">{{ $number }}</dd>
             </div>
         @endforeach
     </dl>

@@ -21,7 +21,7 @@
     });
 @endphp
 
-<header x-data="{ open: false }" @keydown.escape.window="open = false" class="sticky top-0 z-40 border-b border-line bg-surface">
+<header x-data="{ open: false }" @keydown.escape.window="open = false" class="sticky top-0 z-40 border-b border-line bg-surface/95 backdrop-blur-xs">
     <nav class="mx-auto flex h-16 max-w-7xl items-center justify-between gap-4 px-4 sm:px-6 lg:h-20 lg:px-8" aria-label="Main">
         <x-site.logo />
 
@@ -33,7 +33,7 @@
                         <button type="button"
                                 @click="flyout = !flyout" @mouseenter="flyout = true"
                                 :aria-expanded="flyout.toString()"
-                                class="flex min-h-11 items-center gap-1 rounded-button px-3 text-[15px] font-medium {{ $item['active'] ? 'text-primary' : 'text-ink hover:text-primary' }}">
+                                class="flex min-h-11 items-center gap-1 rounded-button px-3 text-[15px] font-medium transition-colors {{ $item['active'] ? 'bg-primary-tint/80 font-semibold text-primary' : 'text-ink hover:bg-primary-tint/50 hover:text-primary' }}">
                             {{ $item['label'] }}
                             <svg class="size-4 transition-transform" :class="flyout && 'rotate-180'" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true"><path fill-rule="evenodd" d="M5.2 7.2a.75.75 0 0 1 1.06 0L10 10.94l3.74-3.74a.75.75 0 1 1 1.06 1.06l-4.27 4.27a.75.75 0 0 1-1.06 0L5.2 8.26a.75.75 0 0 1 0-1.06Z" clip-rule="evenodd"/></svg>
                         </button>
@@ -42,7 +42,7 @@
                             <ul class="{{ count($item['children']) > 4 ? 'grid w-[34rem] grid-cols-2' : 'w-60' }} gap-1 rounded-card border border-line bg-surface p-2 shadow-lg">
                                 @foreach ($item['children'] as $child)
                                     <li>
-                                        <a href="{{ $child['url'] }}" class="block rounded-button px-3 py-2.5 text-[15px] text-ink hover:bg-primary-tint hover:text-primary-dark">{{ $child['label'] }}</a>
+                                        <a href="{{ $child['url'] }}" class="block rounded-button px-3 py-2.5 text-[15px] text-ink transition-colors hover:bg-primary-tint hover:text-primary-dark">{{ $child['label'] }}</a>
                                     </li>
                                 @endforeach
                             </ul>
@@ -50,7 +50,7 @@
                     @else
                         <a href="{{ $item['url'] }}"
                            @if ($item['active']) aria-current="page" @endif
-                           class="flex min-h-11 items-center rounded-button px-3 text-[15px] font-medium {{ $item['active'] ? 'text-primary' : 'text-ink hover:text-primary' }}">
+                           class="flex min-h-11 items-center rounded-button px-3 text-[15px] font-medium transition-colors {{ $item['active'] ? 'bg-primary-tint/80 font-semibold text-primary' : 'text-ink hover:bg-primary-tint/50 hover:text-primary' }}">
                             {{ $item['label'] }}
                         </a>
                     @endif
