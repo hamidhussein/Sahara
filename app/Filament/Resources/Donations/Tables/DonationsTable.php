@@ -8,7 +8,6 @@ use App\Filament\Resources\Donations\DonationActions;
 use Filament\Actions\ActionGroup;
 use Filament\Actions\ViewAction;
 use Filament\Forms\Components\DatePicker;
-use Filament\Tables\Columns\IconColumn;
 use Filament\Tables\Columns\Summarizers\Sum;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Filters\Filter;
@@ -38,8 +37,11 @@ class DonationsTable
                 TextColumn::make('cause.name')->label('Cause')->placeholder('Where needed most')->toggleable(isToggledHiddenByDefault: true),
                 TextColumn::make('payment_method')->label('Method')->badge()->color('gray')->toggleable(isToggledHiddenByDefault: true),
                 TextColumn::make('status')->badge()->sortable(),
-                IconColumn::make('needs_eligibility_review')->label('Review')->boolean()
-                    ->trueIcon('heroicon-o-exclamation-triangle')->trueColor('warning')->falseIcon('')
+                // Text, not a bare icon, so the cell's link has a name; nothing at all when no review is needed.
+                TextColumn::make('needs_eligibility_review')->label('Review')
+                    ->state(fn ($record) => $record->needs_eligibility_review ? 'Check' : null)
+                    ->badge()->color('warning')->icon('heroicon-o-exclamation-triangle')
+                    ->disabledClick(fn ($record) => ! $record->needs_eligibility_review)
                     ->tooltip(fn ($record) => $record->needs_eligibility_review ? 'Zakat/Khums for a cause not marked eligible: contact the donor before use.' : null),
             ])
             ->filters([

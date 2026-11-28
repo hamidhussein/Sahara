@@ -26,14 +26,14 @@
         <x-site.logo />
 
         {{-- Desktop menu --}}
-        <ul class="hidden items-center gap-1 lg:flex">
+        <ul class="hidden items-center gap-0.5 lg:flex xl:gap-1">
             @foreach ($menu as $item)
                 <li class="relative" @if ($item['children']) x-data="{ flyout: false }" @mouseleave="flyout = false" @endif>
                     @if ($item['children'])
                         <button type="button"
                                 @click="flyout = !flyout" @mouseenter="flyout = true"
                                 :aria-expanded="flyout.toString()"
-                                class="flex min-h-11 items-center gap-1 rounded-button px-3 text-[15px] font-medium transition-colors {{ $item['active'] ? 'bg-primary-tint/80 font-semibold text-primary' : 'text-ink hover:bg-primary-tint/50 hover:text-primary' }}">
+                                class="flex min-h-11 items-center gap-1 whitespace-nowrap rounded-button px-2.5 text-[15px] font-medium transition-colors xl:px-3 {{ $item['active'] ? 'bg-primary-tint/80 font-semibold text-primary' : 'text-ink hover:bg-primary-tint/50 hover:text-primary' }}">
                             {{ $item['label'] }}
                             <svg class="size-4 transition-transform" :class="flyout && 'rotate-180'" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true"><path fill-rule="evenodd" d="M5.2 7.2a.75.75 0 0 1 1.06 0L10 10.94l3.74-3.74a.75.75 0 1 1 1.06 1.06l-4.27 4.27a.75.75 0 0 1-1.06 0L5.2 8.26a.75.75 0 0 1 0-1.06Z" clip-rule="evenodd"/></svg>
                         </button>
@@ -50,7 +50,7 @@
                     @else
                         <a href="{{ $item['url'] }}"
                            @if ($item['active']) aria-current="page" @endif
-                           class="flex min-h-11 items-center rounded-button px-3 text-[15px] font-medium transition-colors {{ $item['active'] ? 'bg-primary-tint/80 font-semibold text-primary' : 'text-ink hover:bg-primary-tint/50 hover:text-primary' }}">
+                           class="flex min-h-11 items-center whitespace-nowrap rounded-button px-2.5 text-[15px] font-medium transition-colors xl:px-3 {{ $item['active'] ? 'bg-primary-tint/80 font-semibold text-primary' : 'text-ink hover:bg-primary-tint/50 hover:text-primary' }}">
                             {{ $item['label'] }}
                         </a>
                     @endif

@@ -156,3 +156,11 @@ html:not(.dark) .fi-body {
         transition: none;
     }
 }
+
+/* Secondary text (breadcrumbs, section descriptions, page subheadings) at 4.5:1 or better on the
+   light page background above; the default grey measured 4.4:1 there. */
+html:not(.dark) .fi-breadcrumbs-item-label,
+html:not(.dark) .fi-section-header-description,
+html:not(.dark) .fi-header-subheading {
+    color: #475569;
+}

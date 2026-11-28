@@ -79,7 +79,7 @@
             </div>
         </div>
         <figure class="lg:col-span-2">
-            <img src="{{ asset('images/hero-danyor-water.jpg') }}" srcset="{{ \App\Settings\HomeSettings::builtInSrcset() }}" sizes="(min-width: 1024px) 40vw, 100vw" alt="SSWF volunteers delivering clean drinking water in Danyor" loading="lazy" class="aspect-[4/5] w-full rounded-card object-cover">
+            <img src="{{ asset('images/hero-danyor-water.jpg') }}" srcset="{{ \App\Settings\HomeSettings::builtInSrcset() }}" sizes="(min-width: 1024px) 40vw, 100vw" alt="SSWF volunteers delivering clean drinking water in Danyor" loading="lazy" class="aspect-[3/2] w-full rounded-card object-cover lg:aspect-[4/5]">
             <figcaption class="mt-2 text-ink-muted">Volunteers delivering water door to door in Danyor, 2025.</figcaption>
         </figure>
     </section>
@@ -127,12 +127,13 @@
     <section class="border-t border-line bg-surface" aria-labelledby="what-we-do">
         <div class="mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:px-8 lg:py-16">
             <h2 id="what-we-do" class="{{ $h2 }}">What we do</h2>
-            <ul class="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+            {{-- Two columns even on phones, so the eight areas don't become one very long list. --}}
+            <ul class="mt-8 grid grid-cols-2 gap-3 sm:gap-4 lg:grid-cols-4">
                 @foreach ($work as $i => [$title, $text, $link])
-                    <li class="flex flex-col rounded-card border border-line bg-canvas p-5">
+                    <li class="flex flex-col rounded-card border border-line bg-canvas p-4 sm:p-5">
                         <span class="text-sm font-semibold text-ink-muted" aria-hidden="true">{{ str_pad($i + 1, 2, '0', STR_PAD_LEFT) }}</span>
-                        <h3 class="mt-1 text-lg font-semibold leading-snug text-ink">{{ $title }}</h3>
-                        <p class="mt-2 grow text-ink-muted">{{ $text }}</p>
+                        <h3 class="mt-1 text-base font-semibold leading-snug text-ink sm:text-lg">{{ $title }}</h3>
+                        <p class="mt-2 grow text-sm text-ink-muted sm:text-base">{{ $text }}</p>
                         @if ($link)
                             <a href="{{ $link }}" class="mt-2 inline-flex min-h-11 items-center self-start font-medium text-water-dark underline underline-offset-2 hover:text-primary-deep">Learn more<span class="sr-only"> about {{ strtolower($title) }}</span></a>
                         @endif
@@ -145,11 +146,11 @@
     {{-- Values --}}
     <section class="mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:px-8 lg:py-20" aria-labelledby="values">
         <h2 id="values" class="{{ $h2 }}">Our values</h2>
-        <dl class="mt-6 grid gap-x-12 gap-y-6 md:grid-cols-2 lg:grid-cols-3">
+        <dl class="mt-6 grid grid-cols-2 gap-x-5 gap-y-5 sm:gap-x-12 sm:gap-y-6 lg:grid-cols-3">
             @foreach ($values as [$name, $text])
-                <div class="border-s-4 border-primary ps-4">
-                    <dt class="text-lg font-semibold text-ink">{{ $name }}</dt>
-                    <dd class="mt-1 text-ink-muted">{{ $text }}</dd>
+                <div class="border-s-4 border-primary ps-3 sm:ps-4">
+                    <dt class="text-base font-semibold text-ink sm:text-lg">{{ $name }}</dt>
+                    <dd class="mt-1 text-sm text-ink-muted sm:text-base">{{ $text }}</dd>
                 </div>
             @endforeach
         </dl>
@@ -188,9 +189,9 @@
             </div>
             <div>
                 <h3 class="font-semibold text-white">It will house</h3>
-                <ul class="mt-3 grid gap-2 sm:grid-cols-2">
+                <ul class="mt-3 grid grid-cols-2 gap-2">
                     @foreach ($complex as $item)
-                        <li class="rounded-button bg-white/10 px-4 py-3">{{ $item }}</li>
+                        <li class="rounded-button bg-white/10 px-3 py-2.5 text-sm sm:px-4 sm:py-3 sm:text-base">{{ $item }}</li>
                     @endforeach
                 </ul>
             </div>

@@ -26,7 +26,9 @@ class ProjectsTable
             ->emptyStateHeading('No projects found')
             ->emptyStateDescription('Add a project to document your work, or clear the search and filters.')
             ->columns([
-                SpatieMediaLibraryImageColumn::make('cover')->collection('cover')->conversion('thumb')->label(''),
+                SpatieMediaLibraryImageColumn::make('cover')->collection('cover')->conversion('thumb')->label('')
+                    ->alt(fn ($record) => $record->name) // the thumbnail opens the project, so its link needs a name
+                    ->disabledClick(fn ($record) => ! $record->hasMedia('cover')), // no photo: no empty link
                 TextColumn::make('name')->searchable()->weight('semibold')->wrap()
                     ->description(fn ($record) => $record->place()),
                 TextColumn::make('program.name')->sortable(),
