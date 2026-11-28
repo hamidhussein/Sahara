@@ -83,7 +83,7 @@ class ManageHomeSettings extends SettingsPage
                             FileUpload::make('image')->label('Photo')->image()->disk('public')->directory('settings/hero')
                                 ->imageEditor()->maxSize(8192)
                                 // Shrunk in the browser before upload, so phones never load a huge photo.
-                                ->imageResizeMode('contain')->imageResizeTargetWidth('1600')->imageResizeTargetHeight('1600')->imageResizeUpscale(false)
+                                ->automaticallyResizeImagesMode('contain')->automaticallyResizeImagesToWidth('1600')->automaticallyResizeImagesToHeight('1600')->automaticallyUpscaleImagesWhenResizing(false)
                                 ->helperText('A wide, real SSWF photo, at least 1600 pixels across.'),
                             Select::make('preset')->label('Built-in photo, used while no photo is uploaded')
                                 ->options(collect(HomeSettings::HERO_PRESETS)->map(fn ($preset) => $preset['label'])->all())
@@ -97,7 +97,7 @@ class ManageHomeSettings extends SettingsPage
                         ->itemLabel(fn (array $state): ?string => $state['heading'] ?? null)
                         ->addActionLabel('Add a slide'),
                     Toggle::make('hero_autoplay')->label('Move to the next slide automatically')
-                        ->helperText('Visitors can always pause it, and it never moves for people whose device asks for reduced motion.')
+                        ->helperText('Moves on every few seconds (set below). When a visitor picks a slide, the countdown starts again. It never moves for people whose device asks for reduced motion. Switch it off if you prefer the first slide to stay.')
                         ->live(),
                     TextInput::make('hero_interval')->label('Seconds per slide')->numeric()->integer()->required()
                         ->minValue(4)->maxValue(15)->suffix('seconds')
