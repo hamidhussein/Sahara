@@ -1,7 +1,7 @@
 {{--
     Home page, plan 1.1: 1 Hero, 2 Impact counters, 3 Current appeals with
-    "What your gift can do" examples, 4 Our programs, 5 Projects led by one
-    featured project, 8 News, 10 Get involved, 9 Partners strip. Still to come:
+    "What your gift can do" examples, 4 Our programs, 5 Completed projects
+    carousel, 8 News, 10 Get involved, 9 Partners strip. Still to come:
     6 A beneficiary story (needs a quote given with permission), which should
     take the featured-project spot.
 --}}
@@ -36,37 +36,159 @@
         <script type="application/ld+json">@json($organization, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE | JSON_HEX_TAG | JSON_HEX_AMP)</script>
     </x-slot:head>
 
-    {{-- 1. Hero --}}
-    <section class="relative isolate overflow-hidden bg-primary-deep text-white">
-        <img src="{{ $home->heroImageUrl() }}"
-             @if ($srcset = $home->heroSrcset()) srcset="{{ $srcset }}" sizes="100vw" @endif
-             alt="{{ $home->hero_image_alt }}"
-             fetchpriority="high"
-             decoding="async"
-             class="absolute inset-0 -z-20 size-full object-cover object-center">
-        {{-- Lighter on the right (desktop) and at the top (phones) so the people in the photo stay visible; darkest behind the text. --}}
-        <div aria-hidden="true" class="absolute inset-0 -z-10 bg-gradient-to-b from-primary-deep/55 via-primary-deep/75 to-primary-deep/90 lg:bg-gradient-to-r lg:from-primary-deep/92 lg:via-primary-deep/60 lg:to-primary-deep/10"></div>
-        <div aria-hidden="true" class="absolute inset-0 -z-10 bg-gradient-to-t from-primary-deep/45 via-transparent to-transparent"></div>
-        <div class="mx-auto max-w-7xl px-4 py-12 sm:px-6 sm:py-20 lg:px-8 lg:py-24">
-            <div class="max-w-2xl">
-                <p class="inline-flex items-center gap-2 rounded-full border border-white/20 bg-white/10 px-3.5 py-1.5 text-sm font-medium text-white/95 backdrop-blur-xs">
-                    <span class="size-2 shrink-0 rounded-full bg-accent" aria-hidden="true"></span>
-                    <span>Serving Gilgit-Baltistan since {{ config('sswf.founded', 2006) }}<span class="hidden sm:inline"> · Reg. No. {{ $site->registration_number }}</span></span>
-                </p>
-                <h1 class="mt-5 text-[2rem] font-bold leading-[1.12] tracking-tight sm:text-5xl lg:text-[3.25rem]">{{ $home->hero_heading }}</h1>
-                <p class="mt-4 max-w-xl text-lg leading-relaxed text-white/90 sm:text-xl">
-                    {{ $home->hero_text }}
-                </p>
-                <div class="mt-8 flex flex-col gap-3 sm:flex-row sm:items-center">
-                    <a href="{{ route('donate') }}" class="btn-donate px-6 text-lg">Donate Now</a>
-                    <a href="{{ route('get-help') }}" class="btn-outline border-white/80 bg-white/10 px-6 text-lg text-white backdrop-blur-xs hover:border-white hover:bg-white/20">Get Help</a>
-                </div>
-            </div>
-        </div>
-    </section>
+    {{-- 1. Hero carousel (pages/partials/home-hero, Admin → Settings → Home page → Hero slides) --}}
+    @include('pages.partials.home-hero')
 
     {{-- 2. Impact counters --}}
     <x-impact-counters class="border-t-0" />
+
+    {{-- 2b. About Subka Sahara --}}
+    @php
+        $aboutVideoId = $home->aboutVideoId();
+        $aboutVideoTitle = trim((string) $home->about_video_title) ?: 'Subka Sahara Welfare Foundation story';
+    @endphp
+    <section class="border-b border-line bg-surface py-14 sm:py-20 lg:py-24"
+             aria-labelledby="home-about-title"
+             @if ($aboutVideoId) x-data="{ videoOpen: false, playVideo() { this.videoOpen = true; this.$refs.aboutVideoPlayer.showModal(); } }" @endif>
+        <div class="mx-auto grid max-w-7xl items-center gap-12 px-4 sm:px-6 lg:grid-cols-12 lg:gap-14 lg:px-8">
+            <div class="lg:col-span-6">
+                <div class="relative mx-auto max-w-[32rem] pt-6 sm:pt-8 lg:mx-0">
+                    {{-- Photo 1 (top-left) + orange semicircle accent tucked underneath --}}
+                    <div class="relative z-0 w-[64%]">
+                        <div class="overflow-hidden rounded-card border-[6px] border-surface bg-surface shadow-md">
+                            <img src="{{ asset('images/about-eye-camp-960.webp') }}"
+                                 srcset="{{ asset('images/about-eye-camp-640.webp') }} 640w, {{ asset('images/about-eye-camp-960.webp') }} 960w"
+                                 sizes="(min-width: 1024px) 22vw, 60vw"
+                                 alt="Doctor examining a senior patient during an SSWF free eye camp in Nagar"
+                                 loading="lazy"
+                                 decoding="async"
+                                 class="aspect-square w-full object-cover object-center">
+                        </div>
+                        <div class="absolute -bottom-5 left-[18%] -z-10 h-10 w-20 rounded-b-full bg-accent sm:-bottom-7 sm:h-14 sm:w-28" aria-hidden="true"></div>
+                    </div>
+
+                    {{-- Photo 2 (bottom-right overlap) + navy semicircle accent above; doubles as the YouTube story trigger when configured --}}
+                    <div class="relative z-10 -mt-28 ml-auto w-[54%] sm:-mt-40">
+                        <div class="absolute -top-5 right-3 -z-10 h-10 w-20 rounded-t-full bg-primary sm:-top-7 sm:right-5 sm:h-14 sm:w-28" aria-hidden="true"></div>
+                        @if ($aboutVideoId)
+                            <button type="button"
+                                    @click="playVideo()"
+                                    aria-label="Watch our story: {{ $aboutVideoTitle }}"
+                                    class="group relative block w-full cursor-pointer overflow-hidden rounded-card border-[6px] border-surface bg-surface text-start shadow-xl transition-shadow duration-200 hover:shadow-2xl">
+                                <img src="{{ asset('images/about-water-plant-960.webp') }}"
+                                     srcset="{{ asset('images/about-water-plant-640.webp') }} 640w, {{ asset('images/about-water-plant-960.webp') }} 960w"
+                                     sizes="(min-width: 1024px) 19vw, 50vw"
+                                     alt=""
+                                     loading="lazy"
+                                     decoding="async"
+                                     class="aspect-[4/5] w-full object-cover object-[38%_45%] transition-transform duration-300 group-hover:scale-[1.04] motion-reduce:transition-none motion-reduce:group-hover:scale-100">
+                                <span aria-hidden="true" class="absolute inset-0 bg-gradient-to-t from-primary-deep/80 via-primary-deep/20 to-transparent transition-colors duration-200 group-hover:from-primary-deep/90 group-hover:via-primary-deep/40"></span>
+                                <span aria-hidden="true" class="absolute inset-0 grid place-items-center">
+                                    <span class="rounded-full bg-white/25 p-2 backdrop-blur-xs transition-all duration-200 group-hover:scale-110 group-hover:bg-accent/40 motion-reduce:transition-none motion-reduce:group-hover:scale-100">
+                                        <span class="grid size-12 place-items-center rounded-full bg-white text-primary shadow-lg transition-colors duration-200 group-hover:bg-accent group-hover:text-ink sm:size-14">
+                                            <svg class="ms-0.5 size-5 sm:size-6" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
+                                        </span>
+                                    </span>
+                                </span>
+                                <span aria-hidden="true" class="absolute inset-x-0 bottom-0 flex items-center justify-between gap-2 px-3 py-2.5 sm:px-4 sm:py-3">
+                                    <span class="text-sm font-semibold leading-tight text-white">Watch our story</span>
+                                    <span class="hidden size-7 items-center justify-center rounded-full bg-white/15 text-white backdrop-blur-xs transition-colors group-hover:bg-accent group-hover:text-ink sm:inline-flex">
+                                        <svg class="size-3.5" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
+                                    </span>
+                                </span>
+                            </button>
+                        @else
+                            <div class="overflow-hidden rounded-card border-[6px] border-surface bg-surface shadow-xl">
+                                <img src="{{ asset('images/about-water-plant-960.webp') }}"
+                                     srcset="{{ asset('images/about-water-plant-640.webp') }} 640w, {{ asset('images/about-water-plant-960.webp') }} 960w"
+                                     sizes="(min-width: 1024px) 19vw, 50vw"
+                                     alt="A woman collecting clean drinking water from SSWF's filtration plant in Miachar, Nagar"
+                                     loading="lazy"
+                                     decoding="async"
+                                     class="aspect-[4/5] w-full object-cover object-[38%_45%]">
+                            </div>
+                        @endif
+                    </div>
+                </div>
+            </div>
+
+            <div class="lg:col-span-6">
+                <p class="inline-flex items-center gap-2 text-sm font-semibold text-water-dark">
+                    <span class="size-2 rounded-full bg-accent" aria-hidden="true"></span>
+                    About Subka Sahara
+                </p>
+                <h2 id="home-about-title" class="mt-2 text-[1.625rem] font-bold leading-[1.2] text-primary sm:text-3xl lg:text-[2.25rem]">
+                    Serving Gilgit-Baltistan with dignity since 2006.
+                </h2>
+                <p class="mt-4 text-base leading-relaxed text-ink-muted sm:text-lg">
+                    Started in 2006 as Syedabad Sahara Welfare Organization by people from District Nagar living in Gilgit, Subka Sahara Welfare Foundation is a non-profit, non-political organization led by volunteers. From clean drinking water and free eye camps to scholarships, winter relief and ambulances, we stand with families in need without discrimination.
+                </p>
+
+                <div class="mt-7 grid gap-6 border-t border-line pt-6 sm:grid-cols-2">
+                    <div class="flex items-start gap-3.5">
+                        <span class="grid size-12 shrink-0 place-items-center rounded-full border-2 border-water/35 bg-primary-tint/50 text-water-dark" aria-hidden="true">
+                            <svg class="size-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+                                <circle cx="12" cy="12" r="9" />
+                                <circle cx="12" cy="12" r="5" />
+                                <circle cx="12" cy="12" r="1.5" fill="currentColor" stroke="none" />
+                            </svg>
+                        </span>
+                        <div>
+                            <h3 class="text-base font-bold text-ink sm:text-lg">Our Mission</h3>
+                            <p class="mt-1 text-sm leading-relaxed text-ink-muted">
+                                Serve humanity without discrimination through lasting clean water, healthcare, education and relief led by communities.
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="flex items-start gap-3.5">
+                        <span class="grid size-12 shrink-0 place-items-center rounded-full border-2 border-accent/65 bg-accent/10 text-primary" aria-hidden="true">
+                            <svg class="size-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M3 19h18" />
+                                <path d="m5 19 5.5-9 3.5 5 2.5-3.5L19 19" />
+                                <circle cx="16.5" cy="7" r="2" />
+                            </svg>
+                        </span>
+                        <div>
+                            <h3 class="text-base font-bold text-ink sm:text-lg">Our Vision</h3>
+                            <p class="mt-1 text-sm leading-relaxed text-ink-muted">
+                                Compassionate, self-reliant communities where clean water, education and healthcare are within everyone’s reach.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="mt-8">
+                    <a href="{{ route('about') }}" class="btn-primary px-6">Discover More</a>
+                </div>
+            </div>
+        </div>
+
+        @if ($aboutVideoId)
+            {{-- Embedded YouTube player: loads only when opened, unloads on close. --}}
+            <dialog x-ref="aboutVideoPlayer"
+                    class="m-auto w-[min(960px,calc(100vw-2rem))] overflow-hidden rounded-card bg-primary-deep p-0 text-white shadow-2xl backdrop:bg-primary-deep/90"
+                    @close="videoOpen = false"
+                    @click.self="$el.close()"
+                    aria-label="{{ $aboutVideoTitle }}">
+                <template x-if="videoOpen">
+                    <div>
+                        <div class="aspect-video bg-black">
+                            <iframe class="size-full"
+                                    src="https://www.youtube-nocookie.com/embed/{{ $aboutVideoId }}?autoplay=1&rel=0"
+                                    title="{{ $aboutVideoTitle }}"
+                                    allow="autoplay; encrypted-media; picture-in-picture"
+                                    allowfullscreen></iframe>
+                        </div>
+                        <div class="flex items-center justify-between gap-4 border-t border-white/10 bg-primary-deep px-4 py-3 sm:px-6">
+                            <p class="font-semibold text-white">{{ $aboutVideoTitle }}</p>
+                            <button type="button" @click="$refs.aboutVideoPlayer.close()" class="btn bg-white text-ink hover:bg-canvas">Close</button>
+                        </div>
+                    </div>
+                </template>
+            </dialog>
+        @endif
+    </section>
 
     {{-- 3. Current appeals (Admin → Causes & appeals). Progress shows only when a goal is set. --}}
     @if ($appeals->isNotEmpty())
@@ -171,7 +293,7 @@
         </div>
     </section>
 
-    {{-- 5. Latest projects (marked "Show on the home page" in the admin) --}}
+    {{-- 5. Completed projects carousel (pages/partials/home-projects-carousel) --}}
     @if ($projects->isNotEmpty())
         <section class="bg-canvas py-14 sm:py-20" aria-labelledby="projects-title">
             <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
@@ -185,38 +307,7 @@
                         See all projects <span aria-hidden="true">→</span>
                     </a>
                 </div>
-                @php
-                    // The first project with a photo becomes a large feature: a real place and real people
-                    // break up the card grids. Replace with a beneficiary story once one is given with consent.
-                    $feature = $projects->first(fn ($project) => $project->imageUrl('cover', 'card'));
-                    $rest = $feature ? $projects->reject(fn ($project) => $project->is($feature)) : $projects;
-                @endphp
-                @if ($feature)
-                    <article class="group relative mt-8 grid overflow-hidden rounded-card border border-line bg-surface shadow-xs lg:grid-cols-2">
-                        <img src="{{ $feature->imageUrl('cover', 'card') }}" alt="{{ $feature->name }}" loading="lazy" class="aspect-[3/2] size-full object-cover lg:aspect-auto">
-                        <div class="flex flex-col justify-center p-6 sm:p-10">
-                            <div class="flex flex-wrap items-center gap-2 text-sm">
-                                <span class="rounded-full px-2.5 py-0.5 font-medium {{ $feature->status->tagClasses() }}">{{ $feature->status->getLabel() }}</span>
-                                <span class="text-ink-muted">{{ $feature->program->name }}{{ $feature->place() ? ' · '.$feature->place() : '' }}</span>
-                            </div>
-                            <h3 class="mt-4 text-2xl font-bold leading-snug text-ink sm:text-3xl">
-                                <a href="{{ route('projects.show', $feature) }}" class="after:absolute after:inset-0 group-hover:text-primary">{{ $feature->name }}</a>
-                            </h3>
-                            <p class="mt-3 text-lg leading-relaxed text-ink-muted">{{ $feature->summary }}</p>
-                            @if ($feature->donor)
-                                <p class="mt-4 border-s-4 border-accent ps-4 text-ink">{{ $feature->donor }}</p>
-                            @endif
-                            <span class="mt-6 inline-flex items-center gap-1.5 font-semibold text-water-dark group-hover:text-primary">Read the full story <span aria-hidden="true">→</span></span>
-                        </div>
-                    </article>
-                @endif
-                @if ($rest->isNotEmpty())
-                    <ul class="mt-6 grid gap-6 sm:grid-cols-2">
-                        @foreach ($rest as $project)
-                            <li><x-project-card :project="$project" /></li>
-                        @endforeach
-                    </ul>
-                @endif
+                @include('pages.partials.home-projects-carousel')
                 <a href="{{ route('projects.index') }}" class="btn-primary mt-6 w-full sm:hidden">See all projects</a>
             </div>
         </section>

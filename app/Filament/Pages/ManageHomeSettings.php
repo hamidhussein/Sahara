@@ -4,6 +4,7 @@ namespace App\Filament\Pages;
 
 use App\Enums\Role;
 use App\Models\Cause;
+use App\Models\GalleryAlbum;
 use App\Settings\HomeSettings;
 use BackedEnum;
 use Filament\Forms\Components\FileUpload;
@@ -11,6 +12,7 @@ use Filament\Forms\Components\Repeater;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\TextInput;
+use Filament\Forms\Components\Toggle;
 use Filament\Pages\SettingsPage;
 use Filament\Schemas\Components\Section;
 use Filament\Schemas\Schema;
@@ -37,21 +39,84 @@ class ManageHomeSettings extends SettingsPage
         return (bool) auth()->user()?->hasAnyRole([Role::SuperAdmin->value, Role::Editor->value]);
     }
 
+    /** No slides saved yet: start the list with the single hero that was set before. */
+    protected function mutateFormDataBeforeFill(array $data): array
+    {
+        if (blank($data['hero_slides'] ?? null)) {
+            $data['hero_slides'] = [[
+                'heading' => $data['hero_heading'] ?? '',
+                'text' => $data['hero_text'] ?? '',
+                'image' => $data['hero_image'] ?? null,
+                'image_alt' => $data['hero_image_alt'] ?? '',
+                'preset' => 'danyor-water',
+            ]];
+        }
+
+        return $data;
+    }
+
+    /** Slide 1 is also the page's share preview and search description photo. */
+    protected function mutateFormDataBeforeSave(array $data): array
+    {
+        $data['hero_slides'] = array_values($data['hero_slides'] ?? []);
+
+        if ($first = $data['hero_slides'][0] ?? null) {
+            $data['hero_heading'] = $first['heading'];
+            $data['hero_text'] = $first['text'];
+            $data['hero_image'] = $first['image'] ?? null;
+            $data['hero_image_alt'] = $first['image_alt'];
+        }
+
+        return $data;
+    }
+
     public function form(Schema $schema): Schema
     {
         return $schema->columns(1)->components([
-            Section::make('Top of the page')
-                ->description('The first thing every visitor sees. Keep the heading short; it sits over the photo.')
+            Section::make('Hero slides')
+                ->description('The top of the page. Each slide has its own photo and message; the Donate Now and Get Help buttons stay on every slide. Keep headings short: they sit over the photo.')
                 ->schema([
-                    TextInput::make('hero_heading')->label('Heading')->required()->maxLength(80),
-                    Textarea::make('hero_text')->label('Text under the heading')->required()->rows(3)->maxLength(300),
-                    FileUpload::make('hero_image')->label('Photo')->image()->disk('public')->directory('settings')
-                        ->imageEditor()->maxSize(8192)
-                        // Shrunk in the browser before upload, so phones never load a huge photo.
-                        ->imageResizeMode('contain')->imageResizeTargetWidth('1600')->imageResizeTargetHeight('1600')->imageResizeUpscale(false)
-                        ->helperText('A wide, real SSWF photo, at least 1600 pixels across. Leave empty to keep the Danyor water photo.'),
-                    TextInput::make('hero_image_alt')->label('What the photo shows')->required()->maxLength(160)
-                        ->helperText('Read aloud to blind visitors, e.g. "Volunteers delivering water in Danyor".'),
+                    Repeater::make('hero_slides')->hiddenLabel()
+                        ->schema([
+                            TextInput::make('heading')->label('Heading')->required()->maxLength(80),
+                            Textarea::make('text')->label('Text under the heading')->required()->rows(2)->maxLength(300),
+                            FileUpload::make('image')->label('Photo')->image()->disk('public')->directory('settings/hero')
+                                ->imageEditor()->maxSize(8192)
+                                // Shrunk in the browser before upload, so phones never load a huge photo.
+                                ->imageResizeMode('contain')->imageResizeTargetWidth('1600')->imageResizeTargetHeight('1600')->imageResizeUpscale(false)
+                                ->helperText('A wide, real SSWF photo, at least 1600 pixels across.'),
+                            Select::make('preset')->label('Built-in photo, used while no photo is uploaded')
+                                ->options(collect(HomeSettings::HERO_PRESETS)->map(fn ($preset) => $preset['label'])->all())
+                                ->default('danyor-water')->selectablePlaceholder(false),
+                            TextInput::make('image_alt')->label('What the photo shows')->required()->maxLength(160)->columnSpanFull()
+                                ->helperText('Read aloud to blind visitors, e.g. "Volunteers delivering water in Danyor".'),
+                        ])
+                        ->columns(2)
+                        ->minItems(1)->maxItems(5)
+                        ->reorderable()->collapsible()
+                        ->itemLabel(fn (array $state): ?string => $state['heading'] ?? null)
+                        ->addActionLabel('Add a slide'),
+                    Toggle::make('hero_autoplay')->label('Move to the next slide automatically')
+                        ->helperText('Visitors can always pause it, and it never moves for people whose device asks for reduced motion.')
+                        ->live(),
+                    TextInput::make('hero_interval')->label('Seconds per slide')->numeric()->integer()->required()
+                        ->minValue(4)->maxValue(15)->suffix('seconds')
+                        ->visible(fn ($get) => (bool) $get('hero_autoplay')),
+                ]),
+
+            Section::make('About section video')
+                ->description('Optional YouTube video played in a modal when a visitor clicks the About photo collage.')
+                ->columns(2)
+                ->schema([
+                    TextInput::make('about_video_url')->label('YouTube link')->url()->nullable()
+                        ->placeholder('https://www.youtube.com/watch?v=...')
+                        ->rule(fn () => function (string $attribute, $value, $fail): void {
+                            if (filled($value) && ! GalleryAlbum::youtubeId((string) $value)) {
+                                $fail('Paste a YouTube link, e.g. https://youtu.be/abc123XYZ00.');
+                            }
+                        }),
+                    TextInput::make('about_video_title')->label('Video title (optional)')->maxLength(120)
+                        ->placeholder('Subka Sahara Welfare Foundation story'),
                 ]),
 
             Section::make('How your donation helps')
