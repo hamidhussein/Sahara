@@ -85,12 +85,7 @@
         <div class="max-w-2xl">
             {{-- One fixed page heading for search engines and screen readers; each slide's message is a sub-heading. --}}
             <h1 class="sr-only">{{ config('sswf.name') }}</h1>
-            <p class="inline-flex items-center gap-2 rounded-full border border-white/20 bg-white/10 px-3.5 py-1.5 text-sm font-medium text-white/95 backdrop-blur-xs">
-                <span class="size-2 shrink-0 rounded-full bg-accent" aria-hidden="true"></span>
-                <span>Serving Gilgit-Baltistan since {{ config('sswf.founded', 2006) }}<span class="hidden sm:inline"> · Reg. No. {{ $site->registration_number }}</span></span>
-            </p>
-
-            <div class="mt-5 grid" :aria-live="running ? 'off' : 'polite'">
+            <div class="grid" :aria-live="running ? 'off' : 'polite'">
                 @foreach ($slides as $index => $slide)
                     {{-- The outgoing message fades first; the incoming one follows a moment later. --}}
                     <div class="col-start-1 row-start-1 transition-[opacity,visibility,translate] duration-500 ease-out motion-reduce:transition-none {{ $index === 0 ? '' : 'invisible translate-y-2 opacity-0' }}"

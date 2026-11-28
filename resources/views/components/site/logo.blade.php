@@ -4,7 +4,7 @@
          sizes="97px" width="97" height="40" alt="" class="h-10 w-auto shrink-0">
     {{-- From 1024 to 1279 px the full menu needs the room: the name is kept for screen readers only. --}}
     <span class="whitespace-nowrap leading-tight lg:max-xl:sr-only">
-        <span class="block text-base font-bold text-primary">Subka Sahara</span>
-        <span class="block text-xs font-medium text-ink-muted"><span class="sr-only"> </span>Welfare Foundation</span>
+        <span class="block text-base font-bold text-primary-dark">Subka Sahara</span>
+        <span class="block text-xs font-medium text-accent"><span class="sr-only"> </span>Welfare Foundation</span>
     </span>
 </a>
