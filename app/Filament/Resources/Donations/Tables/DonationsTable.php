@@ -23,17 +23,20 @@ class DonationsTable
     {
         return $table
             ->defaultSort('created_at', 'desc')
+            ->searchPlaceholder('Search reference, donor or phone')
+            ->emptyStateHeading('No donations found')
+            ->emptyStateDescription('New donations appear here automatically. Try another tab or clear the search and filters.')
             ->columns([
                 TextColumn::make('reference')->searchable()->copyable()->weight('semibold'),
-                TextColumn::make('created_at')->label('Date')->dateTime('j M Y, g:i a')->sortable(),
+                TextColumn::make('created_at')->label('Date (PKT)')->dateTime('j M Y, g:i a', 'Asia/Karachi')->sortable()->toggleable(),
                 TextColumn::make('donor_name')->label('Donor')->searchable()
                     ->description(fn ($record) => $record->is_anonymous ? 'Anonymous on the site' : null),
                 TextColumn::make('donor_phone')->label('Phone')->searchable()->toggleable(isToggledHiddenByDefault: true),
                 TextColumn::make('amount')->label('Amount')->money('PKR', locale: 'en_PK', decimalPlaces: 0)->sortable()
                     ->summarize(Sum::make()->label('Total')->money('PKR', locale: 'en_PK', decimalPlaces: 0)),
                 TextColumn::make('givingType.name')->label('Type')->sortable(),
-                TextColumn::make('cause.name')->label('Cause')->placeholder('Where needed most'),
-                TextColumn::make('payment_method')->label('Method')->badge()->color('gray'),
+                TextColumn::make('cause.name')->label('Cause')->placeholder('Where needed most')->toggleable(isToggledHiddenByDefault: true),
+                TextColumn::make('payment_method')->label('Method')->badge()->color('gray')->toggleable(isToggledHiddenByDefault: true),
                 TextColumn::make('status')->badge()->sortable(),
                 IconColumn::make('needs_eligibility_review')->label('Review')->boolean()
                     ->trueIcon('heroicon-o-exclamation-triangle')->trueColor('warning')->falseIcon('')

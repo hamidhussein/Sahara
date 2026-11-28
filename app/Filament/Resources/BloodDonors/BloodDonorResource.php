@@ -8,6 +8,7 @@ use App\Filament\Resources\HelpRequests\HelpRequestResource;
 use App\Models\BloodDonor;
 use BackedEnum;
 use Filament\Actions\Action;
+use Filament\Actions\ActionGroup;
 use Filament\Actions\DeleteAction;
 use Filament\Actions\EditAction;
 use Filament\Forms\Components\DatePicker;
@@ -58,9 +59,12 @@ class BloodDonorResource extends Resource
     {
         return $table
             ->defaultSort('name')
+            ->searchPlaceholder('Search donor name or mobile')
+            ->emptyStateHeading('No matching blood donors')
+            ->emptyStateDescription('Choose another blood group or district, or change the Available filter to include unavailable donors.')
             ->columns([
                 TextColumn::make('blood_group')->label('Group')->badge()->color('danger')->sortable(),
-                TextColumn::make('name')->searchable()->weight('semibold')
+                TextColumn::make('name')->searchable(['name', 'phone'])->weight('semibold')->wrap()
                     ->description(fn (BloodDonor $record) => $record->phone),
                 TextColumn::make('district')->sortable(),
                 TextColumn::make('last_donated_on')->label('Last donated')->date('j M Y')->placeholder('Not given')->sortable()
@@ -75,8 +79,10 @@ class BloodDonorResource extends Resource
             ->recordActions([
                 Action::make('call')->label('Call')->icon(Heroicon::OutlinedPhone)->color('success')
                     ->url(fn (BloodDonor $record) => HelpRequestResource::callUrl($record->phone)),
-                EditAction::make(),
-                DeleteAction::make(),
+                ActionGroup::make([
+                    EditAction::make()->modalHeading('Blood donor details'),
+                    DeleteAction::make(),
+                ])->tooltip('More donor actions'),
             ]);
     }
 

@@ -22,10 +22,10 @@ class ProjectForm
         $districts = array_combine(config('sswf.districts'), config('sswf.districts'));
 
         return $schema
-            ->columns(3)
+            ->columns(['default' => 1, 'lg' => 3])
             ->components([
                 Group::make([
-                    Section::make()->schema([
+                    Section::make('Project story')->schema([
                         ContentFields::title('name', 'Project name'),
                         ContentFields::slug('projects'),
                         Textarea::make('summary')->required()->rows(2)->maxLength(300)
@@ -51,10 +51,11 @@ class ProjectForm
                             DatePicker::make('completed_on')->label('Completed or opened'),
                         ]),
                     ContentFields::seo(),
-                ])->columnSpan(2),
+                ])->columnSpan(['default' => 1, 'lg' => 2]),
                 Group::make([
-                    Section::make()->schema([
-                        Toggle::make('is_published')->label('Published')->default(true),
+                    Section::make('Publishing')->schema([
+                        Toggle::make('is_published')->label('Published')->default(true)
+                            ->helperText('Published projects are visible to everyone on the website.'),
                         Toggle::make('is_featured')->label('Show on the home page'),
                         ContentFields::language(),
                     ]),

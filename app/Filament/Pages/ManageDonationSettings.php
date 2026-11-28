@@ -57,7 +57,7 @@ class ManageDonationSettings extends SettingsPage
             $settings->jazzcash_qr, $settings->easypaisa_qr, $settings->bank_qr,
         ])->contains(fn ($v) => SampleDetails::isSample($v));
 
-        return $schema->components([
+        return $schema->columns(1)->components([
             Text::make('Some details below are samples for testing. The live site ignores them: replace every SAMPLE value and QR code with SSWF’s real details before launch.')
                 ->color('danger')
                 ->weight('bold')

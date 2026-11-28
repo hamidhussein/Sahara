@@ -7,6 +7,7 @@ use App\Filament\Resources\Volunteers\Pages\ListVolunteers;
 use App\Models\Volunteer;
 use BackedEnum;
 use Filament\Actions\Action;
+use Filament\Actions\ActionGroup;
 use Filament\Actions\DeleteAction;
 use Filament\Actions\EditAction;
 use Filament\Forms\Components\CheckboxList;
@@ -63,14 +64,17 @@ class VolunteerResource extends Resource
     {
         return $table
             ->defaultSort('created_at', 'desc')
+            ->searchPlaceholder('Search volunteer, mobile or area')
+            ->emptyStateHeading('No matching volunteers')
+            ->emptyStateDescription('Volunteer sign-ups appear here automatically. Clear the search or change the skill and contact filters to see more people.')
             ->columns([
-                TextColumn::make('name')->searchable()->weight('semibold')
+                TextColumn::make('name')->searchable(['name', 'phone'])->weight('semibold')->wrap()
                     ->description(fn (Volunteer $record) => $record->phone),
                 TextColumn::make('area')->searchable()->placeholder('–'),
                 TextColumn::make('skills')->badge()->color('gray')->placeholder('–'),
-                TextColumn::make('availability')->placeholder('–')->toggleable(),
+                TextColumn::make('availability')->placeholder('–')->toggleable(isToggledHiddenByDefault: true),
                 TextColumn::make('contacted_at')->label('Contacted')->since('Asia/Karachi')->placeholder('Not yet')->sortable(),
-                TextColumn::make('created_at')->label('Signed up')->since('Asia/Karachi')->sortable(),
+                TextColumn::make('created_at')->label('Signed up')->since('Asia/Karachi')->sortable()->toggleable(isToggledHiddenByDefault: true),
             ])
             ->filters([
                 SelectFilter::make('skill')->label('Skill')
@@ -90,8 +94,10 @@ class VolunteerResource extends Resource
                         $record->forceFill(['contacted_at' => now()])->save();
                         Notification::make()->success()->title("{$record->name} marked as contacted")->send();
                     }),
-                EditAction::make(),
-                DeleteAction::make(),
+                ActionGroup::make([
+                    EditAction::make()->modalHeading('Volunteer details'),
+                    DeleteAction::make(),
+                ])->tooltip('More volunteer actions'),
             ]);
     }
 

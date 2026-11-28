@@ -39,9 +39,9 @@ class PageResource extends Resource
 
     public static function form(Schema $schema): Schema
     {
-        return $schema->columns(3)->components([
+        return $schema->columns(['default' => 1, 'lg' => 3])->components([
             Group::make([
-                Section::make()->schema([
+                Section::make('Page content')->schema([
                     TextInput::make('title')->required()->maxLength(160),
                     TextInput::make('slug')->label('Web address')->prefix(url('/').'/')
                         ->alphaDash()->unique(ignoreRecord: true)
@@ -54,8 +54,8 @@ class PageResource extends Resource
                     RichEditor::make('body')->label('Text')->required(),
                 ]),
                 ContentFields::seo(),
-            ])->columnSpan(2),
-            Section::make()->schema([
+            ])->columnSpan(['default' => 1, 'lg' => 2]),
+            Section::make('Publishing')->schema([
                 Toggle::make('is_published')->label('Published')->default(true)
                     ->disabled(fn (?Page $record) => in_array($record?->slug, self::FIXED_SLUGS, true))
                     ->helperText(fn (?Page $record) => in_array($record?->slug, self::FIXED_SLUGS, true)

@@ -44,8 +44,8 @@ class TeamMemberResource extends Resource
 
     public static function form(Schema $schema): Schema
     {
-        return $schema->components([
-            Section::make()->columns(2)->schema([
+        return $schema->columns(1)->components([
+            Section::make('Team member details')->columns(2)->schema([
                 TextInput::make('name')->required()->maxLength(120),
                 TextInput::make('role')->required()->maxLength(120)->placeholder('General Secretary'),
                 Select::make('group')->label('Section')->options(TeamGroup::class)->required()->native(false)
@@ -64,12 +64,15 @@ class TeamMemberResource extends Resource
     {
         return $table
             ->defaultSort('sort_order')
+            ->searchPlaceholder('Search team member names')
+            ->emptyStateHeading('No team members found')
+            ->emptyStateDescription('Add a confirmed team member, or clear the search and section filter.')
             ->reorderable('sort_order')
             ->defaultGroup('group')
             ->columns([
                 SpatieMediaLibraryImageColumn::make('photo')->collection('photo')->conversion('thumb')->circular()->label(''),
-                TextColumn::make('name')->weight('semibold')->searchable(),
-                TextColumn::make('role'),
+                TextColumn::make('name')->weight('semibold')->searchable()->wrap(),
+                TextColumn::make('role')->wrap(),
                 ToggleColumn::make('is_published')->label('Shown'),
             ])
             ->filters([

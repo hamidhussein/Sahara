@@ -43,8 +43,8 @@ class CauseResource extends Resource
 
     public static function form(Schema $schema): Schema
     {
-        return $schema->columns(2)->components([
-            Section::make()->columns(2)->schema([
+        return $schema->columns(1)->components([
+            Section::make('Cause details')->columns(2)->schema([
                 TextInput::make('name')->required()->maxLength(120),
                 TextInput::make('slug')->label('Short code')->alphaDash()->unique(ignoreRecord: true)
                     ->helperText('Used in links, e.g. /donate?cause=winter-package. Filled from the name.'),

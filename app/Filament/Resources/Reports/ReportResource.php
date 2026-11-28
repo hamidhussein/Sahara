@@ -43,8 +43,8 @@ class ReportResource extends Resource
 
     public static function form(Schema $schema): Schema
     {
-        return $schema->components([
-            Section::make()->columns(3)->schema([
+        return $schema->columns(1)->components([
+            Section::make('Document details')->columns(['default' => 1, 'md' => 3])->schema([
                 Select::make('type')->options(ReportType::class)->required()->native(false)->live(),
                 TextInput::make('year')->numeric()->minValue(2006)->maxValue(2100)
                     ->required(fn (Get $get) => $get('type') !== ReportType::Certificate->value
@@ -80,11 +80,14 @@ class ReportResource extends Resource
     {
         return $table
             ->defaultSort('year', 'desc')
+            ->searchPlaceholder('Search document titles')
+            ->emptyStateHeading('No documents found')
+            ->emptyStateDescription('Upload an approved report or certificate, or clear the search and filters.')
             ->columns([
-                TextColumn::make('title')->weight('semibold')->searchable(),
+                TextColumn::make('title')->weight('semibold')->searchable()->wrap(),
                 TextColumn::make('type')->badge(),
                 TextColumn::make('year')->sortable()->placeholder('–'),
-                ToggleColumn::make('is_published')->label('Shown'),
+                ToggleColumn::make('is_published')->label('Published'),
             ])
             ->filters([
                 SelectFilter::make('type')->options(ReportType::class),

@@ -65,7 +65,7 @@ class ManageTransparencySettings extends SettingsPage
 
     public function form(Schema $schema): Schema
     {
-        return $schema->components([
+        return $schema->columns(1)->components([
             Section::make('How we are funded')->schema([
                 static::lines('funding', 'Sources of income', 'Donation boxes'),
             ]),

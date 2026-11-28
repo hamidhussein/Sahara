@@ -14,6 +14,10 @@ class DonationStats extends StatsOverviewWidget
 {
     protected static ?int $sort = 1;
 
+    protected ?string $heading = 'Donations & finance';
+
+    protected ?string $description = 'Confirmed gifts and payments that need your attention.';
+
     public static function canView(): bool
     {
         return (bool) auth()->user()?->hasAnyRole([Role::Finance->value, Role::SuperAdmin->value]);
@@ -28,12 +32,16 @@ class DonationStats extends StatsOverviewWidget
 
         return [
             Stat::make('Donations this month', 'Rs '.number_format((clone $month)->sum('amount')))
+                ->icon('heroicon-o-banknotes')
+                ->url(DonationResource::getUrl('index', ['tab' => 'paid']))
                 ->description((clone $month)->count().' donations · last month Rs '.number_format($lastMonth->sum('amount'))),
             Stat::make('Payments to confirm', $toConfirm)
+                ->icon('heroicon-o-clock')
                 ->description($toConfirm ? 'Check each against the bank or wallet statement' : 'All caught up')
                 ->color($toConfirm ? 'warning' : 'success')
                 ->url(DonationResource::getUrl('index', ['tab' => 'to_confirm'])),
             Stat::make('Zakat/Khums to review', $toReview)
+                ->icon('heroicon-o-shield-check')
                 ->description($toReview ? 'Contact these donors before using the gift' : 'Nothing to review')
                 ->color($toReview ? 'warning' : 'success')
                 ->url(DonationResource::getUrl('index', ['tab' => 'review'])),

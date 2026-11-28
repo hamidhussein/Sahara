@@ -18,10 +18,10 @@ class PostForm
     public static function configure(Schema $schema): Schema
     {
         return $schema
-            ->columns(3)
+            ->columns(['default' => 1, 'lg' => 3])
             ->components([
                 Group::make([
-                    Section::make()->schema([
+                    Section::make('Article content')->schema([
                         ContentFields::title(),
                         ContentFields::slug('news'),
                         Textarea::make('excerpt')->label('Short summary')->rows(2)->maxLength(300)
@@ -29,11 +29,11 @@ class PostForm
                         RichEditor::make('body')->label('Article')->required(),
                     ]),
                     ContentFields::seo(),
-                ])->columnSpan(2),
+                ])->columnSpan(['default' => 1, 'lg' => 2]),
                 Group::make([
-                    Section::make()->schema([
+                    Section::make('Publishing')->schema([
                         DateTimePicker::make('published_at')->label('Publish on')
-                            ->native(false)->seconds(false)
+                            ->native(false)->seconds(false)->timezone('Asia/Karachi')
                             ->helperText('Leave empty to keep this as a draft. A future date publishes it then.'),
                         Select::make('category')->options(PostCategory::class)->required()->native(false),
                         ContentFields::language(),

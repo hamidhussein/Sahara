@@ -16,10 +16,10 @@ class ProgramForm
     public static function configure(Schema $schema): Schema
     {
         return $schema
-            ->columns(3)
+            ->columns(['default' => 1, 'lg' => 3])
             ->components([
                 Group::make([
-                    Section::make()->schema([
+                    Section::make('Program details')->schema([
                         ContentFields::title('name', 'Program name'),
                         ContentFields::slug('programs'),
                         TextInput::make('tagline')->maxLength(160)
@@ -30,9 +30,9 @@ class ProgramForm
                             ->helperText('The problem, what we do, highlights and how a gift helps.'),
                     ]),
                     ContentFields::seo(),
-                ])->columnSpan(2),
+                ])->columnSpan(['default' => 1, 'lg' => 2]),
                 Group::make([
-                    Section::make()->schema([
+                    Section::make('Publishing')->schema([
                         Toggle::make('is_published')->label('Published')->default(true),
                         ContentFields::language(),
                         TextInput::make('sort_order')->label('Order in menus')->numeric()->default(0),

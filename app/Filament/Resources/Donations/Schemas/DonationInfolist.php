@@ -12,10 +12,10 @@ class DonationInfolist
     public static function configure(Schema $schema): Schema
     {
         return $schema
-            ->columns(3)
+            ->columns(['default' => 1, 'lg' => 3])
             ->components([
                 Section::make('Donation')
-                    ->columnSpan(2)
+                    ->columnSpan(['default' => 1, 'lg' => 2])
                     ->columns(2)
                     ->schema([
                         TextEntry::make('reference')->copyable()->weight('bold'),

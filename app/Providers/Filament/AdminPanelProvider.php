@@ -2,6 +2,8 @@
 
 namespace App\Providers\Filament;
 
+use App\Filament\Pages\Dashboard;
+use Filament\Actions\Action;
 use Filament\Auth\MultiFactor\App\AppAuthentication;
 use Filament\Auth\MultiFactor\Email\EmailAuthentication;
 use Filament\Http\Middleware\Authenticate;
@@ -9,11 +11,10 @@ use Filament\Http\Middleware\AuthenticateSession;
 use Filament\Http\Middleware\DisableBladeIconComponents;
 use Filament\Http\Middleware\DispatchServingFilamentEvent;
 use Filament\Navigation\NavigationGroup;
-use Filament\Pages\Dashboard;
+use Filament\Pages\Page;
 use Filament\Panel;
 use Filament\PanelProvider;
 use Filament\Support\Colors\Color;
-use Filament\Widgets\AccountWidget;
 use Illuminate\Cookie\Middleware\AddQueuedCookiesToResponse;
 use Illuminate\Cookie\Middleware\EncryptCookies;
 use Illuminate\Foundation\Http\Middleware\PreventRequestForgery;
@@ -25,6 +26,8 @@ class AdminPanelProvider extends PanelProvider
 {
     public function panel(Panel $panel): Panel
     {
+        Page::stickyFormActions();
+
         return $panel
             ->default()
             ->id('admin')
@@ -43,6 +46,14 @@ class AdminPanelProvider extends PanelProvider
             )
             ->passwordReset()
             ->brandName('SSWF Admin')
+            ->viteTheme('resources/css/filament/admin/theme.css')
+            ->sidebarCollapsibleOnDesktop()
+            ->unsavedChangesAlerts()
+            ->userMenuItems([
+                Action::make('website')->label('View website')
+                    ->icon('heroicon-o-arrow-top-right-on-square')
+                    ->url(fn () => route('home'), shouldOpenInNewTab: true),
+            ])
             ->favicon(asset('favicon-32.png'))
             ->colors([
                 'primary' => Color::hex('#0d2d5e'),
@@ -55,9 +66,9 @@ class AdminPanelProvider extends PanelProvider
                 NavigationGroup::make('Content'),
                 NavigationGroup::make('Donations'),
                 NavigationGroup::make('Services'),
-                NavigationGroup::make('Transparency'),
-                NavigationGroup::make('Settings'),
-                NavigationGroup::make('Users'),
+                NavigationGroup::make('Transparency')->collapsed(),
+                NavigationGroup::make('Settings')->collapsed(),
+                NavigationGroup::make('Users')->collapsed(),
             ])
             ->discoverResources(in: app_path('Filament/Resources'), for: 'App\Filament\Resources')
             ->discoverPages(in: app_path('Filament/Pages'), for: 'App\Filament\Pages')
@@ -65,9 +76,6 @@ class AdminPanelProvider extends PanelProvider
                 Dashboard::class,
             ])
             ->discoverWidgets(in: app_path('Filament/Widgets'), for: 'App\Filament\Widgets')
-            ->widgets([
-                AccountWidget::class,
-            ])
             ->middleware([
                 EncryptCookies::class,
                 AddQueuedCookiesToResponse::class,

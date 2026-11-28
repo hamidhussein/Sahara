@@ -52,8 +52,8 @@ class ContactMessageResource extends Resource
 
     public static function infolist(Schema $schema): Schema
     {
-        return $schema->columns(3)->components([
-            Section::make('Message')->columnSpan(2)->schema([
+        return $schema->columns(['default' => 1, 'lg' => 3])->components([
+            Section::make('Message')->columnSpan(['default' => 1, 'lg' => 2])->schema([
                 TextEntry::make('subject')->weight('bold')->size('lg'),
                 TextEntry::make('message')->hiddenLabel()->prose(),
             ]),
@@ -97,6 +97,9 @@ class ContactMessageResource extends Resource
     {
         return $table
             ->defaultSort('created_at', 'desc')
+            ->searchPlaceholder('Search subject or sender')
+            ->emptyStateHeading('No matching messages')
+            ->emptyStateDescription('New website enquiries appear here. Change the Status filter to see answered messages, or clear your search.')
             ->columns([
                 IconColumn::make('handled_at')->label('')->boolean()
                     ->state(fn (ContactMessage $r) => $r->handled_at !== null)

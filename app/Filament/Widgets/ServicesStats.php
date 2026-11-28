@@ -19,6 +19,10 @@ class ServicesStats extends StatsOverviewWidget
 {
     protected static ?int $sort = 2;
 
+    protected ?string $heading = 'Community services';
+
+    protected ?string $description = 'Help requests, volunteer follow-ups and available blood donors.';
+
     public static function canView(): bool
     {
         return (bool) auth()->user()?->hasAnyRole([Role::Services->value, Role::SuperAdmin->value]);
@@ -33,6 +37,7 @@ class ServicesStats extends StatsOverviewWidget
 
         return [
             Stat::make('New help requests', $new)
+                ->icon('heroicon-o-lifebuoy')
                 ->description(match (true) {
                     $blood > 0 => "{$blood} need blood: call first",
                     $new > 0 => 'Call each person as soon as you can',
@@ -41,10 +46,12 @@ class ServicesStats extends StatsOverviewWidget
                 ->color($blood ? 'danger' : ($new ? 'warning' : 'success'))
                 ->url(HelpRequestResource::getUrl('index')),
             Stat::make('Volunteers to call', $toCall)
+                ->icon('heroicon-o-user-group')
                 ->description($toCall ? 'Signed up, not contacted yet' : 'Everyone has been contacted')
                 ->color($toCall ? 'warning' : 'success')
                 ->url(VolunteerResource::getUrl('index')),
             Stat::make('Blood donors available', $donors)
+                ->icon('heroicon-o-heart')
                 ->description('Find one by blood group and district')
                 ->url(BloodDonorResource::getUrl('index')),
         ];

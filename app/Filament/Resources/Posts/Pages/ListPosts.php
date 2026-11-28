@@ -10,6 +10,11 @@ class ListPosts extends ListRecords
 {
     protected static string $resource = PostResource::class;
 
+    public function getSubheading(): ?string
+    {
+        return 'Write field updates, review drafts and schedule news. All publish times use Pakistan time.';
+    }
+
     protected function getHeaderActions(): array
     {
         return [

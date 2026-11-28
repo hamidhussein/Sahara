@@ -43,8 +43,8 @@ class GalleryAlbumResource extends Resource
 
     public static function form(Schema $schema): Schema
     {
-        return $schema->components([
-            Section::make()->columns(2)->schema([
+        return $schema->columns(1)->components([
+            Section::make('Album details')->columns(2)->schema([
                 TextInput::make('title')->required()->maxLength(160),
                 DatePicker::make('taken_on')->label('When')->helperText('Optional; shown as month and year.'),
                 Textarea::make('description')->rows(2)->maxLength(400)->columnSpanFull(),
@@ -52,7 +52,7 @@ class GalleryAlbumResource extends Resource
                     ->helperText('Albums only appear once they have at least one photo or video.'),
             ]),
             Section::make('Photos')
-                ->description('Real SSWF photos only. Ask consent before showing beneficiaries (plan 0.4). Large photos are resized to WebP automatically.')
+                ->description('Upload photos and drag them into order. Use real SSWF photos with consent from the people shown. Large photos are resized automatically.')
                 ->schema([
                     SpatieMediaLibraryFileUpload::make('photos')->collection('photos')->hiddenLabel()
                         ->image()->multiple()->reorderable()->panelLayout('grid')
@@ -83,13 +83,27 @@ class GalleryAlbumResource extends Resource
     {
         return $table
             ->defaultSort('sort_order')
+            ->searchPlaceholder('Search album titles')
+            ->emptyStateHeading('No albums found')
+            ->emptyStateDescription('Create an album and add photos or videos, or clear your search.')
             ->reorderable('sort_order')
             ->columns([
                 SpatieMediaLibraryImageColumn::make('photos')->collection('photos')->conversion('thumb')->limit(1)->label(''),
-                TextColumn::make('title')->weight('semibold')->searchable(),
+                TextColumn::make('title')->weight('semibold')->searchable()->wrap(),
                 TextColumn::make('media_count')->counts('media')->label('Photos'),
+                TextColumn::make('public_visibility')->label('Public visibility')->badge()
+                    ->state(fn (GalleryAlbum $record): string => match (true) {
+                        ! $record->is_published => 'Hidden',
+                        ! $record->media_count && empty($record->videos) => 'Needs photos or videos',
+                        default => 'Published',
+                    })
+                    ->color(fn (string $state): string => match ($state) {
+                        'Published' => 'success',
+                        'Hidden' => 'gray',
+                        default => 'warning',
+                    }),
                 TextColumn::make('taken_on')->label('When')->date('M Y')->placeholder('–'),
-                ToggleColumn::make('is_published')->label('Shown'),
+                ToggleColumn::make('is_published')->label('Published')->toggleable(),
             ])
             ->recordActions([EditAction::make()]);
     }

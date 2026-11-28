@@ -1,0 +1,158 @@
+@import '../../../../vendor/filament/filament/resources/css/theme.css';
+
+@source '../../../../app/Filament/**/*';
+@source '../../../views/filament/**/*';
+
+html:not(.dark) .fi-body {
+    background: #f4f6fa;
+}
+
+.fi-topbar {
+    border-bottom: 1px solid #e2e8f0;
+    box-shadow: none;
+}
+
+.fi-sidebar {
+    background: #001f47;
+}
+
+.fi-sidebar .fi-sidebar-group-label {
+    color: #a9bedb;
+    font-size: 0.7rem;
+    font-weight: 700;
+    letter-spacing: 0.09em;
+    text-transform: uppercase;
+}
+
+.fi-sidebar .fi-sidebar-item-label,
+.fi-sidebar .fi-sidebar-item-icon,
+.fi-sidebar .fi-sidebar-group-btn .fi-icon {
+    color: #d6e3f5;
+}
+
+.fi-sidebar .fi-sidebar-item-btn {
+    min-height: 2.75rem;
+    border-inline-start: 3px solid transparent;
+}
+
+.fi-sidebar .fi-sidebar-item-btn:hover,
+.fi-sidebar .fi-sidebar-item-btn:focus-visible {
+    background: #143763;
+}
+
+.fi-sidebar .fi-sidebar-item.fi-active > .fi-sidebar-item-btn {
+    background: #173d70;
+    border-inline-start-color: #ff8f02;
+}
+
+.fi-sidebar .fi-sidebar-item.fi-active .fi-sidebar-item-label,
+.fi-sidebar .fi-sidebar-item.fi-active .fi-sidebar-item-icon {
+    color: #fff;
+}
+
+.fi-header-heading {
+    letter-spacing: -0.035em;
+}
+
+.fi-section,
+.fi-ta-ctn,
+.fi-wi-stats-overview-stat {
+    border-radius: 0.875rem;
+}
+
+.fi-wi-stats-overview-stat-value {
+    font-variant-numeric: tabular-nums;
+}
+
+.admin-shortcuts {
+    display: grid;
+    gap: 0.75rem;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.admin-shortcut {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 1rem;
+    border: 1px solid var(--color-gray-200);
+    border-radius: 0.75rem;
+    transition: background-color 150ms, border-color 150ms;
+}
+
+.admin-shortcut:hover {
+    background: #f0f5fc;
+    border-color: #9fb7d5;
+}
+
+.admin-shortcut:focus-visible {
+    outline: 3px solid #2a7fb8;
+    outline-offset: 3px;
+}
+
+.admin-shortcut-icon {
+    display: grid;
+    place-items: center;
+    flex-shrink: 0;
+    width: 2.5rem;
+    height: 2.5rem;
+    background: #e9f0fa;
+    color: #0d2d5e;
+    border-radius: 0.625rem;
+}
+
+.admin-shortcut-label {
+    display: block;
+    font-size: 0.875rem;
+    font-weight: 600;
+}
+
+.admin-shortcut-description {
+    display: block;
+    margin-top: 0.25rem;
+    color: var(--color-gray-600);
+    font-size: 0.75rem;
+    line-height: 1.5;
+}
+
+.admin-shortcut-arrow {
+    margin-inline-start: auto;
+    flex-shrink: 0;
+    color: var(--color-gray-500);
+}
+
+.dark .admin-shortcut {
+    border-color: var(--color-gray-700);
+    color: #fff;
+}
+
+.dark .admin-shortcut:hover {
+    background: var(--color-gray-800);
+    border-color: var(--color-gray-500);
+}
+
+.dark .admin-shortcut-description {
+    color: var(--color-gray-400);
+}
+
+.dark .fi-topbar {
+    border-color: var(--color-gray-800);
+}
+
+@media (max-width: 1279px) {
+    .admin-shortcuts {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+}
+
+@media (max-width: 639px) {
+    .admin-shortcuts {
+        grid-template-columns: minmax(0, 1fr);
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .admin-shortcut {
+        transition: none;
+    }
+}

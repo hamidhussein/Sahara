@@ -5,7 +5,6 @@ namespace App\Filament\Widgets;
 use App\Enums\DonationStatus;
 use App\Enums\Role;
 use App\Models\GivingType;
-use Filament\Tables\Columns\IconColumn;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
 use Filament\Widgets\TableWidget;
@@ -21,7 +20,7 @@ class FundTotals extends TableWidget
 
     protected int|string|array $columnSpan = 'full';
 
-    protected static ?string $heading = 'Funds';
+    protected static ?string $heading = 'Confirmed donations by fund';
 
     public static function canView(): bool
     {
@@ -41,7 +40,9 @@ class FundTotals extends TableWidget
             ->paginated(false)
             ->columns([
                 TextColumn::make('name')->label('Fund')->weight('semibold'),
-                IconColumn::make('is_restricted')->label('Restricted')->boolean(),
+                TextColumn::make('is_restricted')->label('Allocation')->badge()
+                    ->formatStateUsing(fn (bool $state): string => $state ? 'Restricted' : 'Standard')
+                    ->color(fn (bool $state): string => $state ? 'info' : 'gray'),
                 TextColumn::make('month_total')->label('This month')->money('PKR', locale: 'en_PK', decimalPlaces: 0)->placeholder('Rs 0'),
                 TextColumn::make('year_total')->label('This year')->money('PKR', locale: 'en_PK', decimalPlaces: 0)->placeholder('Rs 0'),
                 TextColumn::make('all_total')->label('All time')->money('PKR', locale: 'en_PK', decimalPlaces: 0)->placeholder('Rs 0'),

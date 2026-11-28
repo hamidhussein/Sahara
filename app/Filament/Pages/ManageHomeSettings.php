@@ -39,7 +39,7 @@ class ManageHomeSettings extends SettingsPage
 
     public function form(Schema $schema): Schema
     {
-        return $schema->components([
+        return $schema->columns(1)->components([
             Section::make('Top of the page')
                 ->description('The first thing every visitor sees. Keep the heading short; it sits over the photo.')
                 ->schema([

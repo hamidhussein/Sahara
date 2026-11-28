@@ -34,7 +34,7 @@ class ManageSiteSettings extends SettingsPage
 
     public function form(Schema $schema): Schema
     {
-        return $schema->components([
+        return $schema->columns(1)->components([
             Section::make('Phone numbers')
                 ->description('Shown in the emergency strip, the sticky mobile bar and the footer on every page. While the ambulance number is empty, the site shows the office phone instead. While WhatsApp is empty, WhatsApp buttons are hidden.')
                 ->columns(3)

@@ -32,7 +32,7 @@ class ManageImpactSettings extends SettingsPage
 
     public function form(Schema $schema): Schema
     {
-        return $schema->components([
+        return $schema->columns(1)->components([
             Section::make('Counters on the home page')
                 ->description('Update these each quarter. Years of service are calculated from the founding year.')
                 ->columns(3)

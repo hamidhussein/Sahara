@@ -16,6 +16,11 @@ class ListDonations extends ListRecords
 {
     protected static string $resource = DonationResource::class;
 
+    public function getSubheading(): ?string
+    {
+        return 'Check payment receipts against your statements before confirming. Exports follow the current tab, search and filters.';
+    }
+
     protected function getHeaderActions(): array
     {
         return [
@@ -36,6 +41,8 @@ class ListDonations extends ListRecords
                 ->badge(fn () => Donation::where('status', DonationStatus::AwaitingConfirmation)->count() ?: null)
                 ->badgeColor('warning'),
             'review' => Tab::make('Zakat/Khums to review')
+                ->badge(fn () => Donation::where('needs_eligibility_review', true)->whereIn('status', [DonationStatus::Paid, DonationStatus::AwaitingConfirmation])->count() ?: null)
+                ->badgeColor('warning')
                 ->modifyQueryUsing(fn (Builder $query) => $query->where('needs_eligibility_review', true)->whereIn('status', [DonationStatus::Paid, DonationStatus::AwaitingConfirmation])),
             'paid' => Tab::make('Paid')
                 ->modifyQueryUsing(fn (Builder $query) => $query->where('status', DonationStatus::Paid)),

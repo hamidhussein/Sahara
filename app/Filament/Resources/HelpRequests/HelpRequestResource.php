@@ -71,8 +71,8 @@ class HelpRequestResource extends Resource
 
     public static function infolist(Schema $schema): Schema
     {
-        return $schema->columns(3)->components([
-            Section::make(fn (HelpRequest $record) => $record->type->getLabel())->columnSpan(2)->schema([
+        return $schema->columns(['default' => 1, 'lg' => 3])->components([
+            Section::make(fn (HelpRequest $record) => $record->type->getLabel())->columnSpan(['default' => 1, 'lg' => 2])->schema([
                 TextEntry::make('details')->hiddenLabel()->prose(),
                 TextEntry::make('person_in_need')->label('Person in need')->placeholder('The person asking'),
                 TextEntry::make('document')->label('Document')
@@ -134,10 +134,13 @@ class HelpRequestResource extends Resource
     {
         return $table
             ->defaultSort('created_at', 'desc')
+            ->searchPlaceholder('Search name, mobile or reference')
+            ->emptyStateHeading('No matching help requests')
+            ->emptyStateDescription('New website requests appear here. Clear the search or change the Status filter to include finished requests.')
             ->columns([
                 TextColumn::make('status')->badge(),
                 TextColumn::make('type')->label('Need')->badge()->color('gray'),
-                TextColumn::make('name')->searchable()->weight('semibold')
+                TextColumn::make('name')->searchable(['name', 'phone'])->weight('semibold')->wrap()
                     ->description(fn (HelpRequest $record) => str($record->details)->limit(80)),
                 TextColumn::make('district')->placeholder('–')->toggleable(),
                 TextColumn::make('reference')->searchable()->toggleable(isToggledHiddenByDefault: true),
